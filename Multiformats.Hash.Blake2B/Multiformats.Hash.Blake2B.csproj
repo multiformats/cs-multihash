@@ -35,18 +35,31 @@
       <HintPath>..\..\..\_clones\BLAKE2\csharp\Blake2Sharp\bin\Release\Blake2Sharp.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Multiformats.Base, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Base.1.0.1\lib\net462\Multiformats.Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Multiformats.Hash, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Hash.1.0.0\lib\net462\Multiformats.Hash.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleBase, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleBase.1.2.0\lib\net45\SimpleBase.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="WallF.BaseNEncodings, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WallF.BaseNEncodings.1.0.0.0\lib\net20\WallF.BaseNEncodings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blake2B.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Multiformats.Hash\Multiformats.Hash.csproj">
-      <Project>{86a29d9b-0640-4af4-985b-cb3085c87693}</Project>
-      <Name>Multiformats.Hash</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

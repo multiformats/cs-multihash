@@ -35,18 +35,28 @@
       <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Multiformats.Base, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Base.1.0.1\lib\net462\Multiformats.Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Multiformats.Hash, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Hash.1.0.0\lib\net462\Multiformats.Hash.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleBase, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleBase.1.2.0\lib\net45\SimpleBase.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="WallF.BaseNEncodings, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WallF.BaseNEncodings.1.0.0.0\lib\net20\WallF.BaseNEncodings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SHA3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Multiformats.Hash\Multiformats.Hash.csproj">
-      <Project>{86a29d9b-0640-4af4-985b-cb3085c87693}</Project>
-      <Name>Multiformats.Hash</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
