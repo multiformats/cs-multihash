@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash", "Multiformats.Hash\Multiformats.Hash.csproj", "{86A29D9B-0640-4AF4-985B-CB3085C87693}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.Tests", "Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj", "{00E6BCB9-A356-48B1-A84E-D6F293079EA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.Blake2B", "Multiformats.Hash.Blake2B\Multiformats.Hash.Blake2B.csproj", "{6AA18CE2-F0A7-47B6-94EE-9511A9818B4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.Blake2B.Tests", "Multiformats.Hash.Blake2B.Tests\Multiformats.Hash.Blake2B.Tests.csproj", "{CDC19A53-C74A-49E1-BEC5-7E871E3B4310}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.SHA3", "Multiformats.Hash.SHA3\Multiformats.Hash.SHA3.csproj", "{DAD50DAE-676B-456A-A407-835C0854438A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.SHA3.Tests", "Multiformats.Hash.SHA3.Tests\Multiformats.Hash.SHA3.Tests.csproj", "{ADBCC1B4-52B5-4229-87CF-27CC494C0393}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1DD8484-EFAE-4B0E-A815-8C42EBC86604}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86A29D9B-0640-4AF4-985B-CB3085C87693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A29D9B-0640-4AF4-985B-CB3085C87693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A29D9B-0640-4AF4-985B-CB3085C87693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A29D9B-0640-4AF4-985B-CB3085C87693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AA18CE2-F0A7-47B6-94EE-9511A9818B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AA18CE2-F0A7-47B6-94EE-9511A9818B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AA18CE2-F0A7-47B6-94EE-9511A9818B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AA18CE2-F0A7-47B6-94EE-9511A9818B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDC19A53-C74A-49E1-BEC5-7E871E3B4310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDC19A53-C74A-49E1-BEC5-7E871E3B4310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDC19A53-C74A-49E1-BEC5-7E871E3B4310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDC19A53-C74A-49E1-BEC5-7E871E3B4310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAD50DAE-676B-456A-A407-835C0854438A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAD50DAE-676B-456A-A407-835C0854438A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAD50DAE-676B-456A-A407-835C0854438A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAD50DAE-676B-456A-A407-835C0854438A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADBCC1B4-52B5-4229-87CF-27CC494C0393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBCC1B4-52B5-4229-87CF-27CC494C0393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBCC1B4-52B5-4229-87CF-27CC494C0393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBCC1B4-52B5-4229-87CF-27CC494C0393}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
