@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Blake2Sharp">
-      <HintPath>..\..\..\_clones\BLAKE2\csharp\Blake2Sharp\bin\Release\Blake2Sharp.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="Blake2Sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Blake2Sharp.dll</HintPath>
     </Reference>
     <Reference Include="Multiformats.Base, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Multiformats.Base.1.0.1\lib\net462\Multiformats.Base.dll</HintPath>

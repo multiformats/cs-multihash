@@ -14,4 +14,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>multihash blake2b</tags>
   </metadata>
+  <files>
+    <file src="lib\*.dll" target="lib" />
+  </files>
 </package>
