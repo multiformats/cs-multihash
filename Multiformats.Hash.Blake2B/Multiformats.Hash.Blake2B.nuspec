@@ -15,6 +15,6 @@
     <tags>multihash blake2b</tags>
   </metadata>
   <files>
-    <file src="lib\*.dll" target="lib" />
+    <file src="lib\*.dll" target="lib\net462" />
   </files>
 </package>

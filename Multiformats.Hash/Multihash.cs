@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,7 +87,7 @@ namespace Multiformats.Hash
 
         public static Multihash Encode(string s, HashType code) => Encode(Multibase.DecodeRaw(Multibase.Base32, s), code);
 
-        private static readonly Dictionary<Type, MultihashAlgorithm> _algorithms = new Dictionary<Type, MultihashAlgorithm>();
+        private static readonly ConcurrentDictionary<Type, MultihashAlgorithm> _algorithms = new ConcurrentDictionary<Type, MultihashAlgorithm>();
 
         public static Multihash Sum<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm
         {
@@ -94,7 +95,7 @@ namespace Multiformats.Hash
             if (!_algorithms.TryGetValue(typeof(TAlgorithm), out algo))
             {
                 algo = Activator.CreateInstance<TAlgorithm>();
-                _algorithms.Add(typeof(TAlgorithm), algo);
+                _algorithms.TryAdd(typeof(TAlgorithm), algo);
             }
 
             return new Multihash(algo.Code, algo.ComputeHash(data).Take(length != -1 ? length : algo.DefaultLength).ToArray());
@@ -106,7 +107,7 @@ namespace Multiformats.Hash
             if (!_algorithms.TryGetValue(typeof(TAlgorithm), out algo))
             {
                 algo = Activator.CreateInstance<TAlgorithm>();
-                _algorithms.Add(typeof(TAlgorithm), algo);
+                _algorithms.TryAdd(typeof(TAlgorithm), algo);
             }
 
             return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Take(length != -1 ? length : algo.DefaultLength).ToArray());
