@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Multiformats.Hash.SHA3</RootNamespace>
     <AssemblyName>Multiformats.Hash.SHA3</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -35,12 +35,8 @@
       <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Multiformats.Base, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multiformats.Base.1.0.1\lib\net462\Multiformats.Base.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Multiformats.Hash, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multiformats.Hash.1.0.0\lib\net462\Multiformats.Hash.dll</HintPath>
+    <Reference Include="Multiformats.Base, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Base.1.0.8\lib\net45\Multiformats.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SimpleBase, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -49,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="WallF.BaseNEncodings, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WallF.BaseNEncodings.1.0.0.0\lib\net20\WallF.BaseNEncodings.dll</HintPath>
       <Private>True</Private>
@@ -60,6 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Multiformats.Hash\Multiformats.Hash.csproj">
+      <Project>{86a29d9b-0640-4af4-985b-cb3085c87693}</Project>
+      <Name>Multiformats.Hash</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -15,4 +15,3 @@ var mh = Multihash.Sum<SHA1>(bytes);
 * SHA2_512
 * SHA3
 * Blake2B
-* 

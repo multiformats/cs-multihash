@@ -1,0 +1,11 @@
+language: csharp
+solution: Multiformats.Hash.sln
+branches:
+  only:
+    - master
+install:
+  - nuget restore Multiformats.Hash.sln
+  - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release Multiformats.Hash.sln
+  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll

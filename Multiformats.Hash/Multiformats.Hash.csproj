@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Multiformats.Hash</RootNamespace>
     <AssemblyName>Multiformats.Hash</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Multiformats.Base, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multiformats.Base.1.0.1\lib\net462\Multiformats.Base.dll</HintPath>
+    <Reference Include="Multiformats.Base, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multiformats.Base.1.0.8\lib\net45\Multiformats.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SimpleBase, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="WallF.BaseNEncodings, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WallF.BaseNEncodings.1.0.0.0\lib\net20\WallF.BaseNEncodings.dll</HintPath>
       <Private>True</Private>
