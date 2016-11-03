@@ -1,6 +1,6 @@
 ﻿using Blake2Sharp;
 
-namespace Multiformats.Hash
+namespace Multiformats.Hash.Algorithms
 {
     public class Blake2B : MultihashAlgorithm
     {
