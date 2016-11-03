@@ -1,4 +1,4 @@
-namespace Multiformats.Hash
+namespace Multiformats.Hash.Algorithms
 {
     public class SHA2_256 : MultihashAlgorithm
     {

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Multiformats.Hash.Algorithms;
 using NUnit.Framework;
 
 namespace Multiformats.Hash.Tests
 {
     [TestFixture]
-    public partial class SumTests
+    public class SumTests
     {
         [Test]
         public void TestSHA1()
@@ -38,6 +39,26 @@ namespace Multiformats.Hash.Tests
 
             var mh = Multihash.Sum<SHA2_512>(Encoding.UTF8.GetBytes(text));
             Assert.That(mh.B58String(), Is.EqualTo(hash));
+        }
+
+        [Test]
+        public void TestSHA3()
+        {
+            var text = "hello world";
+            var hash = "8tWhXW5oUwtPd9d3FnjuLP1NozN3vc45rmsoWEEfrZL1L6gi9dqi1YkZu5iHb2HJ8WbZaaKAyNWWRAa8yaxMkGKJmX";
+
+            var mh = Multihash.Sum<SHA3>(Encoding.UTF8.GetBytes(text));
+            Assert.That(mh.B58String(), Is.EqualTo(hash));
+        }
+
+        [Test]
+        public void TestBlake2B()
+        {
+            var text = "hello world";
+            var hash = "021ced8799296ceca557832ab941a50b4a11f83478cf141f51f933f653ab9fbcc05a037cddbed06e309bf334942c4e58cdf1a46e237911ccd7fcf9787cbc7fd0";
+
+            var mh = Multihash.Sum<Blake2B>(Encoding.UTF8.GetBytes(text));
+            Assert.That(BitConverter.ToString(mh.Digest).Replace("-", "").ToLower(), Is.EqualTo(hash));
         }
     }
 }

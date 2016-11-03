@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Multiformats.Base;
+using Multiformats.Hash.Algorithms;
 
 namespace Multiformats.Hash
 {

@@ -1,7 +1,7 @@
 ﻿using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 
-namespace Multiformats.Hash
+namespace Multiformats.Hash.Algorithms
 {
     public class SHA3 : MultihashAlgorithm
     {

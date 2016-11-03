@@ -1,7 +1,6 @@
-using System;
 using System.Threading.Tasks;
 
-namespace Multiformats.Hash
+namespace Multiformats.Hash.Algorithms
 {
     public abstract class MultihashAlgorithm
     {
