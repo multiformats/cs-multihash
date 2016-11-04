@@ -6,7 +6,7 @@ namespace Multiformats.Hash.Algorithms
     {
         public HashType Code { get; }
         public string Name { get; }
-        public int DefaultLength { get; } = 1;
+        public int DefaultLength { get; }
 
         protected MultihashAlgorithm(HashType code, string name, int defaultLength)
         {

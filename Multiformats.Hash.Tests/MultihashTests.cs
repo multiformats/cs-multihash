@@ -1,9 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using NUnit.Framework;
 using Org.BouncyCastle.Utilities.Encoders;
 
@@ -26,11 +21,11 @@ namespace Multiformats.Hash.Tests
 
             Assert.That(encoded, Is.EqualTo(nb));
 
-            var h = TestCaseToMultihash(hex, code, name);
+            var h = TestCastToMultihash(hex, code, name);
             Assert.That((byte[])h, Is.EqualTo(nb));
         }
 
-        private static Multihash TestCaseToMultihash(string hex, int code, string name)
+        private static Multihash TestCastToMultihash(string hex, int code, string name)
         {
             var ob = Hex.Decode(hex);
             var b = new byte[2 + ob.Length];
@@ -60,9 +55,18 @@ namespace Multiformats.Hash.Tests
         [TestCase(0x11, "sha1")]
         [TestCase(0x12, "sha2-256")]
         [TestCase(0x13, "sha2-512")]
-        [TestCase(0x14, "sha3")]
+        [TestCase(0x14, "sha3-512")]
+        [TestCase(0x15, "sha3-384")]
+        [TestCase(0x16, "sha3-256")]
+        [TestCase(0x17, "sha3-224")]
+        [TestCase(0x18, "shake-128")]
+        [TestCase(0x19, "shake-256")]
+        [TestCase(0x1A, "keccak-224")]
+        [TestCase(0x1B, "keccak-256")]
+        [TestCase(0x1C, "keccak-384")]
+        [TestCase(0x1D, "keccak-512")]
         [TestCase(0x40, "blake2b")]
-        //[TestCase(0x41, "blake2s")]
+        [TestCase(0x41, "blake2s")]
         public void TestTable(byte code, string name)
         {
             if (Multihash.GetName(code) != name)

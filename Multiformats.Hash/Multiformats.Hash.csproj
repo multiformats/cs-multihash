@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Blake2s, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\blake2s-net.0.1.0\lib\net\Blake2s.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Blake2Sharp">
       <HintPath>lib\Blake2Sharp.dll</HintPath>
     </Reference>
@@ -55,7 +59,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Blake2S.cs" />
     <Compile Include="Algorithms\Blake2B.cs" />
+    <Compile Include="Algorithms\Extensions.cs" />
+    <Compile Include="Algorithms\SHA3_224.cs" />
+    <Compile Include="Algorithms\SHAKE_256.cs" />
+    <Compile Include="Algorithms\SHAKE_128.cs" />
+    <Compile Include="Algorithms\KECCAK_512.cs" />
+    <Compile Include="Algorithms\KECCAK_384.cs" />
+    <Compile Include="Algorithms\KECCAK_256.cs" />
+    <Compile Include="Algorithms\KECCAK_224.cs" />
+    <Compile Include="Algorithms\SHA3_256.cs" />
+    <Compile Include="Algorithms\SHA3_384.cs" />
     <Compile Include="HashType.cs" />
     <Compile Include="Multihash.cs" />
     <Compile Include="Algorithms\MultihashAlgorithm.cs" />
@@ -63,7 +78,7 @@
     <Compile Include="Algorithms\SHA1.cs" />
     <Compile Include="Algorithms\SHA2_256.cs" />
     <Compile Include="Algorithms\SHA2_512.cs" />
-    <Compile Include="Algorithms\SHA3.cs" />
+    <Compile Include="Algorithms\SHA3_512.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
