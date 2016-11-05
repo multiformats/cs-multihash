@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text;
+using Multiformats.Base;
 using NUnit.Framework;
 using Org.BouncyCastle.Utilities.Encoders;
 
@@ -74,6 +77,46 @@ namespace Multiformats.Hash.Tests
 
             if ((byte)Multihash.GetCode(name) != code)
                 Assert.Fail($"Table mismatch: {Multihash.GetCode(name)}, {code}");
+        }
+
+        [TestCase("5drNu81uhrFLRiS4bxWgAkpydaLUPW", "hello world")] // sha1
+        [TestCase("QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4", "hello world")] // sha2_256
+        [TestCase("8Vtkv2tdQ43bNGdWN9vNx9GVS9wrbXHk4ZW8kmucPmaYJwwedXir52kti9wJhcik4HehyqgLrQ1hBuirviLhxgRBNv", "hello world")] // sha2_512
+        [TestCase("8tWhXW5oUwtPd9d3FnjuLP1NozN3vc45rmsoWEEfrZL1L6gi9dqi1YkZu5iHb2HJ8WbZaaKAyNWWRAa8yaxMkGKJmX", "hello world")] // sha3_512
+        public void TestVerify(string mhs, string data)
+        {
+            var mh = Multihash.Parse(mhs);
+            var bytes = Encoding.UTF8.GetBytes(data);
+
+            Assert.That(mh.Verify(bytes));
+        }
+
+        [TestCase(HashType.SHA1)]
+        [TestCase(HashType.SHA2_256)]
+        [TestCase(HashType.SHA2_512)]
+        [TestCase(HashType.SHA3_224)]
+        [TestCase(HashType.SHA3_256)]
+        [TestCase(HashType.SHA3_384)]
+        [TestCase(HashType.SHA3_512)]
+        [TestCase(HashType.KECCAK_224)]
+        [TestCase(HashType.KECCAK_256)]
+        [TestCase(HashType.KECCAK_384)]
+        [TestCase(HashType.KECCAK_512)]
+        [TestCase(HashType.SHAKE_128)]
+        [TestCase(HashType.SHAKE_256)]
+        [TestCase(HashType.BLAKE2B)]
+        [TestCase(HashType.BLAKE2S)]
+        public void VerifyRoundTrip(HashType type)
+        {
+            var rand = new Random(Environment.TickCount);
+            var bytes = new byte[rand.Next(1024, 4096)];
+            rand.NextBytes(bytes);
+
+            var mh = Multihash.Sum(type, bytes);
+            var str = mh.ToString();
+            var mh2 = Multihash.Parse(str);
+
+            Assert.That(mh2.Verify(bytes), Is.True);
         }
     }
 }
