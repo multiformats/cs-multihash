@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
+using BinaryEncoding;
 using Multiformats.Base;
 using Multiformats.Hash.Algorithms;
-using Org.BouncyCastle.Asn1.X509.Qualified;
-using Org.BouncyCastle.Tsp;
 
 namespace Multiformats.Hash
 {
@@ -110,25 +107,21 @@ namespace Multiformats.Hash
             if (buf.Length < 3)
                 throw new Exception("Too short");
 
-            if (buf.Length > 129)
-                throw new Exception("Too long");
+            uint code;
+            var offset = Binary.Varint.Read(buf, 0, out code);
 
-            var length = buf[1];
+            uint length;
+            offset += Binary.Varint.Read(buf, offset, out length);
 
-            if (length != buf.Length - 2)
+            if (length > buf.Length - offset)
                 throw new Exception("Incosistent length");
 
-            var type = (HashType) buf[0];
-
-            return new Multihash(type, buf.Skip(2).ToArray());
+            return new Multihash((HashType)code, buf.Skip(offset).ToArray());
         }
 
         public static byte[] Encode(byte[] data, HashType code)
         {
-            if (data.Length > 127)
-                throw new Exception("Length not supported");
-
-            return new[] {(byte) code, (byte) data.Length}.Concat(data).ToArray();
+            return Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes(data.Length)).Concat(data).ToArray();
         }
 
         public static Multihash Encode(string s, HashType code) => Encode(Multibase.DecodeRaw(Multibase.Base32, s), code);

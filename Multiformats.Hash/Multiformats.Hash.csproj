@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BinaryEncoding, Version=1.2.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BinaryEncoding.1.2.7\lib\net45\BinaryEncoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Blake2s, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\blake2s-net.0.1.0\lib\net\Blake2s.dll</HintPath>
       <Private>True</Private>

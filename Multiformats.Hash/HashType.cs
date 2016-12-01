@@ -2,7 +2,7 @@ using System;
 
 namespace Multiformats.Hash
 {
-    public enum HashType : byte
+    public enum HashType : uint
     {
         SHA1 = 0x11,
         SHA2_256 = 0x12,
