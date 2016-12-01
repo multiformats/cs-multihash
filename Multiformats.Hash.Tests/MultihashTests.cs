@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Multiformats.Base;
 using NUnit.Framework;
 using Org.BouncyCastle.Utilities.Encoders;
@@ -119,6 +120,35 @@ namespace Multiformats.Hash.Tests
             var mh2 = Multihash.Parse(str);
 
             Assert.That(mh2.Verify(bytes), Is.True);
+        }
+
+        [TestCase(HashType.SHA1)]
+        [TestCase(HashType.SHA2_256)]
+        [TestCase(HashType.SHA2_512)]
+        [TestCase(HashType.SHA3_224)]
+        [TestCase(HashType.SHA3_256)]
+        [TestCase(HashType.SHA3_384)]
+        [TestCase(HashType.SHA3_512)]
+        [TestCase(HashType.KECCAK_224)]
+        [TestCase(HashType.KECCAK_256)]
+        [TestCase(HashType.KECCAK_384)]
+        [TestCase(HashType.KECCAK_512)]
+        [TestCase(HashType.SHAKE_128)]
+        [TestCase(HashType.SHAKE_256)]
+        [TestCase(HashType.BLAKE2B)]
+        [TestCase(HashType.BLAKE2S)]
+        [TestCase(HashType.DBL_SHA2_256)]
+        public async Task VerifyRoundTripAsync(HashType type)
+        {
+            var rand = new Random(Environment.TickCount);
+            var bytes = new byte[rand.Next(1024, 4096)];
+            rand.NextBytes(bytes);
+
+            var mh = await Multihash.SumAsync(type, bytes);
+            var str = mh.ToString();
+            var mh2 = Multihash.Parse(str);
+
+            Assert.That(await mh2.VerifyAsync(bytes), Is.True);
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using Multiformats.Hash;
@@ -29,6 +25,8 @@ namespace Mutiformats.Hash.Benchmarks
 
         [Benchmark]
         public Multihash Sum_SHA2_256() => Sum<SHA2_256>();
+        [Benchmark]
+        public Multihash Sum_DBL_SHA2_256() => Sum<DBL_SHA2_256>();
         [Benchmark]
         public Multihash Sum_SHA2_512() => Sum<SHA2_512>();
         [Benchmark]

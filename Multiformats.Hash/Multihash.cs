@@ -49,6 +49,7 @@ namespace Multiformats.Hash
         public override int GetHashCode() => (int) Code ^ Length ^ Digest.Sum(b => b);
 
         public bool Verify(byte[] data) => Sum(Code, data, Length).Equals(this);
+        public Task<bool> VerifyAsync(byte[] data) => SumAsync(Code, data, Length).ContinueWith(mh => mh.Result?.Equals(this) ?? false);
 
         public static bool TryParse(string s, out Multihash mh)
         {
@@ -161,9 +162,6 @@ namespace Multiformats.Hash
 
         public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : MultihashAlgorithm
         {
-            if (data.Length > 127)
-                throw new Exception("Length not supported");
-
             var algo = Get<TAlgorithm>();
 
             return new[] { (byte)algo.Code, (byte)data.Length }.Concat(data).ToArray();
@@ -181,6 +179,13 @@ namespace Multiformats.Hash
             var algo = Get<TAlgorithm>();
 
             return new Multihash(algo.Code, algo.ComputeHash(data).Take(length != -1 ? length : algo.DefaultLength).ToArray());
+        }
+
+        public static async Task<Multihash> SumAsync(HashType type, byte[] data, int length = -1)
+        {
+            var algo = Get(type);
+
+            return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Take(length != -1 ? length : algo.DefaultLength).ToArray());
         }
 
         public static async Task<Multihash> SumAsync<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm

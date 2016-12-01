@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using BinaryEncoding;
 
 namespace Multiformats.Hash
 {
@@ -12,40 +10,36 @@ namespace Multiformats.Hash
     {
         public static Multihash ReadMultihash(this Stream stream)
         {
-            var mhhdr = new byte[2];
-            if (stream.Read(mhhdr, 0, 2) != 2)
+            uint code;
+            if (Binary.Varint.Read(stream, out code) <= 0)
                 return null;
 
-            var length = mhhdr[1];
-            if (length > 127)
-                throw new NotSupportedException("Varints not supported");
+            uint length;
+            if (Binary.Varint.Read(stream, out length) <= 0)
+                return null;
 
-            var buffer = new byte[length + 2];
-            Buffer.BlockCopy(mhhdr, 0, buffer, 0, 2);
+            var buffer = new byte[length];
+            if (stream.Read(buffer, 0, buffer.Length) != length)
+                return null;
 
-            if (stream.Read(buffer, 2, length) != length)
-                throw new Exception("Could not read entire Multihash");
-
-            return Multihash.Cast(buffer);
+            return Multihash.Cast(Binary.Varint.GetBytes(code).Concat(Binary.Varint.GetBytes(length)).Concat(buffer).ToArray());
         }
 
         public static async Task<Multihash> ReadMultihashAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            var mhhdr = new byte[2];
-            if (await stream.ReadAsync(mhhdr, 0, 2, cancellationToken) != 2)
+            var code = await Binary.Varint.ReadUInt32Async(stream);
+            if (code == 0)
                 return null;
 
-            var length = mhhdr[1];
-            if (length > 127)
-                throw new NotSupportedException("Varints not supported");
+            var length = await Binary.Varint.ReadUInt32Async(stream);
+            if (length == 0)
+                return null;
 
-            var buffer = new byte[length + 2];
-            Buffer.BlockCopy(mhhdr, 0, buffer, 0, 2);
+            var buffer = new byte[length];
+            if (await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken) != length)
+                return null;
 
-            if (await stream.ReadAsync(buffer, 2, length, cancellationToken) != length)
-                throw new Exception("Could not read entire Multihash");
-
-            return Multihash.Cast(buffer);
+            return Multihash.Cast(Binary.Varint.GetBytes(code).Concat(Binary.Varint.GetBytes(length)).Concat(buffer).ToArray());
         }
 
         public static void Write(this Stream stream, Multihash mh)
