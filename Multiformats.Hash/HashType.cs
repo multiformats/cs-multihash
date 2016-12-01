@@ -19,6 +19,7 @@ namespace Multiformats.Hash
         KECCAK_512 = 0x1D,
         BLAKE2B = 0x40,
         BLAKE2S = 0x41,
+        DBL_SHA2_256 = 0x56,
         UNKNOWN = 0,
 
         [Obsolete("Use SHA3_512 instead")]

@@ -70,6 +70,7 @@ namespace Multiformats.Hash.Tests
         [TestCase(0x1D, "keccak-512")]
         [TestCase(0x40, "blake2b")]
         [TestCase(0x41, "blake2s")]
+        [TestCase(0x56, "dbl-sha2-256")]
         public void TestTable(byte code, string name)
         {
             if (Multihash.GetName(code) != name)
@@ -106,6 +107,7 @@ namespace Multiformats.Hash.Tests
         [TestCase(HashType.SHAKE_256)]
         [TestCase(HashType.BLAKE2B)]
         [TestCase(HashType.BLAKE2S)]
+        [TestCase(HashType.DBL_SHA2_256)]
         public void VerifyRoundTrip(HashType type)
         {
             var rand = new Random(Environment.TickCount);

@@ -118,7 +118,9 @@ namespace Multiformats.Hash
             if (length != buf.Length - 2)
                 throw new Exception("Incosistent length");
 
-            return new Multihash((HashType) buf[0], buf.Skip(2).ToArray());
+            var type = (HashType) buf[0];
+
+            return new Multihash(type, buf.Skip(2).ToArray());
         }
 
         public static byte[] Encode(byte[] data, HashType code)

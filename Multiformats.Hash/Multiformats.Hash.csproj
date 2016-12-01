@@ -62,6 +62,7 @@
     <Compile Include="Algorithms\Blake2S.cs" />
     <Compile Include="Algorithms\Blake2B.cs" />
     <Compile Include="Algorithms\Extensions.cs" />
+    <Compile Include="Algorithms\DBL_SHA2_256.cs" />
     <Compile Include="Algorithms\SHA3_224.cs" />
     <Compile Include="Algorithms\SHAKE_256.cs" />
     <Compile Include="Algorithms\SHAKE_128.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Algorithms\KECCAK_224.cs" />
     <Compile Include="Algorithms\SHA3_256.cs" />
     <Compile Include="Algorithms\SHA3_384.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="HashType.cs" />
     <Compile Include="Multihash.cs" />
     <Compile Include="Algorithms\MultihashAlgorithm.cs" />

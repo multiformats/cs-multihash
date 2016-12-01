@@ -161,5 +161,15 @@ namespace Multiformats.Hash.Tests
             var mh = Multihash.Sum<SHAKE_256>(Encoding.UTF8.GetBytes(text));
             Assert.That(mh.Digest, Is.EqualTo(hash));
         }
+
+        [Test]
+        public void TestDblSha2_256()
+        {
+            var text = "foo";
+            var hash = Hex.Decode("c7ade88fc7a21498a6a5e5c385e1f68bed822b72aa63c4a9a48a02c2466ee29e");
+
+            var mh = Multihash.Sum<DBL_SHA2_256>(Encoding.UTF8.GetBytes(text));
+            Assert.That(mh.Digest, Is.EqualTo(hash));
+        }
     }
 }
