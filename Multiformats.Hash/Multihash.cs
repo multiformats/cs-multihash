@@ -15,11 +15,11 @@ namespace Multiformats.Hash
         public int Length => Digest?.Length ?? 0;
         public byte[] Digest { get; }
 
-        private readonly byte[] _bytes;
+        private readonly Lazy<byte[]> _bytes;
 
         protected Multihash(byte[] bytes)
         {
-            _bytes = bytes;
+            _bytes = new Lazy<byte[]>(() => bytes);
         }
 
         protected Multihash(HashType code, byte[] digest)
@@ -28,10 +28,10 @@ namespace Multiformats.Hash
             Name = GetName((int) code);
             Digest = digest;
 
-            _bytes = Encode(digest, code);
+            _bytes = new Lazy<byte[]>(() => Encode(digest, code));
         }
 
-        public string ToString(MultibaseEncoding encoding) => Multibase.EncodeRaw(encoding, _bytes);
+        public string ToString(MultibaseEncoding encoding) => Multibase.EncodeRaw(encoding, _bytes.Value);
         public override string ToString() => ToString(Multibase.Base16);
 
         [Obsolete("Use ToString() instead")]
@@ -40,16 +40,28 @@ namespace Multiformats.Hash
         [Obsolete("Use ToString() instead")]
         public string ToHexString() => ToString(Multibase.Base16);
 
+        public byte[] ToBytes() => _bytes.Value;
+
         public override bool Equals(object obj)
         {
             var other = (Multihash) obj;
-            return other != null && _bytes.SequenceEqual(other._bytes);
+            return other != null && _bytes.Value.SequenceEqual(other._bytes.Value);
         }
 
         public override int GetHashCode() => (int) Code ^ Length ^ Digest.Sum(b => b);
 
         public bool Verify(byte[] data) => Sum(Code, data, Length).Equals(this);
         public Task<bool> VerifyAsync(byte[] data) => SumAsync(Code, data, Length).ContinueWith(mh => mh.Result?.Equals(this) ?? false);
+
+        private static readonly MultibaseEncoding[] _standardEncodings = new MultibaseEncoding[]
+        {
+            Multibase.Base16,
+            Multibase.Base32,
+            Multibase.Base58,
+            Multibase.Base64,
+            Multibase.Base2,
+            Multibase.Base8,
+        };
 
         public static bool TryParse(string s, out Multihash mh)
         {
@@ -64,8 +76,7 @@ namespace Multiformats.Hash
             }
             catch { }
 
-            var bases = new MultibaseEncoding[] { Multibase.Base2, Multibase.Base8, Multibase.Base16, Multibase.Base32, Multibase.Base58, Multibase.Base64 };
-            foreach (var @base in bases)
+            foreach (var @base in _standardEncodings)
             {
                 try
                 {
@@ -117,15 +128,19 @@ namespace Multiformats.Hash
             if (length > buf.Length - offset)
                 throw new Exception("Incosistent length");
 
-            return new Multihash((HashType)code, buf.Skip(offset).ToArray());
+            return new Multihash((HashType)code, buf.Slice(offset));
         }
 
-        public static byte[] Encode(byte[] data, HashType code)
-        {
-            return Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes(data.Length)).Concat(data).ToArray();
-        }
+        public static byte[] Encode(byte[] data, HashType code) => Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
 
         public static Multihash Encode(string s, HashType code) => Encode(Multibase.DecodeRaw(Multibase.Base32, s), code);
+
+        public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : MultihashAlgorithm
+        {
+            var algo = Get<TAlgorithm>();
+
+            return Binary.Varint.GetBytes((uint)algo.Code).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
+        }
 
         private static readonly ConcurrentDictionary<Type, MultihashAlgorithm> _algorithms = new ConcurrentDictionary<Type, MultihashAlgorithm>();
 
@@ -160,43 +175,36 @@ namespace Multiformats.Hash
             return Get(type);
         }
 
-        public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : MultihashAlgorithm
-        {
-            var algo = Get<TAlgorithm>();
-
-            return new[] { (byte)algo.Code, (byte)data.Length }.Concat(data).ToArray();
-        }
-
         public static Multihash Sum(HashType code, byte[] data, int length = -1)
         {
             var algo = Get(code);
 
-            return new Multihash(algo.Code, algo.ComputeHash(data).Take(length != -1 ? length : algo.DefaultLength).ToArray());
+            return new Multihash(algo.Code, algo.ComputeHash(data).Slice(0, length != -1 ? length : algo.DefaultLength));
         }
 
         public static Multihash Sum<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm
         {
             var algo = Get<TAlgorithm>();
 
-            return new Multihash(algo.Code, algo.ComputeHash(data).Take(length != -1 ? length : algo.DefaultLength).ToArray());
+            return new Multihash(algo.Code, algo.ComputeHash(data).Slice(0, length != -1 ? length : algo.DefaultLength));
         }
 
         public static async Task<Multihash> SumAsync(HashType type, byte[] data, int length = -1)
         {
             var algo = Get(type);
 
-            return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Take(length != -1 ? length : algo.DefaultLength).ToArray());
+            return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Slice(0, length != -1 ? length : algo.DefaultLength));
         }
 
         public static async Task<Multihash> SumAsync<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm
         {
             var algo = Get<TAlgorithm>();
 
-            return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Take(length != -1 ? length : algo.DefaultLength).ToArray());
+            return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Slice(0, length != -1 ? length : algo.DefaultLength));
         }
 
         public static implicit operator Multihash(byte[] buf) => Decode(buf);
-        public static implicit operator byte[](Multihash mh) => mh._bytes;
+        public static implicit operator byte[](Multihash mh) => mh._bytes.Value;
         public static implicit operator Multihash(string s) => Parse(s);
         public static implicit operator string(Multihash mh) => mh.ToString(Multibase.Base16);
 

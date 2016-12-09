@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Multiformats.Base;
+using Multiformats.Hash.Algorithms;
 using NUnit.Framework;
 using Org.BouncyCastle.Utilities.Encoders;
 
@@ -149,6 +150,21 @@ namespace Multiformats.Hash.Tests
             var mh2 = Multihash.Parse(str);
 
             Assert.That(await mh2.VerifyAsync(bytes), Is.True);
+        }
+
+        public static void MultihashProfile()
+        {
+            var rand = new Random(Environment.TickCount);
+            var bytes = new byte[4096];
+            rand.NextBytes(bytes);
+
+            for (var i = 0; i < 1000; i++)
+            {
+                var mh = Multihash.Sum<SHA1>(bytes);
+                var mhs = mh.ToString();
+                var mhd = Multihash.Parse(mhs);
+                mhd.Verify(bytes);
+            }
         }
     }
 }
