@@ -152,10 +152,35 @@ namespace Multiformats.Hash.Tests
             Assert.That(await mh2.VerifyAsync(bytes), Is.True);
         }
 
+        [TestCase(HashType.SHA1)]
+        [TestCase(HashType.SHA2_256)]
+        [TestCase(HashType.SHA2_512)]
+        [TestCase(HashType.SHA3_224)]
+        [TestCase(HashType.SHA3_256)]
+        [TestCase(HashType.SHA3_384)]
+        [TestCase(HashType.SHA3_512)]
+        [TestCase(HashType.KECCAK_224)]
+        [TestCase(HashType.KECCAK_256)]
+        [TestCase(HashType.KECCAK_384)]
+        [TestCase(HashType.KECCAK_512)]
+        [TestCase(HashType.SHAKE_128)]
+        [TestCase(HashType.SHAKE_256)]
+        [TestCase(HashType.BLAKE2B)]
+        [TestCase(HashType.BLAKE2S)]
+        [TestCase(HashType.DBL_SHA2_256)]
+        public void TestMultithreadedEnvironment(HashType type)
+        {
+            var rand = new Random(Environment.TickCount);
+            var bytes = new byte[32*1024];
+            rand.NextBytes(bytes);
+
+            Assert.DoesNotThrow(() => Parallel.For(0, 200, _ => Multihash.Sum(type, bytes)));
+        }
+
         public static void MultihashProfile()
         {
             var rand = new Random(Environment.TickCount);
-            var bytes = new byte[4096];
+            var bytes = new byte[32*1024];
             rand.NextBytes(bytes);
 
             for (var i = 0; i < 1000; i++)

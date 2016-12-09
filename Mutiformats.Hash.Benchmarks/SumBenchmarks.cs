@@ -53,8 +53,8 @@ namespace Mutiformats.Hash.Benchmarks
         public Multihash Sum_SHAKE_256() => Sum<SHAKE_256>();
 
         [Benchmark]
-        public Multihash Sum_BLAKE2B() => Sum<Blake2B>();
+        public Multihash Sum_BLAKE2B() => Sum<BLAKE2B>();
         [Benchmark]
-        public Multihash Sum_BLAKE2S() => Sum<Blake2S>();
+        public Multihash Sum_BLAKE2S() => Sum<BLAKE2S>();
     }
 }

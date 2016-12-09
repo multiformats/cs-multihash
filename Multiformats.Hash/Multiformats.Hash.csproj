@@ -63,10 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Blake2S.cs" />
-    <Compile Include="Algorithms\Blake2B.cs" />
+    <Compile Include="Algorithms\BLAKE2S.cs" />
+    <Compile Include="Algorithms\BLAKE2B.cs" />
     <Compile Include="Algorithms\Extensions.cs" />
     <Compile Include="Algorithms\DBL_SHA2_256.cs" />
+    <Compile Include="Algorithms\Registry.cs" />
     <Compile Include="Algorithms\SHA3_224.cs" />
     <Compile Include="Algorithms\SHAKE_256.cs" />
     <Compile Include="Algorithms\SHAKE_128.cs" />

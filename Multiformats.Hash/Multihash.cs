@@ -10,6 +10,8 @@ namespace Multiformats.Hash
 {
     public class Multihash
     {
+        private static readonly Registry _registry = new Registry();
+
         public HashType Code { get; }
         public string Name { get; }
         public int Length => Digest?.Length ?? 0;
@@ -132,76 +134,15 @@ namespace Multiformats.Hash
         }
 
         public static byte[] Encode(byte[] data, HashType code) => Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
-
         public static Multihash Encode(string s, HashType code) => Encode(Multibase.DecodeRaw(Multibase.Base32, s), code);
+        public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : MultihashAlgorithm => Binary.Varint.GetBytes((uint)_registry.GetHashType<TAlgorithm>()).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
 
-        public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : MultihashAlgorithm
-        {
-            var algo = Get<TAlgorithm>();
-
-            return Binary.Varint.GetBytes((uint)algo.Code).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
-        }
-
-        private static readonly ConcurrentDictionary<Type, MultihashAlgorithm> _algorithms = new ConcurrentDictionary<Type, MultihashAlgorithm>();
-
-        private static TAlgorithm Get<TAlgorithm>() where TAlgorithm : MultihashAlgorithm => (TAlgorithm)Get(typeof(TAlgorithm));
-
-        private static MultihashAlgorithm Get(Type type)
-        {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
-
-            MultihashAlgorithm algo;
-            if (!_algorithms.TryGetValue(type, out algo))
-            {
-                algo = (MultihashAlgorithm)Activator.CreateInstance(type);
-                _algorithms.TryAdd(type, algo);
-            }
-
-            return algo;
-        }
-
-        public static MultihashAlgorithm Get(HashType code)
-        {
-            var algo = _algorithms.Values.SingleOrDefault(alg => alg.Code == code);
-            if (algo != null)
-                return algo;
-
-            var s = code.ToString();
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            var types = assemblies.SelectMany(asm => asm.ExportedTypes);
-            var type = types.SingleOrDefault(t => t.IsSubclassOf(typeof(MultihashAlgorithm)) && t.Name.Equals(s, StringComparison.CurrentCultureIgnoreCase));
-
-            return Get(type);
-        }
-
-        public static Multihash Sum(HashType code, byte[] data, int length = -1)
-        {
-            var algo = Get(code);
-
-            return new Multihash(algo.Code, algo.ComputeHash(data).Slice(0, length != -1 ? length : algo.DefaultLength));
-        }
-
-        public static Multihash Sum<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm
-        {
-            var algo = Get<TAlgorithm>();
-
-            return new Multihash(algo.Code, algo.ComputeHash(data).Slice(0, length != -1 ? length : algo.DefaultLength));
-        }
-
-        public static async Task<Multihash> SumAsync(HashType type, byte[] data, int length = -1)
-        {
-            var algo = Get(type);
-
-            return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Slice(0, length != -1 ? length : algo.DefaultLength));
-        }
-
-        public static async Task<Multihash> SumAsync<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm
-        {
-            var algo = Get<TAlgorithm>();
-
-            return new Multihash(algo.Code, (await algo.ComputeHashAsync(data)).Slice(0, length != -1 ? length : algo.DefaultLength));
-        }
+        private static Multihash Sum(MultihashAlgorithm algo, byte[] data, int length) => new Multihash(algo.Code, algo.ComputeHash(data).Slice(0, length != -1 ? length : algo.DefaultLength));
+        public static Multihash Sum(HashType code, byte[] data, int length = -1) => _registry.Use(code, algo => Sum(algo, data, length));
+        public static Multihash Sum<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm => _registry.Use<TAlgorithm, Multihash>(algo => Sum(algo, data, length));
+        private static Task<Multihash> SumAsync(MultihashAlgorithm algo, byte[] data, int length) => algo.ComputeHashAsync(data).ContinueWith(t => new Multihash(algo.Code, t.Result.Slice(0, length != -1 ? length : algo.DefaultLength)));
+        public static Task<Multihash> SumAsync(HashType type, byte[] data, int length = -1) => _registry.UseAsync(type, algo => SumAsync(algo, data, length));
+        public static Task<Multihash> SumAsync<TAlgorithm>(byte[] data, int length = -1) where TAlgorithm : MultihashAlgorithm => _registry.UseAsync<TAlgorithm, Multihash>(algo => SumAsync(algo, data, length));
 
         public static implicit operator Multihash(byte[] buf) => Decode(buf);
         public static implicit operator byte[](Multihash mh) => mh._bytes.Value;
