@@ -82,7 +82,7 @@ namespace Multiformats.Hash.Tests
             Assert.That(mh.Digest, Is.EqualTo(hash));
         }
 
-                [Test]
+        [Test]
         public void TestBlake2B()
         {
             var text = "hello world";

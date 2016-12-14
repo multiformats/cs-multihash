@@ -43,8 +43,10 @@ var isValid = mh.Verify(bytes);
 * KECCAK_256
 * KECCAK_384
 * KECCAK_512
-* Blake2B
-* Blake2S
+* Blake2B - *deprecated*
+* BLAKE2B-(bits) (8-64)
+* Blake2S - *deprecated*
+* BLAKE2S-(bits) (8-32)
 * DBL_SHA2_256
 
 ## Benchmarks

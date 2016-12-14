@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Multiformats.Hash.Algorithms
@@ -28,11 +29,24 @@ namespace Multiformats.Hash.Algorithms
                 {HashType.KECCAK_512, typeof(KECCAK_512)},
                 {HashType.SHAKE_128, typeof(SHAKE_128)},
                 {HashType.SHAKE_256, typeof(SHAKE_256)},
-                {HashType.BLAKE2B, typeof(BLAKE2B)},
-                {HashType.BLAKE2S, typeof(BLAKE2S)},
                 {HashType.DBL_SHA2_256, typeof(DBL_SHA2_256)}
             };
+            var asm = typeof(HashType).Assembly;
+
+            asm.GetTypes().Where(t => typeof(BLAKE2B).IsAssignableFrom(t))
+                .ToList()
+                .ForEach(t => _mappings.Add(TypeToHashType(t), t));
+
+            asm.GetTypes().Where(t => typeof(BLAKE2S).IsAssignableFrom(t))
+                .ToList()
+                .ForEach(t => _mappings.Add(TypeToHashType(t), t));
+
             _algorithms = new ConcurrentDictionary<HashType, ConcurrentQueue<MultihashAlgorithm>>(Environment.ProcessorCount, _mappings.Count);
+        }
+
+        private static HashType TypeToHashType(Type type)
+        {
+            return (HashType) Enum.Parse(typeof(HashType), type.Name);
         }
 
         public MultihashAlgorithm Rent(HashType type)
