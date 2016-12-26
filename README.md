@@ -1,11 +1,29 @@
-# Multiformats.Hash
+# Multiformats.Hash (cs-multihash)
 
-[![Build Status](https://travis-ci.org/tabrath/cs-multihash.svg?branch=master)](https://travis-ci.org/tabrath/cs-multihash)
+[![](https://img.shields.io/badge/project-multiformats-blue.svg?style=flat-square)](https://github.com/multiformats/multiformats)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](https://webchat.freenode.net/?channels=%23ipfs)
+[![Travis CI](https://img.shields.io/travis/multiformats/cs-multihash.svg?style=flat-square&branch=master)](https://travis-ci.org/multiformats/cs-multihash)
 [![Build status](https://ci.appveyor.com/api/projects/status/h1rd7s003rj2q1no?svg=true)](https://ci.appveyor.com/project/tabrath/cs-multihash)
 [![NuGet Badge](https://buildstats.info/nuget/Multiformats.Hash)](https://www.nuget.org/packages/Multiformats.Hash/)
+[![](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-C# implementation of [multiformats/multihash](https://github.com/multiformats/multihash).
+> [Multihash](https://github.com/multiformats/multihash) implementation in C#
+
 Beware that some of the supported algorithms may be dropped as the specs are not complete yet.
+
+## Table of Contents
+
+- [Install](#install)
+- [Usage](#usage)
+- [Supported hash algorithms](#supported-hash-algorithms)
+- [Benchmarks](#benchmarks)
+- [Maintainers](#maintainers)
+- [Contribute](#contribute)
+- [License](#license)
+
+## Install
+
+TODO
 
 ## Usage
 ``` cs
@@ -97,3 +115,19 @@ Type=SumBenchmarks  Mode=Throughput
   Sum_SHAKE_256 |      X86 | LegacyJit | 34.7667 us | 0.4644 us |
     Sum_BLAKE2B |      X86 | LegacyJit |  9.3866 us | 0.1349 us |
     Sum_BLAKE2S |      X86 | LegacyJit |  5.7486 us | 0.0533 us |
+
+## Maintainers
+
+Captain: [@tabrath](https://github.com/tabrath).
+
+## Contribute
+
+Contributions welcome. Please check out [the issues](https://github.com/multiformats/cs-multihash/issues).
+
+Check out our [contributing document](https://github.com/multiformats/multiformats/blob/master/contributing.md) for more information on how we work, and about contributing in general. Please be aware that all interactions related to multiformats are subject to the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
+
+Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+
+## License
+
+[MIT](LICENSE) © 2016 Trond Bråthen
