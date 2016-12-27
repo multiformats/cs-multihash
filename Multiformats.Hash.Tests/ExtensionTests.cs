@@ -22,7 +22,7 @@ namespace Multiformats.Hash.Tests
 
 #if MONO
             HashType hash;
-            while ((hash = hashes.SingleOrDefault(h => h.ToString().StartsWith("BLAKE2S"))) != null)
+            while ((hash = hashes.FirstOrDefault(h => h.ToString().StartsWith("BLAKE2S"))) != default(HashType))
             {
                 hashes.Remove(hash);
             }
