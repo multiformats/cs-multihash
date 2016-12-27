@@ -4,8 +4,8 @@ branches:
   only:
     - master
 install:
-  - nuget restore Multiformats.Hash -PackagesDirectory ./packages
-  - nuget restore Multiformats.Hash.Tests -PackagesDirectory ./packages
+  - nuget restore ./Multiformats.Hash/packages.config -PackagesDirectory ./packages
+  - nuget restore ./Multiformats.Hash.Tests/packages.config -PackagesDirectory ./packages
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
