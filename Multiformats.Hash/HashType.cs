@@ -17,8 +17,6 @@ namespace Multiformats.Hash
         KECCAK_256 = 0x1B,
         KECCAK_384 = 0x1C,
         KECCAK_512 = 0x1D,
-        [Obsolete("Use bit specific type")]
-        BLAKE2B = 0x40,
         BLAKE2B_8 = 0xb201,
         BLAKE2B_16 = 0xb202,
         BLAKE2B_24 = 0xb203,
@@ -83,8 +81,6 @@ namespace Multiformats.Hash
         BLAKE2B_496 = 0xb23e,
         BLAKE2B_504 = 0xb23f,
         BLAKE2B_512 = 0xb240,
-        [Obsolete("Use bit specific type")]
-        BLAKE2S = 0x41,
         BLAKE2S_8 = 0xb241,
         BLAKE2S_16 = 0xb242,
         BLAKE2S_24 = 0xb243,
@@ -119,8 +115,5 @@ namespace Multiformats.Hash
         BLAKE2S_256 = 0xb260,
         DBL_SHA2_256 = 0x56,
         UNKNOWN = 0,
-
-        [Obsolete("Use SHA3_512 instead")]
-        SHA3 = SHA3_512
     }
 }

@@ -3,17 +3,9 @@ using Blake2Sharp;
 
 namespace Multiformats.Hash.Algorithms
 {
-    [Obsolete("Use specific bit type instead")]
-    public class BLAKE2B : MultihashAlgorithm
+    public abstract class BLAKE2B : MultihashAlgorithm
     {
         private readonly Hasher _algo;
-
-        public BLAKE2B()
-            : base(HashType.BLAKE2B, "blake2b", 64)
-        {
-            _algo = Blake2B.Create(new Blake2BConfig {OutputSizeInBytes = 64});
-            _algo.Init();
-        }
 
         protected BLAKE2B(int bits)
             : base(GetHashType(bits), GetName(bits), bits / 8)

@@ -44,7 +44,7 @@ namespace Multiformats.Hash.Tests
         [TestCase("0beec7b5", 0x11, "sha1")]
         [TestCase("2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae", 0x12, "sha2-256")]
         [TestCase("2c26b46b", 0x12, "sha2-256")]
-        [TestCase("0beec7b5ea3f0fdbc9", 0x40, "blake2b")]
+        [TestCase("0beec7b5ea3f0fdbc9", 0xb220, "blake2b-256")]
         public void TestDecode(string hex, byte code, string name)
         {
             var ob = Hex.Decode(hex);
@@ -70,9 +70,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(0x1B, "keccak-256")]
         [TestCase(0x1C, "keccak-384")]
         [TestCase(0x1D, "keccak-512")]
-        [TestCase(0x40, "blake2b")]
+        [TestCase(0xb240, "blake2b-512")]
 #if !__MonoCS__
-        [TestCase(0x41, "blake2s")]
+        [TestCase(0xb260, "blake2s-256")]
 #endif
         [TestCase(0x56, "dbl-sha2-256")]
         public void TestTable(byte code, string name)
@@ -109,9 +109,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(HashType.KECCAK_512)]
         [TestCase(HashType.SHAKE_128)]
         [TestCase(HashType.SHAKE_256)]
-        [TestCase(HashType.BLAKE2B)]
+        [TestCase(HashType.BLAKE2B_256)]
 #if !__MonoCS__
-        [TestCase(HashType.BLAKE2S)]
+        [TestCase(HashType.BLAKE2S_128)]
 #endif
         [TestCase(HashType.DBL_SHA2_256)]
         public void VerifyRoundTrip(HashType type)
@@ -140,9 +140,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(HashType.KECCAK_512)]
         [TestCase(HashType.SHAKE_128)]
         [TestCase(HashType.SHAKE_256)]
-        [TestCase(HashType.BLAKE2B)]
+        [TestCase(HashType.BLAKE2B_256)]
 #if !__MonoCS__
-        [TestCase(HashType.BLAKE2S)]
+        [TestCase(HashType.BLAKE2S_128)]
 #endif
         [TestCase(HashType.DBL_SHA2_256)]
         public async Task VerifyRoundTripAsync(HashType type)
@@ -171,9 +171,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(HashType.KECCAK_512)]
         [TestCase(HashType.SHAKE_128)]
         [TestCase(HashType.SHAKE_256)]
-        [TestCase(HashType.BLAKE2B)]
+        [TestCase(HashType.BLAKE2B_256)]
 #if !__MonoCS__
-        [TestCase(HashType.BLAKE2S)]
+        [TestCase(HashType.BLAKE2S_128)]
 #endif
         [TestCase(HashType.DBL_SHA2_256)]
         public void TestMultithreadedEnvironment(HashType type)

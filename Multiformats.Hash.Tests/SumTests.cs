@@ -88,7 +88,7 @@ namespace Multiformats.Hash.Tests
             var text = "hello world";
             var hash = "021ced8799296ceca557832ab941a50b4a11f83478cf141f51f933f653ab9fbcc05a037cddbed06e309bf334942c4e58cdf1a46e237911ccd7fcf9787cbc7fd0";
 
-            var mh = Multihash.Sum<BLAKE2B>(Encoding.UTF8.GetBytes(text));
+            var mh = Multihash.Sum<BLAKE2B_512>(Encoding.UTF8.GetBytes(text));
             Assert.That(BitConverter.ToString(mh.Digest).Replace("-", "").ToLower(), Is.EqualTo(hash));
         }
 
@@ -99,7 +99,7 @@ namespace Multiformats.Hash.Tests
             var text = "hello world";
             var hash = "9aec6806794561107e594b1f6a8a6b0c92a0cba9acf5e5e93cca06f781813b0b";
 
-            var mh = Multihash.Sum<BLAKE2S>(Encoding.UTF8.GetBytes(text));
+            var mh = Multihash.Sum<BLAKE2S_256>(Encoding.UTF8.GetBytes(text));
             Assert.That(BitConverter.ToString(mh.Digest).Replace("-", "").ToLower(), Is.EqualTo(hash));
         }
 #endif

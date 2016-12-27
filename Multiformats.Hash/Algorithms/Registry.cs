@@ -33,12 +33,12 @@ namespace Multiformats.Hash.Algorithms
             };
             var asm = typeof(HashType).Assembly;
 
-            asm.GetTypes().Where(t => typeof(BLAKE2B).IsAssignableFrom(t))
+            asm.GetTypes().Where(t => !t.IsAbstract && typeof(BLAKE2B).IsAssignableFrom(t))
                 .ToList()
                 .ForEach(t => _mappings.Add(TypeToHashType(t), t));
 
 #if !__MonoCS__
-            asm.GetTypes().Where(t => typeof(BLAKE2S).IsAssignableFrom(t))
+            asm.GetTypes().Where(t => !t.IsAbstract && typeof(BLAKE2S).IsAssignableFrom(t))
                 .ToList()
                 .ForEach(t => _mappings.Add(TypeToHashType(t), t));
 #endif

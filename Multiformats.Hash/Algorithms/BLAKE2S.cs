@@ -6,17 +6,9 @@ using Hasher = Blake2s.Hasher;
 
 namespace Multiformats.Hash.Algorithms
 {
-    [Obsolete("Use specific bit type instead")]
-    public class BLAKE2S : MultihashAlgorithm
+    public abstract class BLAKE2S : MultihashAlgorithm
     {
         private readonly Hasher _algo;
-
-        public BLAKE2S()
-            : base(HashType.BLAKE2S, "blake2s", 32)
-        {
-            _algo = Blake2S.Create(new Blake2sConfig {OutputSizeInBytes = 32});
-            _algo.Init();
-        }
 
         protected BLAKE2S(int bits)
             : base(GetHashType(bits), GetName(bits), bits / 8)
