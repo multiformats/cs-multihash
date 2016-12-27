@@ -9,6 +9,9 @@ install:
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
-  #- mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
-  - mono ./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe -target:./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe -targetargs:"/nologo /noshadow ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll" -filter:"+[*]* -[*.Tests]*" -register:user
-  - mono ./packages/coveralls.net.0.7.0/tools/csmacnz.Coveralls.exe --opencover -i ./results.xml --repoToken $REPO_TOKEN
+  - mono ./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe -target:./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe -targetargs:"/nologo /noshadow ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:./Multiformats.Hash_coverage.xml -register:user
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+cache:
+  - directories:
+    - ./packages
