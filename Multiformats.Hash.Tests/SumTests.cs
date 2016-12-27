@@ -92,6 +92,7 @@ namespace Multiformats.Hash.Tests
             Assert.That(BitConverter.ToString(mh.Digest).Replace("-", "").ToLower(), Is.EqualTo(hash));
         }
 
+#if !MONO
         [Test]
         public void TestBlake2S()
         {
@@ -101,6 +102,7 @@ namespace Multiformats.Hash.Tests
             var mh = Multihash.Sum<BLAKE2S>(Encoding.UTF8.GetBytes(text));
             Assert.That(BitConverter.ToString(mh.Digest).Replace("-", "").ToLower(), Is.EqualTo(hash));
         }
+#endif
 
         [Test]
         public void TestKeccak_224()

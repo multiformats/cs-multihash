@@ -10,6 +10,11 @@ install:
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
   - mono ./testrunner/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    branch: master
 cache:
   - directories:
     - ./packages
