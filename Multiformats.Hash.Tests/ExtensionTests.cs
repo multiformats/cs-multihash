@@ -12,11 +12,30 @@ namespace Multiformats.Hash.Tests
     [TestFixture]
     public class ExtensionTests
     {
+        public HashType[] SupportedHashTypes { get; private set; }
+
+        [SetUp]
+        public void Setup()
+        {
+            var hashes =
+                Enum.GetValues(typeof(HashType)).Cast<HashType>().Where(type => type != HashType.UNKNOWN).ToList();
+
+#if MONO
+            HashType hash;
+            while ((hash = hashes.SingleOrDefault(h => h.ToString().StartsWith("BLAKE2S"))) != null)
+            {
+                hashes.Remove(hash);
+            }
+#endif
+
+            SupportedHashTypes = hashes.ToArray();
+        }
+
         [Test]
         public void Read_StreamGivenMultistreamContent_ReturnsValidMultihashes()
         {
             var data = Encoding.UTF8.GetBytes("hello world");
-            var hashes = (from HashType type in Enum.GetValues(typeof(HashType)) where type != HashType.UNKNOWN select Multihash.Sum(type, data)).ToList();
+            var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToArray();
 
             using (var stream = new MemoryStream(hashes.SelectMany(mh => (byte[])mh).ToArray()))
             {
@@ -35,7 +54,7 @@ namespace Multiformats.Hash.Tests
         public async Task Read_StreamGivenMultistreamContent_ReturnsValidMultihashes_Async()
         {
             var data = Encoding.UTF8.GetBytes("hello world");
-            var hashes = (from HashType type in Enum.GetValues(typeof(HashType)) where type != HashType.UNKNOWN select Multihash.Sum(type, data)).ToList();
+            var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToArray();
 
             using (var stream = new MemoryStream(hashes.SelectMany(mh => (byte[])mh).ToArray()))
             {
@@ -54,7 +73,7 @@ namespace Multiformats.Hash.Tests
         public void ReadWrite_Roundtrip()
         {
             var data = Encoding.UTF8.GetBytes("hello world");
-            var hashes = (from HashType type in Enum.GetValues(typeof(HashType)) where type != HashType.UNKNOWN select Multihash.Sum(type, data)).ToList();
+            var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToList();
 
             using (var stream = new MemoryStream())
             {
@@ -80,7 +99,7 @@ namespace Multiformats.Hash.Tests
         public async Task ReadWrite_Roundtrip_Async()
         {
             var data = Encoding.UTF8.GetBytes("hello world");
-            var hashes = (from HashType type in Enum.GetValues(typeof(HashType)) where type != HashType.UNKNOWN select Multihash.Sum(type, data)).ToList();
+            var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToList();
 
             using (var stream = new MemoryStream())
             {

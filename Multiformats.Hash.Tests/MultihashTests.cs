@@ -71,7 +71,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(0x1C, "keccak-384")]
         [TestCase(0x1D, "keccak-512")]
         [TestCase(0x40, "blake2b")]
+#if !MONO
         [TestCase(0x41, "blake2s")]
+#endif
         [TestCase(0x56, "dbl-sha2-256")]
         public void TestTable(byte code, string name)
         {
@@ -108,7 +110,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(HashType.SHAKE_128)]
         [TestCase(HashType.SHAKE_256)]
         [TestCase(HashType.BLAKE2B)]
+#if !MONO
         [TestCase(HashType.BLAKE2S)]
+#endif
         [TestCase(HashType.DBL_SHA2_256)]
         public void VerifyRoundTrip(HashType type)
         {
@@ -137,7 +141,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(HashType.SHAKE_128)]
         [TestCase(HashType.SHAKE_256)]
         [TestCase(HashType.BLAKE2B)]
+#if !MONO
         [TestCase(HashType.BLAKE2S)]
+#endif
         [TestCase(HashType.DBL_SHA2_256)]
         public async Task VerifyRoundTripAsync(HashType type)
         {
@@ -166,7 +172,9 @@ namespace Multiformats.Hash.Tests
         [TestCase(HashType.SHAKE_128)]
         [TestCase(HashType.SHAKE_256)]
         [TestCase(HashType.BLAKE2B)]
+#if !MONO
         [TestCase(HashType.BLAKE2S)]
+#endif
         [TestCase(HashType.DBL_SHA2_256)]
         public void TestMultithreadedEnvironment(HashType type)
         {
