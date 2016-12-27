@@ -6,6 +6,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/h1rd7s003rj2q1no?svg=true)](https://ci.appveyor.com/project/tabrath/cs-multihash)
 [![NuGet Badge](https://buildstats.info/nuget/Multiformats.Hash)](https://www.nuget.org/packages/Multiformats.Hash/)
 [![](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![Coverage Status](https://coveralls.io/repos/github/multiformats/cs-multihash/badge.svg?branch=master)](https://coveralls.io/github/multiformats/cs-multihash?branch=master)
 
 > [Multihash](https://github.com/multiformats/multihash) implementation in C#
 
@@ -23,7 +24,7 @@ Beware that some of the supported algorithms may be dropped as the specs are not
 
 ## Install
 
-TODO
+    PM> Install-Package Multiformats.Hash
 
 ## Usage
 ``` cs

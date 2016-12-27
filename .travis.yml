@@ -4,8 +4,11 @@ branches:
   only:
     - master
 install:
-  - nuget restore Multiformats.Hash.sln
+  - nuget restore Multiformats.Hash -PackagesDirectory ./packages
+  - nuget restore Multiformats.Hash.Tests -PackagesDirectory ./packages
   - nuget install NUnit.Runners -Version 3.4.1 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
+  #- mono ./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
+  - mono ./packages/OpenCover.4.6.519/tools/OpenCover.Console.exe -target:./testrunner/NUnit.ConsoleRunner.3.4.1/tools/nunit3-console.exe -targetargs:"/nologo /noshadow ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll" -filter:"+[*]* -[*.Tests]*" -register:user
+  - mono ./packages/coveralls.net.0.7.0/tools/csmacnz.Coveralls.exe --opencover -i ./results.xml --repoToken $REPO_TOKEN

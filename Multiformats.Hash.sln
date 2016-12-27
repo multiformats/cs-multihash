@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutiformats.Hash.Benchmarks", "Mutiformats.Hash.Benchmarks\Mutiformats.Hash.Benchmarks.csproj", "{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.Benchmarks", "Mutiformats.Hash.Benchmarks\Multiformats.Hash.Benchmarks.csproj", "{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,11 +29,9 @@ Global
 		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00E6BCB9-A356-48B1-A84E-D6F293079EA6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
