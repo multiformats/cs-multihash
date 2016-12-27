@@ -11,11 +11,9 @@ script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
   - mono ./testrunner/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
   - chmod +x ./scripts/deploy.sh
-deploy:
-  provider: script
-  script: ./scripts/deploy.sh
-  on:
-    branch: master
+after_success:
+  - nuget pack ./Multiformats.Hash/Multiformats.Hash.csproj -IncludeReferencedProjects -Properties Configuration=Release
+  - nuget push ./Multiformats.Hash.$NUGET_VERSION.nupkg -ApiKey $NUGET_APIKEY
 cache:
   - directories:
     - ./packages
