@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BinaryEncoding;
 using Multiformats.Base;
 using Multiformats.Hash.Algorithms;
 using NUnit.Framework;
@@ -16,11 +17,11 @@ namespace Multiformats.Hash.Tests
         [TestCase("0beec7b5", 0x11, "sha1")]
         [TestCase("2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae", 0x12, "sha2-256")]
         [TestCase("2c26b46b", 0x12, "sha2-256")]
-        [TestCase("0beec7b5ea3f0fdbc9", 0x40, "blake2b")]
+        [TestCase("0beec7b5ea3f0fdbc9", 0xb220, "blake2b-256")]
         public void TestEncode(string hex, int code, string name)
         {
             var ob = Hex.Decode(hex);
-            var nb = new[] {(byte) code, (byte) ob.Length}.Concat(ob).ToArray();
+            var nb = Binary.Varint.GetBytes((uint)code).Concat(Binary.Varint.GetBytes((uint)ob.Length)).Concat(ob).ToArray();
 
             var encoded = Multihash.Encode(ob, (HashType)code);
 
@@ -33,10 +34,7 @@ namespace Multiformats.Hash.Tests
         private static Multihash TestCastToMultihash(string hex, int code, string name)
         {
             var ob = Hex.Decode(hex);
-            var b = new byte[2 + ob.Length];
-            b[0] = (byte)code;
-            b[1] = (byte) ob.Length;
-            ob.CopyTo(b, 2);
+            var b = Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes((uint) ob.Length)).Concat(ob).ToArray();
             return Multihash.Cast(b);
         }
 
@@ -45,13 +43,13 @@ namespace Multiformats.Hash.Tests
         [TestCase("2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae", 0x12, "sha2-256")]
         [TestCase("2c26b46b", 0x12, "sha2-256")]
         [TestCase("0beec7b5ea3f0fdbc9", 0xb220, "blake2b-256")]
-        public void TestDecode(string hex, byte code, string name)
+        public void TestDecode(string hex, int code, string name)
         {
             var ob = Hex.Decode(hex);
-            var nb = new[] {(byte) code, (byte) ob.Length}.Concat(ob).ToArray();
+            var nb = Binary.Varint.GetBytes((uint)code).Concat(Binary.Varint.GetBytes((uint)ob.Length)).Concat(ob).ToArray();
 
             var dec = Multihash.Decode(nb);
-            Assert.That((byte)dec.Code, Is.EqualTo(code));
+            Assert.That((int)dec.Code, Is.EqualTo(code));
             Assert.That(dec.Name, Is.EqualTo(name));
             Assert.That(dec.Length, Is.EqualTo(ob.Length));
             Assert.That(dec.Digest, Is.EqualTo(ob));
@@ -75,12 +73,12 @@ namespace Multiformats.Hash.Tests
         [TestCase(0xb260, "blake2s-256")]
 #endif
         [TestCase(0x56, "dbl-sha2-256")]
-        public void TestTable(byte code, string name)
+        public void TestTable(int code, string name)
         {
             if (Multihash.GetName(code) != name)
                 Assert.Fail($"Table mismatch: {Multihash.GetName(code)}, {name}");
 
-            if ((byte)Multihash.GetCode(name) != code)
+            if ((int)Multihash.GetCode(name) != code)
                 Assert.Fail($"Table mismatch: {Multihash.GetCode(name)}, {code}");
         }
 
