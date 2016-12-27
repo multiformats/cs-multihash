@@ -37,7 +37,7 @@ namespace Multiformats.Hash.Algorithms
                 .ToList()
                 .ForEach(t => _mappings.Add(TypeToHashType(t), t));
 
-#if !MONO
+#if !__MonoCS__
             asm.GetTypes().Where(t => typeof(BLAKE2S).IsAssignableFrom(t))
                 .ToList()
                 .ForEach(t => _mappings.Add(TypeToHashType(t), t));

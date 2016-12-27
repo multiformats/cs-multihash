@@ -20,7 +20,7 @@ namespace Multiformats.Hash.Tests
             var hashes =
                 Enum.GetValues(typeof(HashType)).Cast<HashType>().Where(type => type != HashType.UNKNOWN).ToList();
 
-#if MONO
+#if ____MonoCS__CS__
             HashType hash;
             while ((hash = hashes.FirstOrDefault(h => h.ToString().StartsWith("BLAKE2S"))) != default(HashType))
             {

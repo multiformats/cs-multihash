@@ -92,7 +92,7 @@ namespace Multiformats.Hash.Tests
             Assert.That(BitConverter.ToString(mh.Digest).Replace("-", "").ToLower(), Is.EqualTo(hash));
         }
 
-#if !MONO
+#if !__MonoCS__
         [Test]
         public void TestBlake2S()
         {
