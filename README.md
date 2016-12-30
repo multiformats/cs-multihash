@@ -3,7 +3,7 @@
 [![](https://img.shields.io/badge/project-multiformats-blue.svg?style=flat-square)](https://github.com/multiformats/multiformats)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](https://webchat.freenode.net/?channels=%23ipfs)
 [![Travis CI](https://img.shields.io/travis/multiformats/cs-multihash.svg?style=flat-square&branch=master)](https://travis-ci.org/multiformats/cs-multihash)
-[![Build status](https://ci.appveyor.com/api/projects/status/h1rd7s003rj2q1no?svg=true)](https://ci.appveyor.com/project/tabrath/cs-multihash)
+[![Build status](https://ci.appveyor.com/api/projects/status/rulmse6b8cnjynbh?svg=true)](https://ci.appveyor.com/project/tabrath/cs-multihash)
 [![NuGet Badge](https://buildstats.info/nuget/Multiformats.Hash)](https://www.nuget.org/packages/Multiformats.Hash/)
 [![](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![codecov](https://codecov.io/gh/multiformats/cs-multihash/branch/master/graph/badge.svg)](https://codecov.io/gh/multiformats/cs-multihash)
