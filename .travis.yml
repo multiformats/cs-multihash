@@ -3,20 +3,12 @@ solution: Multiformats.Hash.sln
 branches:
   only:
     - master
-before_install:
-  - mkdir -p .nuget
-  - wget -O .nuget/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - mono .nuget/nuget.exe # Output NuGet's version number
 install:
-  - mono .nuget/nuget.exe restore ./Multiformats.Hash/packages.config -PackagesDirectory ./packages
-  - mono .nuget/nuget.exe restore ./Multiformats.Hash.Tests/packages.config -PackagesDirectory ./packages
-  - mono .nuget/nuget.exe install NUnit.ConsoleRunner -Version 3.5.0 -OutputDirectory testrunner
+  - nuget restore Multiformats.Hash/packages.config -PackagesDirectory ./packages
+  - nuget restore Multiformats.Hash.Tests/packages.config -PackagesDirectory ./packages
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
-after_success:
-  - mono .nuget/nuget.exe pack ./Multiformats.Hash/Multiformats.Hash.csproj -IncludeReferencedProjects -Properties Configuration=Release
-  - mono .nuget/nuget.exe push ./Multiformats.Hash.$NUGET_VERSION.nupkg -ApiKey $NUGET_APIKEY
+  - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
 cache:
   - directories:
     - ./packages
