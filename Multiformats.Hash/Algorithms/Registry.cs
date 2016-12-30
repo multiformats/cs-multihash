@@ -37,11 +37,12 @@ namespace Multiformats.Hash.Algorithms
                 .ToList()
                 .ForEach(t => _mappings.Add(TypeToHashType(t), t));
 
-#if !__MonoCS__
-            asm.GetTypes().Where(t => !t.IsAbstract && typeof(BLAKE2S).IsAssignableFrom(t))
-                .ToList()
-                .ForEach(t => _mappings.Add(TypeToHashType(t), t));
-#endif
+            if (Type.GetType("Mono.Runtime") == null)
+            {
+                asm.GetTypes().Where(t => !t.IsAbstract && typeof(BLAKE2S).IsAssignableFrom(t))
+                    .ToList()
+                    .ForEach(t => _mappings.Add(TypeToHashType(t), t));
+            }
 
             _algorithms = new ConcurrentDictionary<HashType, ConcurrentQueue<MultihashAlgorithm>>(Environment.ProcessorCount, _mappings.Count);
         }
