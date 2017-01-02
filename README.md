@@ -7,7 +7,7 @@
 [![NuGet](https://buildstats.info/nuget/Multiformats.Hash)](https://www.nuget.org/packages/Multiformats.Hash/)
 [![](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![Codecov](https://img.shields.io/codecov/c/github/multiformats/cs-multihash/master.svg?style=flat-square)](https://codecov.io/gh/multiformats/cs-multihash)
-[![Libraries.io](https://img.shields.io/librariesio/github/multiformats/cs-multihash.svg?style=flat-square)](https://libraries.io/github/multiformats/cs-multibase)
+[![Libraries.io](https://img.shields.io/librariesio/github/multiformats/cs-multihash.svg?style=flat-square)](https://libraries.io/github/multiformats/cs-multihash)
 
 > [Multihash](https://github.com/multiformats/multihash) implementation in C#
 
