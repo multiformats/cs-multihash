@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,16 @@ namespace Multiformats.Hash.Tests
             var ob = Hex.Decode(hex);
             var b = Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes((uint) ob.Length)).Concat(ob).ToArray();
             return Multihash.Cast(b);
+        }
+
+        [Test]
+        public void CanDecodeFromMultibase()
+        {
+            var hex = Multibase.DecodeRaw(Multibase.Base58, "8Vtkv2tdQ43bNGdWN9vNx9GVS9wrbXHk4ZW8kmucPmaYJwwedXir52kti9wJhcik4HehyqgLrQ1hBuirviLhxgRBNv");
+            var mb = Multibase.Base32.Encode(hex);
+            Multihash mh;
+            Assert.True(Multihash.TryParse(mb, out mh));
+            Assert.That(mh.ToBytes(), Is.EqualTo(hex));
         }
 
         [TestCase("0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33", 0x11, "sha1")]
@@ -183,6 +194,7 @@ namespace Multiformats.Hash.Tests
             Assert.DoesNotThrow(() => Parallel.For(0, 200, _ => Multihash.Sum(type, bytes)));
         }
 
+        [ExcludeFromCodeCoverage]
         public static void MultihashProfile()
         {
             var rand = new Random(Environment.TickCount);
