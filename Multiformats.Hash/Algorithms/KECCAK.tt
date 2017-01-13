@@ -1,0 +1,39 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Digests;
+
+namespace Multiformats.Hash.Algorithms
+{
+    public abstract class KECCAK : MultihashAlgorithm
+    {
+        private readonly Func<IDigest> _factory;
+
+        protected KECCAK(HashType code, string name, int defaultLength, Func<IDigest> factory)
+            : base(code, name, defaultLength)
+        {
+            _factory = factory;
+        }
+
+        public override byte[] ComputeHash(byte[] data) => _factory().ComputeHash(data);
+    }
+
+<#
+	var bits = new int[] { 224, 256, 384, 512 };
+	foreach (var bit in bits)
+	{ #>
+    [MultihashAlgorithmExport(HashType.KECCAK_<#= bit #>, "keccak-<#= bit #>", <#= bit / 8 #>)]
+    public class KECCAK_<#= bit #> : KECCAK
+    {
+        public KECCAK_<#= bit #>()
+			: base(HashType.KECCAK_<#= bit #>, "keccak-<#= bit #>", <#= bit / 8 #>, () => new KeccakDigest(<#= bit #>))
+        {
+        }
+    }
+	<# } #>
+}

@@ -1,85 +1,55 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Multiformats.Hash.Algorithms
 {
-    internal class Registry
+    internal class Registry : IDisposable
     {
-        private readonly Dictionary<HashType, Type> _mappings;
-        private readonly ConcurrentDictionary<HashType, ConcurrentQueue<MultihashAlgorithm>> _algorithms;
+        private readonly AggregateCatalog _catalog;
+        private readonly CompositionContainer _container;
+        private readonly IEnumerable<Lazy<IMultihashAlgorithm, IMultihashAlgorithmMetadata>> _algorithms;
+
+        public HashType[] SupportedHashTypes => _algorithms.Select(a => a.Metadata.Code).OrderBy(x => x.ToString()).ToArray();
 
         public Registry()
         {
-            _mappings = new Dictionary<HashType, Type>
-            {
-                {HashType.SHA1, typeof(SHA1)},
-                {HashType.SHA2_256, typeof(SHA2_256)},
-                {HashType.SHA2_512, typeof(SHA2_512)},
-                {HashType.SHA3_224, typeof(SHA3_224)},
-                {HashType.SHA3_256, typeof(SHA3_256)},
-                {HashType.SHA3_384, typeof(SHA3_384)},
-                {HashType.SHA3_512, typeof(SHA3_512)},
-                {HashType.KECCAK_224, typeof(KECCAK_224)},
-                {HashType.KECCAK_256, typeof(KECCAK_256)},
-                {HashType.KECCAK_384, typeof(KECCAK_384)},
-                {HashType.KECCAK_512, typeof(KECCAK_512)},
-                {HashType.SHAKE_128, typeof(SHAKE_128)},
-                {HashType.SHAKE_256, typeof(SHAKE_256)},
-                {HashType.DBL_SHA2_256, typeof(DBL_SHA2_256)}
-            };
-            var asm = typeof(HashType).Assembly;
-
-            asm.GetTypes().Where(t => !t.IsAbstract && typeof(BLAKE2B).IsAssignableFrom(t))
-                .ToList()
-                .ForEach(t => _mappings.Add(TypeToHashType(t), t));
-
-            if (Type.GetType("Mono.Runtime") == null)
-            {
-                asm.GetTypes().Where(t => !t.IsAbstract && typeof(BLAKE2S).IsAssignableFrom(t))
-                    .ToList()
-                    .ForEach(t => _mappings.Add(TypeToHashType(t), t));
-            }
-
-            _algorithms = new ConcurrentDictionary<HashType, ConcurrentQueue<MultihashAlgorithm>>(Environment.ProcessorCount, _mappings.Count);
+            _catalog = new AggregateCatalog(new AssemblyCatalog(typeof(Multihash).Assembly)/*, new DirectoryCatalog(Environment.CurrentDirectory)*/);
+            _container = new CompositionContainer(_catalog);
+            _algorithms = _container.GetExports<IMultihashAlgorithm, IMultihashAlgorithmMetadata>();
         }
 
-        private static HashType TypeToHashType(Type type)
+        private static HashType TypeToHashType(Type type) => (HashType) Enum.Parse(typeof(HashType), type.Name);
+
+        public IMultihashAlgorithm Get(HashType type)
         {
-            return (HashType) Enum.Parse(typeof(HashType), type.Name);
+            var algo = _algorithms.SingleOrDefault(a => a.Metadata.Code.Equals(type));
+            if (algo == null)
+                throw new NotSupportedException($"{type} is not supported.");
+
+            return algo.Value;
         }
 
-        public MultihashAlgorithm Rent(HashType type)
+        public IMultihashAlgorithm Get<TAlgorithm>()
+            where TAlgorithm : IMultihashAlgorithm
         {
-            var queue = _algorithms.GetOrAdd(type, _ => new ConcurrentQueue<MultihashAlgorithm>());
+            var code = GetHashType<TAlgorithm>();
+            if (code == HashType.UNKNOWN)
+                throw new NotSupportedException($"{typeof(TAlgorithm)} is not supported.");
 
-            MultihashAlgorithm algo;
-            if (!queue.TryDequeue(out algo))
-                algo = (MultihashAlgorithm) Activator.CreateInstance(_mappings[type]);
-
-            return algo;
+            return Get(code);
         }
 
-        public MultihashAlgorithm Rent<TAlgorithm>()
-            where TAlgorithm : MultihashAlgorithm
+        public void Return(IMultihashAlgorithm algo)
         {
-            var code = _mappings.SingleOrDefault(x => x.Value == typeof(TAlgorithm)).Key;
-            return Rent(code);
         }
 
-        public void Return(MultihashAlgorithm algo)
+        public T Use<T>(HashType code, Func<IMultihashAlgorithm, T> func)
         {
-            var queue = _algorithms.GetOrAdd(algo.Code, _ => new ConcurrentQueue<MultihashAlgorithm>());
-
-            queue.Enqueue(algo);
-        }
-
-        public T Use<T>(HashType code, Func<MultihashAlgorithm, T> func)
-        {
-            var algorithm = Rent(code);
+            var algorithm = Get(code);
             try
             {
                 return func(algorithm);
@@ -90,9 +60,9 @@ namespace Multiformats.Hash.Algorithms
             }
         }
 
-        public async Task<T> UseAsync<T>(HashType code, Func<MultihashAlgorithm, Task<T>> func)
+        public async Task<T> UseAsync<T>(HashType code, Func<IMultihashAlgorithm, Task<T>> func)
         {
-            var algorithm = Rent(code);
+            var algorithm = Get(code);
             try
             {
                 return await func(algorithm).ConfigureAwait(false);
@@ -103,10 +73,10 @@ namespace Multiformats.Hash.Algorithms
             }
         }
 
-        public TResult Use<TAlgorithm, TResult>(Func<MultihashAlgorithm, TResult> func)
-            where TAlgorithm : MultihashAlgorithm
+        public TResult Use<TAlgorithm, TResult>(Func<IMultihashAlgorithm, TResult> func)
+            where TAlgorithm : IMultihashAlgorithm
         {
-            var algorithm = Rent<TAlgorithm>();
+            var algorithm = Get<TAlgorithm>();
             try
             {
                 return func(algorithm);
@@ -117,10 +87,10 @@ namespace Multiformats.Hash.Algorithms
             }
         }
 
-        public async Task<TResult> UseAsync<TAlgorithm, TResult>(Func<MultihashAlgorithm, Task<TResult>> func)
-            where TAlgorithm : MultihashAlgorithm
+        public async Task<TResult> UseAsync<TAlgorithm, TResult>(Func<IMultihashAlgorithm, Task<TResult>> func)
+            where TAlgorithm : IMultihashAlgorithm
         {
-            var algorithm = Rent<TAlgorithm>();
+            var algorithm = Get<TAlgorithm>();
             try
             {
                 return await func(algorithm);
@@ -131,10 +101,17 @@ namespace Multiformats.Hash.Algorithms
             }
         }
 
-        public HashType GetHashType<TAlgorithm>()
-            where TAlgorithm : MultihashAlgorithm
+        public static HashType GetHashType<TAlgorithm>()
+            where TAlgorithm : IMultihashAlgorithm
         {
-            return _mappings.SingleOrDefault(x => x.Value == typeof(TAlgorithm)).Key;
+            var attr = typeof(TAlgorithm).GetCustomAttribute<MultihashAlgorithmExportAttribute>();
+            return attr?.Code ?? HashType.UNKNOWN;
+        }
+
+        public void Dispose()
+        {
+            _catalog?.Dispose();
+            _container?.Dispose();
         }
     }
 }

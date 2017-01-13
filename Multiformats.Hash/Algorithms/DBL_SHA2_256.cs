@@ -1,5 +1,6 @@
 namespace Multiformats.Hash.Algorithms
 {
+    [MultihashAlgorithmExport(HashType.DBL_SHA2_256, "dbl-sha2-256", 32)]
     public class DBL_SHA2_256 : MultihashAlgorithm
     {
         private readonly System.Security.Cryptography.HashAlgorithm algo;
