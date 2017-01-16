@@ -1,5 +1,7 @@
 language: csharp
 solution: Multiformats.Hash.sln
+notifications:
+  email: false
 branches:
   only:
     - master
@@ -9,7 +11,7 @@ install:
   - mkdir ./sharness
   - git clone https://github.com/multiformats/multihash.git ./sharness
 env:
-  - MULTIHASH_BIN="mono ./Multiformats.Hash.CLI/bin/Release/multihash.exe"
+  - MULTIHASH_BIN="/usr/lib/mono/4.5/mono.exe ./Multiformats.Hash.CLI/bin/Release/multihash.exe"
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
   - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
