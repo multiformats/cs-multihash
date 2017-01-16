@@ -59,8 +59,9 @@ namespace Multiformats.Multihash.CLI
                 if (string.IsNullOrEmpty(options.Checksum))
                 {
                     Console.Write(mh.ToString(options.Encoding));
-                    if (!options.Quiet)
+                    if (!options.Quiet && !Console.IsOutputRedirected)
                         Console.WriteLine();
+                    Console.Out.Flush();
 
                     Environment.Exit(0);
                 }
