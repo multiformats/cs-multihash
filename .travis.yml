@@ -6,9 +6,14 @@ branches:
 install:
   - nuget restore Multiformats.Hash/packages.config -PackagesDirectory ./packages
   - nuget restore Multiformats.Hash.Tests/packages.config -PackagesDirectory ./packages
+  - mkdir ./sharness
+  - git clone https://github.com/multiformats/multihash.git ./sharness
+env:
+  - MULTIHASH_BIN="mono ./Multiformats.Hash.CLI/bin/Release/multihash.exe"
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
   - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
+  - make -j1 -C ./sharness/tests/sharness
 cache:
   - directories:
     - ./packages
