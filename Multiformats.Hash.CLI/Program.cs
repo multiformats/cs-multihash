@@ -166,7 +166,7 @@ namespace Multiformats.Multihash.CLI
             {
                 case "base2": return Multibase.Base2;
                 case "base8": return Multibase.Base8;
-                case "base16": return Multibase.Base16;
+                case "hex": case "base16": return Multibase.Base16;
                 case "base32": return Multibase.Base32;
                 case "base58": return Multibase.Base58;
                 case "base64": return Multibase.Base64;
