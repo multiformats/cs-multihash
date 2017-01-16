@@ -58,7 +58,7 @@ namespace Multiformats.Multihash.CLI
 
                 if (string.IsNullOrEmpty(options.Checksum))
                 {
-                    Console.Write(Multibase.EncodeRaw(options.Encoding, mh.Digest));
+                    Console.Write(mh.ToString(options.Encoding));
                     if (!options.Quiet)
                         Console.WriteLine();
 
@@ -226,7 +226,7 @@ namespace Multiformats.Multihash.CLI
 
         private static void DisplayHelp()
         {
-            Console.WriteLine("multihash [options] [FILE]");
+            Console.WriteLine("usage: multihash [options] [FILE]");
             Console.WriteLine("Print or check multihash checksums.");
             Console.WriteLine("With no FILE, or when FILE is -, read standard input.");
             Console.WriteLine();
@@ -236,6 +236,7 @@ namespace Multiformats.Multihash.CLI
             Console.WriteLine("  -e, --encoding string   use specified encoding (default: base58)");
             Console.WriteLine("  -l, --length int        checksum length in bits (truncate, default -1)");
             Console.WriteLine("  -q, --quiet             quiet output (no newline on checksum, no error text)");
+            Console.WriteLine("  -h, --help              show help (this)");
 
             Environment.Exit(1);
         }
