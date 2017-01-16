@@ -12,11 +12,11 @@ install:
   - git clone https://github.com/multiformats/multihash.git ./sharness
   - echo -e "#!/bin/bash\n/usr/bin/mono /home/travis/build/multiformats/cs-multihash/Multiformats.Hash.CLI/bin/Release/multihash.exe \"$@\"" >./multihash
   - chmod +x ./multihash
-  - ./multihash --version
 env:
   - MULTIHASH_BIN="/home/travis/build/multiformats/cs-multihash/multihash"
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
+  - ./multihash --version
   - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
   - make -j1 -C ./sharness/tests/sharness
 cache:
