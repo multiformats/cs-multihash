@@ -54,22 +54,22 @@ namespace Multiformats.Multihash.CLI
                     data = mem.ToArray();
                 }
 
-                var digest = Hash.Multihash.Sum(options.Algorithm, data, options.Length);
+                var mh = Hash.Multihash.Sum(options.Algorithm, data, options.Length);
 
                 if (string.IsNullOrEmpty(options.Checksum))
                 {
-                    Console.Write(digest.ToString(options.Encoding));
+                    Console.Write(Multibase.EncodeRaw(options.Encoding, mh.Digest));
                     if (!options.Quiet)
                         Console.WriteLine();
 
                     Environment.Exit(0);
                 }
 
-                var checksum = Hash.Multihash.Parse(options.Checksum);
-                if (!checksum.Equals(digest))
+                var checksum = Multibase.DecodeRaw(options.Encoding, options.Checksum);
+                if (!checksum.SequenceEqual(mh.Digest))
                 {
                     if (!options.Quiet)
-                        Console.WriteLine($"Digest mismatch, got: {digest.ToString(options.Encoding)}, wanted: {checksum.ToString(options.Encoding)}");
+                        Console.WriteLine($"Digest mismatch, got: {Multibase.EncodeRaw(options.Encoding, mh.Digest)}, wanted: {Multibase.EncodeRaw(options.Encoding, checksum)}");
 
                     Environment.Exit(1);
                 }
