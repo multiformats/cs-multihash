@@ -89,12 +89,21 @@ namespace Multiformats.Multihash.CLI
                 if (args[i] == "--help")
                     DisplayHelp();
 
-                if (args[i] == "-a" || args[i] == "--algorithm")
+                if (args[i].StartsWith("-a") || args[i].StartsWith("--algorithm"))
                 {
-                    if (++i >= args.Length)
-                        DisplayError("No algorithm specified");
+                    string algo;
+                    if (args[i].Contains("="))
+                    {
+                        algo = args[i++].Split('=').Last();
+                    }
+                    else
+                    {
+                        if (++i >= args.Length)
+                            DisplayError("No algorithm specified");
 
-                    var algo = args[i++];
+                        algo = args[i++];
+                    }
+
                     var code = Hash.Multihash.GetCode(algo);
                     if (code == HashType.UNKNOWN)
                         DisplayError($"Unknown algorithm: {algo}");
@@ -103,41 +112,74 @@ namespace Multiformats.Multihash.CLI
                     continue;
                 }
 
-                if (args[i] == "-c" || args[i] == "--check")
+                if (args[i].StartsWith("-c") || args[i].StartsWith("--check"))
                 {
-                    if (++i >= args.Length)
-                        DisplayError("No checksum specified");
+                    if (args[i].Contains("="))
+                    {
+                        options.Checksum = args[i++].Split('=').Last();
+                    }
+                    else
+                    {
+                        if (++i >= args.Length)
+                            DisplayError("No checksum specified");
 
-                    options.Checksum = args[i++];
+                        options.Checksum = args[i++];
+                    }
                     continue;
                 }
 
-                if (args[i] == "-e" || args[i] == "--encoding")
+                if (args[i].StartsWith("-e") || args[i].StartsWith("--encoding"))
                 {
-                    if (++i >= args.Length)
-                        DisplayError("No encoding specified");
+                    if (args[i].Contains("="))
+                    {
+                        options.Encoding = ParseEncoding(args[i++].Split('=').Last());
+                    }
+                    else
+                    {
+                        if (++i >= args.Length)
+                            DisplayError("No encoding specified");
 
-                    options.Encoding = ParseEncoding(args[i++]);
+                        options.Encoding = ParseEncoding(args[i++]);
+                    }
                     continue;
                 }
 
-                if (args[i] == "-l" || args[i] == "--length")
+                if (args[i].StartsWith("-l") || args[i].StartsWith("--length"))
                 {
-                    if (++i >= args.Length)
-                        DisplayError("No length specified");
+                    string raw;
+                    if (args[i].Contains("="))
+                    {
+                        raw = args[i++].Split('=').Last();
+                    }
+                    else
+                    {
+                        if (++i >= args.Length)
+                            DisplayError("No length specified");
+
+                        raw = args[i++];
+                    }
 
                     int length = -1;
-                    if (!int.TryParse(args[i++], out length))
+                    if (!int.TryParse(raw, out length))
                         DisplayError("Invalid length specified");
 
                     options.Length = length;
                     continue;
                 }
 
-                if (args[i] == "-q" || args[i] == "--quiet")
+                if (args[i].StartsWith("-q") || args[i].StartsWith("--quiet"))
                 {
-                    i++;
-                    options.Quiet = true;
+                    if (args[i].Contains("="))
+                    {
+                        var raw = args[i++].Split('=').Last();
+                        bool value;
+                        options.Quiet = !bool.TryParse(raw, out value) || value;
+                    }
+                    else
+                    {
+                        i++;
+                        options.Quiet = true;
+                    }
                     continue;
                 }
 
