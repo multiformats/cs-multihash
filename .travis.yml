@@ -10,8 +10,10 @@ install:
   - nuget restore Multiformats.Hash.Tests/packages.config -PackagesDirectory ./packages
   - mkdir ./sharness
   - git clone https://github.com/multiformats/multihash.git ./sharness
+  - echo "#!/bin/bash\nmono ./Multiformats.Hash.CLI/bin/Release/multihash.exe" >./multihash
+  - chmod +x ./multihash
 env:
-  - MULTIHASH_BIN="/usr/lib/mono/4.5/mono.exe ./Multiformats.Hash.CLI/bin/Release/multihash.exe"
+  - MULTIHASH_BIN="multihash"
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
   - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
