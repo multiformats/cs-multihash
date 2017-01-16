@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using Multiformats.Base;
-using Multiformats.Hash;
-using Multiformats.Hash.Algorithms;
 
-namespace Multiformats.Multihash.CLI
+namespace Multiformats.Hash.CLI
 {
     class Program
     {
@@ -87,8 +82,11 @@ namespace Multiformats.Multihash.CLI
             var i = 0;
             while (i < args.Length)
             {
-                if (args[i] == "--help")
+                if (args[i] == "-h" || args[i] == "--help")
                     DisplayHelp();
+
+                if (args[i] == "-v" || args[i] == "--version")
+                    DisplayVersion();
 
                 if (args[i].StartsWith("-a") || args[i].StartsWith("--algorithm"))
                 {
@@ -203,6 +201,15 @@ namespace Multiformats.Multihash.CLI
             return options;
         }
 
+        private static void DisplayVersion()
+        {
+            var libversion = typeof(Multihash).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
+            var cliversion = typeof(Program).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>();
+
+            Console.WriteLine($"v{cliversion.Version} (library v{libversion.Version})");
+            Environment.Exit(0);
+        }
+
         private static MultibaseEncoding ParseEncoding(string s)
         {
             switch (s.ToLower().Trim())
@@ -237,6 +244,7 @@ namespace Multiformats.Multihash.CLI
             Console.WriteLine("  -e, --encoding string   use specified encoding (default: base58)");
             Console.WriteLine("  -l, --length int        checksum length in bits (truncate, default -1)");
             Console.WriteLine("  -q, --quiet             quiet output (no newline on checksum, no error text)");
+            Console.WriteLine("  -v, --version           display version");
             Console.WriteLine("  -h, --help              show help (this)");
 
             Environment.Exit(1);
