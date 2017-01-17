@@ -1,5 +1,8 @@
 version: 1.0.{build}
 configuration: Release
+platform: x64
+init:
+  - git config --global core.autocrlf input
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'

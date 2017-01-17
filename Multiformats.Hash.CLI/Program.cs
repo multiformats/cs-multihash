@@ -190,7 +190,7 @@ namespace Multiformats.Hash.CLI
                     DisplayError($"File does not exists: {args[i]}");
                 }
 
-                options.Source = File.OpenRead(args[i]);
+                options.Source = new FileStream(args[i], FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan); //File.OpenRead(args[i]);
                 break;
             }
 
