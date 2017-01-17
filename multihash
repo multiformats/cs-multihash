@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mono /home/travis/build/multiformats/cs-multihash/Multiformats.Hash.CLI/bin/Release/multihash.exe "$@"
