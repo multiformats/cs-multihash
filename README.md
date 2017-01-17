@@ -13,6 +13,9 @@
 
 Beware that some of the supported algorithms may be dropped as the specs are not complete yet.
 
+There's a CLI version that you can use to compute files or direct input from the command line.
+This CLI tool passes the sharness tests [here](https://github.com/multiformats/multihash/tree/master/tests/sharness).
+
 ## Table of Contents
 
 - [Install](#install)
