@@ -53,7 +53,8 @@ namespace Multiformats.Hash.CLI
 
                 if (string.IsNullOrEmpty(options.Checksum))
                 {
-                    Console.WriteLine(mh.ToString(options.Encoding).ToLower());
+                    //HACK: just put hex in lowercase for now, change it in multibase later
+                    Console.WriteLine(options.Encoding.GetType() == typeof(Base16Encoding) ? mh.ToString(options.Encoding).ToLower() : mh.ToString(options.Encoding));
                     Environment.Exit(0);
                 }
 
