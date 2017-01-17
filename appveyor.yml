@@ -37,8 +37,10 @@ deploy:
     on:
       branch: master                 # release from master branch only
       appveyor_repo_tag: true
+tests: off
+test_script:
+  - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\packages\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Hash.Tests\bin\x64\Release\Multiformats.Hash.Tests.dll" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
 after_test:
-  - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:".\packages\NUnit.ConsoleRunner.3.5.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Hash.Tests\bin\x64\Release\Multiformats.Hash.Tests.dll" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
   - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
   - pip install codecov
   - codecov -f ".\coverage.xml"
