@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Security.Cryptography;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace Multiformats.Hash.Algorithms
 {
     public abstract class SHA2 : MultihashAlgorithm
     {
-        private readonly Func<HashAlgorithm> _factory;
+        private readonly Func<IDigest> _factory;
 
-        protected SHA2(HashType code, string name, int defaultLength, Func<HashAlgorithm> factory)
+        protected SHA2(HashType code, string name, int defaultLength, Func<IDigest> factory)
             : base(code, name, defaultLength)
         {
             _factory = factory;
@@ -20,7 +21,7 @@ namespace Multiformats.Hash.Algorithms
     public class SHA2_256 : SHA2
     {
         public SHA2_256()
-			: base(HashType.SHA2_256, "sha2-256", 32, SHA256.Create)
+			: base(HashType.SHA2_256, "sha2-256", 32, () => new Sha256Digest())
         {
         }
     }
@@ -28,7 +29,7 @@ namespace Multiformats.Hash.Algorithms
     public class SHA2_512 : SHA2
     {
         public SHA2_512()
-			: base(HashType.SHA2_512, "sha2-512", 64, SHA512.Create)
+			: base(HashType.SHA2_512, "sha2-512", 64, () => new Sha512Digest())
         {
         }
     }
