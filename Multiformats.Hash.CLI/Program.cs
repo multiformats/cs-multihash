@@ -49,15 +49,11 @@ namespace Multiformats.Hash.CLI
                     data = mem.ToArray();
                 }
 
-                var mh = Hash.Multihash.Sum(options.Algorithm, data, options.Length);
+                var mh = Multihash.Sum(options.Algorithm, data, options.Length);
 
                 if (string.IsNullOrEmpty(options.Checksum))
                 {
-                    Console.Write(mh.ToString(options.Encoding));
-                    if (!options.Quiet && !Console.IsOutputRedirected)
-                        Console.WriteLine();
-                    Console.Out.Flush();
-
+                    Console.WriteLine(mh.ToString(options.Encoding));
                     Environment.Exit(0);
                 }
 
