@@ -10,7 +10,7 @@ install:
   - nuget restore Multiformats.Hash.Tests/packages.config -PackagesDirectory ./packages
   - mkdir ./sharness
   - git clone https://github.com/multiformats/multihash.git ./sharness
-  - echo -e "#!/bin/bash\nmono /home/travis/build/multiformats/cs-multihash/Multiformats.Hash.CLI/bin/Release/multihash.exe \"$@\"" >./multihash
+  - echo -e "#!/bin/bash\nmono /home/travis/build/multiformats/cs-multihash/Multiformats.Hash.CLI/bin/Release/multihash.exe $*" >./multihash
   - chmod +x ./multihash
 env:
   - MULTIHASH_BIN="/home/travis/build/multiformats/cs-multihash/multihash"
