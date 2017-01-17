@@ -9,7 +9,7 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
-skip_tags: true
+skip_tags: false
 before_build:
   - nuget restore
 build:
@@ -18,6 +18,9 @@ build:
   include_nuget_references: true
   parallel: true
   verbosity: minimal
+skip_commits:
+  files:
+    - .\*.md
 cache:
   - packages -> **\packages.config
 deploy:
