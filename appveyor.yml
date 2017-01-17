@@ -9,7 +9,7 @@ assembly_info:
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
-skip_tags: true
+#skip_tags: true
 before_build:
   - nuget restore
 build:
@@ -31,7 +31,7 @@ deploy:
       branch: master
       appveyor_repo_tag: true
   - provider: GitHub
-    release: cs-multihash-v$(appveyor_build_version)
+    #release: cs-multihash-v$(appveyor_build_version)
     description: 'Release description'
     auth_token:
       secure: nsZHZ5nFBFP4fZoVUEeWeZKx7LUASVqCZ+JblTox+02RfTAOlANdFWeCqOwhu7pk
