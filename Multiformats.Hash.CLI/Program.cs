@@ -53,7 +53,7 @@ namespace Multiformats.Hash.CLI
 
                 if (string.IsNullOrEmpty(options.Checksum))
                 {
-                    Console.WriteLine(mh.ToString(options.Encoding));
+                    Console.WriteLine(mh.ToString(options.Encoding).ToLower());
                     Environment.Exit(0);
                 }
 
