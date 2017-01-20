@@ -16,7 +16,6 @@ install:
   - git clone https://github.com/multiformats/multihash.git ./sharness
   - chmod +x ./multihash
   - chmod +x ./sonar.sh
-  - ./sonar.sh
 env:
   - MULTIHASH_BIN="/home/travis/build/multiformats/cs-multihash/multihash" TEST_EXPENSIVE=1
 script:
@@ -24,6 +23,7 @@ script:
   - ./multihash --version
   - mono ./packages/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/x64/Release/Multiformats.Hash.Tests.dll
   - make -j1 -C ./sharness/tests/sharness
+  - ./sonar.sh
 cache:
   directories:
     - ./packages
