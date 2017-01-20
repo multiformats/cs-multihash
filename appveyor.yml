@@ -15,7 +15,7 @@ assembly_info:
 #skip_tags: true
 before_build:
   - nuget restore
-  - nuget install NUit.ConsoleRunner -Version 3.6.0 -OutputDirectory .\tools
+  - nuget install NUnit.ConsoleRunner -Version 3.6.0 -OutputDirectory .\tools
   - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
   - nuget install MSBuild.SonarQube.Runner.Tool -Version 1.0.0 -OutputDirectory .\tools
   - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe begin /d:sonar.verbose=true /d:sonar.login=%SONAR_TOKEN% /d:sonar.host.url=https://sonarqube.com/ /d:sonar.cs.opencover.reportsPaths=".\coverage.xml" /d:sonar.cs.nunit.reportsPath=".\TestResult.xml" /n:"Multiformats.Hash" /k:"cs-multihash" /v:"%appveyor_build_version%"
