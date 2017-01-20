@@ -1,7 +1,7 @@
 version: 1.0.{build}
 configuration: Release
 platform: x64
-environment:
+#environment:
   #SONAR_TOKEN:
   #  secure: enWofIW0ZmtvJOJoY3qY19mt/sc3Eg1DugTsm945YsCkotgTHLo/O609sMcIC2bu
 init:
