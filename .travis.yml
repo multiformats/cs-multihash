@@ -4,8 +4,10 @@ notifications:
   email: false
 addons:
   apt:
+    sources:
+      - ppa:webupd8team/java
     packages:
-      - openjdk-8-jdk
+      - oracle-java8-installer
 branches:
   only:
     - master
