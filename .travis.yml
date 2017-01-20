@@ -18,8 +18,7 @@ install:
   - chmod +x ./sonar.sh
   - ./sonar.sh
 env:
-  - MULTIHASH_BIN="/home/travis/build/multiformats/cs-multihash/multihash" TEST_EXPENSIVE=1 SONAR_HOST_URL=sonarqube.com
-  - secure: p/sKTeWjE0sUJ0Eksf8Kkapsi34pPm/zr3goHATTqnsXTB/fZelsn8m+Pav7/NVblEizdAP1RsITcRm/g/OJ0EwhauAvz3mCveSlXAfaJzUu9VRnEA0RkCt4jmTFjbje3VbdWIV+IfJiF6U6leQpYBbyCRdpb1VJMfUu9AB4PsrcpFbnk9DhSr9cpEVTJt0JUt50NcPYEAD0+myTsdMQLaoEUa2m8tosRC4DUlenXGoNIzslels/H9ALxyMxVd6PU/EsFlNNDzssfHR3PvSwS6RS0bAGJEFbEAcfgyKp3tVVRNSuX7se7QfqLtYO7wQ7mluq41whFWCXT+m94qlAG97STp/zY+uYU1FfMY6JVUYRHf2rjsRTBARahxL5dpzfEk5rlXrisTyWV3HZlyTCvqjM9+u0UvmVHrUvJxLLgytWJcRYAssCO4Z3R5b1US/AW7zGp4Za0j3np1IQPIWX4JPRAdH2n9+zVVU46QaVid34V9h7h6C3d5mXHDLF7uV1x4osTh5HG4gB0EYP11xDdoT7vI6kc3LI5OXM667xOP1Zezv4XAng+s96pqjXgDxVCsjmiIEFlIY6j8UUPUY6OYrdHZgMWf4tSbJBXRClxgc/RcGiV7FaFtrA8Vbcgow2et6ioda6ZHfk8rm8zXcGAPZxRdUbOTAxYWwFYIlcZ/M=
+  - MULTIHASH_BIN="/home/travis/build/multiformats/cs-multihash/multihash" TEST_EXPENSIVE=1
 script:
   - xbuild /p:Configuration=Release /p:Platform=x64 Multiformats.Hash.sln
   - ./multihash --version
