@@ -1,6 +1,9 @@
 version: 1.0.{build}
 configuration: Release
 platform: x64
+environment:
+  SONAR_TOKEN:
+    secure: enWofIW0ZmtvJOJoY3qY19mt/sc3Eg1DugTsm945YsCkotgTHLo/O609sMcIC2bu
 init:
   - git config --global core.autocrlf input
 assembly_info:
@@ -12,6 +15,11 @@ assembly_info:
 #skip_tags: true
 before_build:
   - nuget restore
+  - nuget install NUit.ConsoleRunner -Version 3.6.0 -OutputDirectory .\tools
+  - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
+  - nuget install MSBuild.SonarQube.Runner.Tool -Version 1.0.0 -OutputDirectory .\tools
+  - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe begin /d:sonar.verbose=true /d:sonar.login=%SONAR_TOKEN% /d:sonar.host.url=https://sonarqube.com/ /d:sonar.cs.opencover.reportsPaths=".\coverage.xml" /d:sonar.cs.nunit.reportsPath=".\TestResult.xml" /n:"Multiformats.Hash" /k:"cs-multihash" /v:"%appveyor_build_version%"
+
 build:
   project: Multiformats.Hash.sln
   publish_nuget: true
@@ -22,7 +30,8 @@ skip_commits:
   files:
     - .\*.md
 cache:
-  - packages -> **\packages.config
+  - '.\packages -> **\packages.config'
+  - '.\tools'
 deploy:
   - provider: NuGet
     api_key:
@@ -43,8 +52,9 @@ deploy:
       appveyor_repo_tag: true
 test: off
 test_script:
-  - .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\packages\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Hash.Tests\bin\x64\Release\Multiformats.Hash.Tests.dll" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
+  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\tools\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Hash.Tests\bin\x64\Release\Multiformats.Hash.Tests.dll" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
 after_test:
+  - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe end /d:sonar.login=%SONAR_TOKEN%
   - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
   - pip install codecov
   - codecov -f ".\coverage.xml" -X gcov
