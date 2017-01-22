@@ -4,7 +4,7 @@ platform: x64
 environment:
   SONAR_HOST_URL: http://sonar.dispatch.no/
   SONAR_TOKEN:
-    secure: 6b244cbecac48d6cbe9dd93ffd99a913d47f7a12
+    secure: Hh8u4GI+wqPDyVPqHBRLwG7SueJHQsl1YUkVMFQrp3plrvL26npWk0Qv/Ztnshci
 init:
   - git config --global core.autocrlf input
 assembly_info:
