@@ -33,6 +33,7 @@ skip_commits:
 cache:
   - '.\packages -> **\packages.config'
   - '.\tools'
+  - '%USERPROFILE\.sonar'
 deploy:
   - provider: NuGet
     api_key:
