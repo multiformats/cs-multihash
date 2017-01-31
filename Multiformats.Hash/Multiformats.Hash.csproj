@@ -129,30 +129,30 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Algorithms\BLAKE2B.tt">
+    <None Include="Algorithms\BLAKE2B.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BLAKE2B.cs</LastGenOutput>
-    </Content>
-    <Content Include="Algorithms\BLAKE2S.tt">
+    </None>
+    <None Include="Algorithms\BLAKE2S.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BLAKE2S.cs</LastGenOutput>
-    </Content>
-    <Content Include="Algorithms\KECCAK.tt">
+    </None>
+    <None Include="Algorithms\KECCAK.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>KECCAK.cs</LastGenOutput>
-    </Content>
-    <Content Include="Algorithms\SHA2.tt">
+    </None>
+    <None Include="Algorithms\SHA2.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SHA2.cs</LastGenOutput>
-    </Content>
-    <Content Include="Algorithms\SHA3.tt">
+    </None>
+    <None Include="Algorithms\SHA3.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SHA3.cs</LastGenOutput>
-    </Content>
-    <Content Include="Algorithms\SHAKE.tt">
+    </None>
+    <None Include="Algorithms\SHAKE.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SHAKE.cs</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
