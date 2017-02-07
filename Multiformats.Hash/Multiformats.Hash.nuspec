@@ -17,6 +17,7 @@
       <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework="net461" />
     </frameworkAssemblies>
     <references>
+      <reference file="Multiformats.Hash" />
       <reference file="Blake2Sharp.dll" />
     </references>
   </metadata>
