@@ -15,6 +15,6 @@
     <tags>multihash sha1 sha256 sha512</tags>
   </metadata>
   <files>
-    <file src="lib\**.dll" target="lib" />
+    <file src="lib\*.dll" target="lib" />
   </files>
 </package>
