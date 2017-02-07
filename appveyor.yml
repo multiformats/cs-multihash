@@ -54,7 +54,7 @@ deploy:
       appveyor_repo_tag: true
 test: off
 test_script:
-  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\tools\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Hash.Tests\bin\x64\Release\Multiformats.Hash.Tests.dll" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
+  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\tools\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Hash.Tests\bin\Release\Multiformats.Hash.Tests.dll" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
 after_test:
   - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe end /d:sonar.login=%SONAR_TOKEN%
   - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"

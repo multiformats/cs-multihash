@@ -16,7 +16,7 @@ env:
 script:
   - xbuild /p:Configuration=Release Multiformats.Hash.sln
   - ./multihash --version
-  - mono ./packages/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/x64/Release/Multiformats.Hash.Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
   - make -j1 -C ./sharness/tests/sharness
 cache:
   directories:
