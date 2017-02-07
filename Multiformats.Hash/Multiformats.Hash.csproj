@@ -59,6 +59,7 @@
     </Reference>
     <Reference Include="Blake2Sharp">
       <HintPath>lib\Blake2Sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
@@ -155,11 +156,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="lib\Blake2Sharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Libraries Include="lib\**\*.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyFiles</PrepareForRunDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CopyFiles">
+    <Copy SourceFiles="@(Libraries)" DestinationFolder="$(OutDir)\lib" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
