@@ -1,6 +1,6 @@
 version: 1.0.{build}
 configuration: Release
-platform: x64
+#platform: x64
 environment:
   SONAR_HOST_URL: http://sonar.dispatch.no/
   SONAR_TOKEN:
