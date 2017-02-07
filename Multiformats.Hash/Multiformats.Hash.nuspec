@@ -13,8 +13,14 @@
     <releaseNotes>Initial release.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>multihash sha1 sha256 sha512</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework="net461" />
+    </frameworkAssemblies>
+    <references>
+      <reference file="Blake2Sharp.dll" />
+    </references>
   </metadata>
   <files>
-    <file src="lib\*.dll" target="lib" />
+    <file src="lib\Blake2Sharp.dll" target="lib" />
   </files>
 </package>
