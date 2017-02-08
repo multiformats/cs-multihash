@@ -159,11 +159,7 @@
     <Libraries Include="lib\**\*.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyFiles</PrepareForRunDependsOn>
-  </PropertyGroup>
-
-  <Target Name="CopyFiles">
+  <Target Name="BeforeBuild">
     <Copy SourceFiles="@(Libraries)" DestinationFolder="$(OutDir)\lib" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
