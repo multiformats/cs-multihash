@@ -86,7 +86,7 @@ CLR=MS.NET 4.0.30319.42000, Arch=32-bit RELEASE
 GC=Concurrent Workstation
 JitModules=clrjit-v4.6.1586.0
 
-Type=SumBenchmarks  Mode=Throughput  
+Type=SumBenchmarks  Mode=Throughput
 
 ```
          Method | Platform |       Jit |     Median |    StdDev |
@@ -136,4 +136,4 @@ Small note: If editing the README, please conform to the [standard-readme](https
 
 ## License
 
-[MIT](LICENSE) © 2016 Trond Bråthen
+[MIT](LICENSE) © 2017 Trond Bråthen

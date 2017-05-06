@@ -1,23 +1,58 @@
 language: csharp
-solution: Multiformats.Hash.sln
+sudo: required
+dist: trusty
+env:
+  - CLI_VERSION=latest MULTIHASH_BIN="${TRAVIS_BUILD_DIR}/multihash" TEST_EXPENSIVE=1
+
+addons:
+  apt:
+    packages:
+    - gettext
+    - libcurl4-openssl-dev
+    - libicu-dev
+    - libssl-dev
+    - libunwind8
+    - zlib1g
+mono:
+  - latest
+os:
+  - linux
+  - osx
+
 notifications:
-  email: false
+  email:
+    on_success: change
+    on_failure: always
+
 branches:
   only:
     - master
+
+cache:
+  bundler: true
+  directories:
+  - ./packages
+  - /.dotnetcli
+  - $HOME/Library/Caches/Homebrew
+
+before_install:
+  - if test "$TRAVIS_OS_NAME" == "osx"; then brew update; brew install openssl; ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
+
 install:
-  - nuget restore Multiformats.Hash/packages.config -PackagesDirectory ./packages
-  - nuget restore Multiformats.Hash.Tests/packages.config -PackagesDirectory ./packages
+  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
+  - export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+  - export DOTNET_CLI_TELEMETRY_OPTOUT=1
+  - curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.1/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR"
+  - git config --global core.autocrlf input
+  - git submodule update --init --recursive
+  - chmod +x ./build.sh
+  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
   - mkdir ./sharness
   - git clone https://github.com/multiformats/multihash.git ./sharness
   - chmod +x ./multihash
-env:
-  - MULTIHASH_BIN="/home/travis/build/multiformats/cs-multihash/multihash" TEST_EXPENSIVE=1
+
 script:
-  - xbuild /p:Configuration=Release Multiformats.Hash.sln
+  - ./build.sh
   - ./multihash --version
-  - mono ./packages/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Multiformats.Hash.Tests/bin/Release/Multiformats.Hash.Tests.dll
   - make -j1 -C ./sharness/tests/sharness
-cache:
-  directories:
-    - ./packages
+

@@ -1,0 +1,119 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <RuntimeIdentifiers>win10-x64;osx-x64;ubuntu-x64</RuntimeIdentifiers>
+    <Description>Multiformat hash encoding</Description>
+    <Copyright>Copyright © tabrath 2017</Copyright>
+    <AssemblyTitle>Multiformats.Hash</AssemblyTitle>
+    <VersionPrefix>1.2.0</VersionPrefix>
+    <Authors>tabrath</Authors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Multiformats.Hash</AssemblyName>
+    <PackageId>Multiformats.Hash</PackageId>
+    <PackageTags>multiformats multihash sha1 sha3 keccak blake2 shake</PackageTags>
+    <PackageIconUrl>https://cdn.rawgit.com/multiformats/website/116894f6/favicon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/multiformats/cs-multihash/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/multiformats/cs-multihash</RepositoryUrl>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'net461' ">$(PackageTargetFallback);netstandard;portable-net461+win8</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <!--<PackageReference Include="Blake2Core" Version="1.0.0" />
+    <Compile Remove="..\..\lib\**\*.*" />-->
+    <PackageReference Include="BouncyCastle.NetCore" Version="1.8.1.2" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+    <PackageReference Include="BouncyCastle" Version="1.8.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BinaryEncoding" Version="1.3.4" />
+    <PackageReference Include="Multiformats.Base" Version="1.2.1" />
+    <PackageReference Include="System.Composition" Version="1.0.31" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\lib\blake2b\*.cs" Exclude="..\..\lib\blake2b\**\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Algorithms\BLAKE2B.cs">
+      <DependentUpon>BLAKE2B.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="Algorithms\BLAKE2S.cs">
+      <DependentUpon>BLAKE2S.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="Algorithms\KECCAK.cs">
+      <DependentUpon>KECCAK.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="Algorithms\SHA2.cs">
+      <DependentUpon>SHA2.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="Algorithms\SHA3.cs">
+      <DependentUpon>SHA3.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="Algorithms\SHAKE.cs">
+      <DependentUpon>SHAKE.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Algorithms\BLAKE2B.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BLAKE2B.cs</LastGenOutput>
+    </None>
+    <None Update="Algorithms\BLAKE2S.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BLAKE2S.cs</LastGenOutput>
+    </None>
+    <None Update="Algorithms\KECCAK.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>KECCAK.cs</LastGenOutput>
+    </None>
+    <None Update="Algorithms\SHA2.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SHA2.cs</LastGenOutput>
+    </None>
+    <None Update="Algorithms\SHA3.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SHA3.cs</LastGenOutput>
+    </None>
+    <None Update="Algorithms\SHAKE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SHAKE.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>

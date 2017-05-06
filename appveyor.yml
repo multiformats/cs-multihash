@@ -1,39 +1,106 @@
-version: 1.0.{build}
-configuration: Release
-#platform: x64
 environment:
-  SONAR_HOST_URL: http://sonar.dispatch.no/
-  SONAR_TOKEN:
-    secure: Hh8u4GI+wqPDyVPqHBRLwG7SueJHQsl1YUkVMFQrp3plrvL26npWk0Qv/Ztnshci
+  PKG_VERSION: 1.2.0
+  VERSION_SUFFIX: ""
+  #SONAR_HOST_URL: https://sonar.dispatch.no/
+  #SONAR_TOKEN:
+    #secure: Hh8u4GI+wqPDyVPqHBRLwG7SueJHQsl1YUkVMFQrp3plrvL26npWk0Qv/Ztnshci
+version: ${PKG_VERSION}-{build}
+configuration: Release
+platform: x64
+
+skip_commits:
+  message: /travis/
+  files:
+    - '**\*.md'
+    - LICENSE
+
+skip_branch_with_pr: true
+
+matrix:
+  fast_finish: true
+
 init:
   - git config --global core.autocrlf input
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
-#skip_tags: true
-before_build:
-  - nuget restore
-  - nuget install NUnit.ConsoleRunner -Version 3.6.0 -OutputDirectory .\tools
-  - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
-  - nuget install MSBuild.SonarQube.Runner.Tool -Version 1.0.0 -OutputDirectory .\tools
-  - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe begin /d:sonar.verbose=true /d:sonar.login=%SONAR_TOKEN% /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.cs.opencover.reportsPaths=".\coverage.xml" /d:sonar.cs.nunit.reportsPath=".\TestResult.xml" /n:"Multiformats.Hash" /k:"cs-multihash" /v:"%appveyor_build_version%"
+  - ps: $env:BUILD_VERSION = "$env:PKG_VERSION-$env:APPVEYOR_BUILD_NUMBER"
+  - ps: |
+      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+      {
+        $env:VERSION_SUFFIX = ""
+        $env:NUGET_VERSION = "$env:PKG_VERSION"
+      }
+      else
+      {
+        $env:VERSION_SUFFIX = "beta$env:APPVEYOR_BUILD_NUMBER"
+        $env:NUGET_VERSION = "$env:PKG_VERSION-$env:VERSION_SUFFIX"
+      }
+  - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
+  - ps: Write-Host "Build version $env:BUILD_VERSION, NuGet version $env:NUGET_VERSION, Version suffix $env:VERSION_SUFFIX"
 
-build:
-  project: Multiformats.Hash.sln
-  publish_nuget: true
-  include_nuget_references: true
-  parallel: true
-  verbosity: minimal
-skip_commits:
-  files:
-    - .\*.md
+install:
+  - git submodule update --init --recursive
+  #- nuget install MSBuild.SonarQube.Runner.Tool -Version 2.3.1 -OutputDirectory .\tools
+
+before_build:
+  - appveyor-retry dotnet restore -v Minimal
+
+build_script:
+  #- .\tools\MSBuild.SonarQube.Runner.Tool.2.3.1\tools\MSBuild.SonarQube.Runner.exe begin /d:sonar.verbose=true /d:sonar.login=%SONAR_TOKEN% /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.cs.opencover.reportsPaths=".\coverage.xml" /d:sonar.cs.nunit.reportsPath=".\TestResult.xml" /n:"Multiformats.Hash" /k:"cs-multihash" /v:"%appveyor_build_version%"
+  - ps: |
+      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+      {
+        dotnet build "src\Multiformats.Hash" -c $env:CONFIGURATION
+      }
+      else
+      {
+        dotnet build "src\Multiformats.Hash" -c $env:CONFIGURATION --version-suffix $env:VERSION_SUFFIX
+      }
+
+after_build:
+  #- .\tools\MSBuild.SonarQube.Runner.Tool.2.3.1\tools\MSBuild.SonarQube.Runner.exe end /d:sonar.login=%SONAR_TOKEN%
+  - ps: |
+      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+      {
+        dotnet pack "src\Multiformats.Hash" -c $env:CONFIGURATION --no-build -o $env:APPVEYOR_BUILD_FOLDER\artifacts
+      }
+      else
+      {
+        dotnet pack "src\Multiformats.Hash" -c $env:CONFIGURATION --no-build --version-suffix $env:VERSION_SUFFIX -o $env:APPVEYOR_BUILD_FOLDER\artifacts
+      }
+
+test: off
+
+before_test:
+  - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
+
+test_script:
+  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj -c Debug -f netcoreapp1.1 -l trx;logfilename=TestResult.xml" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml" -oldStyle
+
+after_test:
+  - ps: |
+        $wc = New-Object 'System.Net.WebClient'
+        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Multiformats.Hash.Tests\TestResults\TestResult.xml))
+
+on_success:
+  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+  - pip install codecov
+  - codecov -f "%APPVEYOR_BUILD_FOLDER%\coverage.xml" -X gcov
+
+artifacts:
+  - path: artifacts\**\*.*
+
 cache:
-  - '.\packages -> **\packages.config'
+  - '%USERPROFILE%\.local'
+  - '%USERPROFILE%\.nuget\packages -> **\project.json'
+  #- '%USERPROFILE%\.sonar'
+  - '%LocalAppData%\NuGet\Cache'
+  - '%LocalAppData%\Python'
+  - '.\packages -> **\project.json'
   - '.\tools'
-  - '%USERPROFILE\.sonar'
+  - '\Python34'
+
+nuget:
+  account_feed: true
+
 deploy:
   - provider: NuGet
     api_key:
@@ -42,7 +109,6 @@ deploy:
       branch: master
       appveyor_repo_tag: true
   - provider: GitHub
-    #release: cs-multihash-v$(appveyor_build_version)
     description: 'Release description'
     auth_token:
       secure: nsZHZ5nFBFP4fZoVUEeWeZKx7LUASVqCZ+JblTox+02RfTAOlANdFWeCqOwhu7pk
@@ -52,11 +118,3 @@ deploy:
     on:
       branch: master                 # release from master branch only
       appveyor_repo_tag: true
-test: off
-test_script:
-  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:".\tools\NUnit.ConsoleRunner.3.6.0\tools\nunit3-console.exe" -targetargs:".\Multiformats.Hash.Tests\bin\Release\Multiformats.Hash.Tests.dll" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
-after_test:
-  - .\tools\MSBuild.SonarQube.Runner.Tool.1.0.0\tools\MSBuild.SonarQube.Runner.exe end /d:sonar.login=%SONAR_TOKEN%
-  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-  - pip install codecov
-  - codecov -f ".\coverage.xml" -X gcov
