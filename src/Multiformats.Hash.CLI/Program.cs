@@ -101,10 +101,10 @@ namespace Multiformats.Hash.CLI
                     }
 
                     var code = Hash.Multihash.GetCode(algo);
-                    if (code == HashType.UNKNOWN)
+                    if (!code.HasValue)
                         DisplayError($"Unknown algorithm: {algo}");
 
-                    options.Algorithm = code;
+                    options.Algorithm = code.Value;
                     continue;
                 }
 

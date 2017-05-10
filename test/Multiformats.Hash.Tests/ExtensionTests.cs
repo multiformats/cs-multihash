@@ -14,7 +14,7 @@ namespace Multiformats.Hash.Tests
 
         public ExtensionTests()
         {
-            SupportedHashTypes = Enum.GetValues(typeof(HashType)).Cast<HashType>().Where(type => type != HashType.UNKNOWN).ToArray();
+            SupportedHashTypes = Enum.GetValues(typeof(HashType)).Cast<HashType>().ToArray();
         }
 
         [Fact]

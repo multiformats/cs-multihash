@@ -111,7 +111,6 @@ namespace Multiformats.Hash
         BLAKE2S_240 = 0xb25e,
         BLAKE2S_248 = 0xb25f,
         BLAKE2S_256 = 0xb260,
-        DBL_SHA2_256 = 0x56,
-        UNKNOWN = 0,
+        DBL_SHA2_256 = 0x56
     }
 }

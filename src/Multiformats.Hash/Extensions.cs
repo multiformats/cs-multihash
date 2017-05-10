@@ -29,8 +29,8 @@ namespace Multiformats.Hash
         public static async Task<Multihash> ReadMultihashAsync(this Stream stream, CancellationToken cancellationToken)
         {
             var code = await Binary.Varint.ReadUInt32Async(stream);
-            if (code == 0)
-                return null;
+            // @Todo: we should check how many bytes we have read,
+            //        but the method we're using doesn't support that.
 
             var length = await Binary.Varint.ReadUInt32Async(stream);
             if (length == 0)
@@ -57,7 +57,7 @@ namespace Multiformats.Hash
 
         internal static byte[] Slice(this byte[] buffer, int offset = 0, int? count = null)
         {
-            var result = new byte[count ?? buffer.Length - offset];
+            var result = new byte[Math.Min(count ?? buffer.Length - offset, buffer.Length - offset)];
             Buffer.BlockCopy(buffer, offset, result, 0, result.Length);
             return result;
         }

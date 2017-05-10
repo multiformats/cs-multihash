@@ -44,10 +44,10 @@ namespace Multiformats.Hash.Algorithms
             where TAlgorithm : IMultihashAlgorithm
         {
             var code = GetHashType<TAlgorithm>();
-            if (code == HashType.UNKNOWN)
+            if (!code.HasValue || !Enum.IsDefined(typeof(HashType), code.Value))
                 throw new NotSupportedException($"{typeof(TAlgorithm)} is not supported.");
 
-            return Get(code);
+            return Get(code.Value);
         }
 
         public void Return(IMultihashAlgorithm algo)
@@ -113,11 +113,10 @@ namespace Multiformats.Hash.Algorithms
             }
         }
 
-        public static HashType GetHashType<TAlgorithm>()
+        public static HashType? GetHashType<TAlgorithm>()
             where TAlgorithm : IMultihashAlgorithm
         {
-            var attr = typeof(TAlgorithm).GetTypeInfo().GetCustomAttribute<MultihashAlgorithmExportAttribute>();
-            return attr?.Code ?? HashType.UNKNOWN;
+            return typeof(TAlgorithm).GetTypeInfo().GetCustomAttribute<MultihashAlgorithmExportAttribute>()?.Code;
         }
 
         public void Dispose()

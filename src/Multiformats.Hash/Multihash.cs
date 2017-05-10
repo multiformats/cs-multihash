@@ -136,7 +136,14 @@ namespace Multiformats.Hash
 
         public static byte[] Encode(byte[] data, HashType code) => Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
         public static Multihash Encode(string s, HashType code) => Encode(Multibase.DecodeRaw(Multibase.Base32, s), code);
-        public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : IMultihashAlgorithm => Binary.Varint.GetBytes((uint)Registry.GetHashType<TAlgorithm>()).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
+        public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : IMultihashAlgorithm
+        {
+            var algo = Registry.GetHashType<TAlgorithm>();
+            if (!algo.HasValue)
+                throw new NotSupportedException($"{typeof(TAlgorithm)} is not supported.");
+
+            return Binary.Varint.GetBytes((uint)algo.Value).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
+        }
 
         private static Multihash Sum(IMultihashAlgorithm algo, byte[] data, int length) => new Multihash(algo.Code, algo.ComputeHash(data).Slice(0, length != -1 ? length : algo.DefaultLength));
         public static Multihash Sum(HashType code, byte[] data, int length = -1) => _registry.Use(code, algo => Sum(algo, data, length));
@@ -153,10 +160,6 @@ namespace Multiformats.Hash
         public static string GetName(HashType code) => code.ToString().Replace("_", "-").ToLower();
         public static string GetName(int code) => Enum.IsDefined(typeof(HashType), (HashType)code) ? GetName((HashType)code) : "unsupported";
 
-        public static HashType GetCode(string name)
-        {
-            HashType result;
-            return HashType.TryParse(name.Replace("-", "_"), true, out result) ? result : HashType.UNKNOWN;
-        }
+        public static HashType? GetCode(string name) => Enum.TryParse(name.Replace("-", "_"), true, out HashType result) ? result : new HashType?();
     }
 }
