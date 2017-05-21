@@ -66,6 +66,7 @@ namespace Multiformats.Hash.Tests
         }
 
         [Theory]
+        [InlineData(0x00, "id")]
         [InlineData(0x11, "sha1")]
         [InlineData(0x12, "sha2-256")]
         [InlineData(0x13, "sha2-512")]
@@ -105,6 +106,7 @@ namespace Multiformats.Hash.Tests
         }
 
         [Theory]
+        [InlineData(HashType.ID)]
         [InlineData(HashType.SHA1)]
         [InlineData(HashType.SHA2_256)]
         [InlineData(HashType.SHA2_512)]
@@ -135,6 +137,7 @@ namespace Multiformats.Hash.Tests
         }
 
         [Theory]
+        [InlineData(HashType.ID)]
         [InlineData(HashType.SHA1)]
         [InlineData(HashType.SHA2_256)]
         [InlineData(HashType.SHA2_512)]
@@ -165,6 +168,7 @@ namespace Multiformats.Hash.Tests
         }
 
         [Theory]
+        [InlineData(HashType.ID)]
         [InlineData(HashType.SHA1)]
         [InlineData(HashType.SHA2_256)]
         [InlineData(HashType.SHA2_512)]

@@ -10,6 +10,16 @@ namespace Multiformats.Hash.Tests
     public class SumTests
     {
         [Fact]
+        public void TestID()
+        {
+            var text = "hello world";
+            var hash = "DVBjHhYDaZ47EzaX1";
+
+            var mh = Multihash.Sum<ID>(Encoding.UTF8.GetBytes(text));
+            Assert.Equal(mh.ToString(Multibase.Base58), hash);
+        }
+
+        [Fact]
         public void TestSHA1()
         {
             var text = "hello world";
