@@ -83,6 +83,8 @@ namespace Multiformats.Hash.Tests
         [InlineData(0xb240, "blake2b-512")]
         [InlineData(0xb260, "blake2s-256")]
         [InlineData(0x56, "dbl-sha2-256")]
+        [InlineData(0x22, "murmur3-32")]
+        [InlineData(0x23, "murmur3-128")]
         public void TestTable(int code, string name)
         {
             if (Multihash.GetName(code) != name)
@@ -123,6 +125,8 @@ namespace Multiformats.Hash.Tests
         [InlineData(HashType.BLAKE2B_256)]
         [InlineData(HashType.BLAKE2S_128)]
         [InlineData(HashType.DBL_SHA2_256)]
+        [InlineData(HashType.MURMUR3_32)]
+        [InlineData(HashType.MURMUR3_128)]
         public void VerifyRoundTrip(HashType type)
         {
             var rand = new Random(Environment.TickCount);
@@ -154,6 +158,8 @@ namespace Multiformats.Hash.Tests
         [InlineData(HashType.BLAKE2B_256)]
         [InlineData(HashType.BLAKE2S_128)]
         [InlineData(HashType.DBL_SHA2_256)]
+        [InlineData(HashType.MURMUR3_32)]
+        [InlineData(HashType.MURMUR3_128)]
         public async Task VerifyRoundTripAsync(HashType type)
         {
             var rand = new Random(Environment.TickCount);
@@ -185,6 +191,8 @@ namespace Multiformats.Hash.Tests
         [InlineData(HashType.BLAKE2B_256)]
         [InlineData(HashType.BLAKE2S_128)]
         [InlineData(HashType.DBL_SHA2_256)]
+        [InlineData(HashType.MURMUR3_32)]
+        [InlineData(HashType.MURMUR3_128)]
         public void TestMultithreadedEnvironment(HashType type)
         {
             var rand = new Random(Environment.TickCount);

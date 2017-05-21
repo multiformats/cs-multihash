@@ -178,5 +178,25 @@ namespace Multiformats.Hash.Tests
             var mh = Multihash.Sum<DBL_SHA2_256>(Encoding.UTF8.GetBytes(text));
             Assert.Equal(mh.Digest, hash);
         }
+
+        [Fact]
+        public void TestMurmur3_128()
+        {
+            var text = "beep boop";
+            var hash = Hex.Decode("acfe9c5bbf88f075c0c4df0464430ead");
+
+            var mh = Multihash.Sum<MURMUR3_128>(Encoding.UTF8.GetBytes(text));
+            Assert.Equal(mh.Digest, hash);
+        }
+
+        [Fact]
+        public void TestMurmur3_32()
+        {
+            var text = "beep boop";
+            var hash = Hex.Decode("243ddb9e");
+
+            var mh = Multihash.Sum<MURMUR3_32>(Encoding.UTF8.GetBytes(text));
+            Assert.Equal(mh.Digest, hash);
+        }
     }
 }
