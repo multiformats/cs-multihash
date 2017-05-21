@@ -16,6 +16,8 @@ namespace Multiformats.Hash
         KECCAK_256 = 0x1B,
         KECCAK_384 = 0x1C,
         KECCAK_512 = 0x1D,
+        MURMUR3_128 = 0x23,
+        MURMUR3_32 = 0x22,
         BLAKE2B_8 = 0xb201,
         BLAKE2B_16 = 0xb202,
         BLAKE2B_24 = 0xb203,
