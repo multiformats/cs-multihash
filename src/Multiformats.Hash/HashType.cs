@@ -3,6 +3,8 @@ namespace Multiformats.Hash
     public enum HashType : uint
     {
         ID = 0x00,
+        MD4 = 0xd4,
+        MD5 = 0xd5,
         SHA1 = 0x11,
         SHA2_256 = 0x12,
         SHA2_512 = 0x13,

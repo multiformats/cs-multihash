@@ -67,6 +67,8 @@ namespace Multiformats.Hash.Tests
 
         [Theory]
         [InlineData(0x00, "id")]
+        [InlineData(0xd4, "md4")]
+        [InlineData(0xd5, "md5")]
         [InlineData(0x11, "sha1")]
         [InlineData(0x12, "sha2-256")]
         [InlineData(0x13, "sha2-512")]
