@@ -13,10 +13,10 @@ namespace Multiformats.Hash.Tests
         public void TestID()
         {
             var text = "hello world";
-            var hash = "DVBjHhYDaZ47EzaX1";
+            var hash = "1DVBjHhYDaZ47EzaX";
 
             var mh = Multihash.Sum<ID>(Encoding.UTF8.GetBytes(text));
-            Assert.Equal(mh.ToString(Multibase.Base58), hash);
+            Assert.Equal(mh.ToString(MultibaseEncoding.Base58Btc), hash);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Multiformats.Hash.Tests
             var hash = "5drNu81uhrFLRiS4bxWgAkpydaLUPW";
 
             var mh = Multihash.Sum<SHA1>(Encoding.UTF8.GetBytes(text));
-            Assert.Equal(mh.ToString(Multibase.Base58), hash);
+            Assert.Equal(mh.ToString(MultibaseEncoding.Base58Btc), hash);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Multiformats.Hash.Tests
             var hash = "QmaozNR7DZHQK1ZcU9p7QdrshMvXqWK6gpu5rmrkPdT3L4";
 
             var mh = Multihash.Sum<SHA2_256>(Encoding.UTF8.GetBytes(text));
-            Assert.Equal(mh.ToString(Multibase.Base58), hash);
+            Assert.Equal(mh.ToString(MultibaseEncoding.Base58Btc), hash);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Multiformats.Hash.Tests
             var hash = "8Vtkv2tdQ43bNGdWN9vNx9GVS9wrbXHk4ZW8kmucPmaYJwwedXir52kti9wJhcik4HehyqgLrQ1hBuirviLhxgRBNv";
 
             var mh = Multihash.Sum<SHA2_512>(Encoding.UTF8.GetBytes(text));
-            Assert.Equal(mh.ToString(Multibase.Base58), hash);
+            Assert.Equal(mh.ToString(MultibaseEncoding.Base58Btc), hash);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Multiformats.Hash.Tests
             var hash = "8tWhXW5oUwtPd9d3FnjuLP1NozN3vc45rmsoWEEfrZL1L6gi9dqi1YkZu5iHb2HJ8WbZaaKAyNWWRAa8yaxMkGKJmX";
 
             var mh = Multihash.Sum<SHA3_512>(Encoding.UTF8.GetBytes(text));
-            Assert.Equal(mh.ToString(Multibase.Base58), hash);
+            Assert.Equal(mh.ToString(MultibaseEncoding.Base58Btc), hash);
         }
 
         [Fact]

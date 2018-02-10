@@ -40,10 +40,10 @@ namespace Multiformats.Hash.Tests
         [Fact]
         public void CanDecodeFromMultibase()
         {
-            var hex = Multibase.DecodeRaw(Multibase.Base58, "8Vtkv2tdQ43bNGdWN9vNx9GVS9wrbXHk4ZW8kmucPmaYJwwedXir52kti9wJhcik4HehyqgLrQ1hBuirviLhxgRBNv");
+            var hex = Multibase.Base58.Decode("8Vtkv2tdQ43bNGdWN9vNx9GVS9wrbXHk4ZW8kmucPmaYJwwedXir52kti9wJhcik4HehyqgLrQ1hBuirviLhxgRBNv");
             var mb = Multibase.Base32.Encode(hex);
-            Multihash mh;
-            Assert.True(Multihash.TryParse(mb, out mh));
+
+            Assert.True(Multihash.TryParse(mb, out var mh));
             Assert.Equal(mh.ToBytes(), hex);
         }
 

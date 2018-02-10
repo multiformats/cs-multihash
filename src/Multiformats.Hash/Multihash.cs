@@ -35,13 +35,13 @@ namespace Multiformats.Hash
         }
 
         public string ToString(MultibaseEncoding encoding) => Multibase.EncodeRaw(encoding, _bytes.Value);
-        public override string ToString() => ToString(Multibase.Base16);
+        public override string ToString() => ToString(MultibaseEncoding.Base16Lower);
 
         [Obsolete("Use ToString() instead")]
-        public string B58String() => ToString(Multibase.Base58);
+        public string B58String() => ToString(MultibaseEncoding.Base58Btc);
 
         [Obsolete("Use ToString() instead")]
-        public string ToHexString() => ToString(Multibase.Base16);
+        public string ToHexString() => ToString(MultibaseEncoding.Base16Lower);
 
         public byte[] ToBytes() => _bytes.Value;
 
@@ -56,41 +56,27 @@ namespace Multiformats.Hash
         public bool Verify(byte[] data) => Sum(Code, data, Length).Equals(this);
         public Task<bool> VerifyAsync(byte[] data) => SumAsync(Code, data, Length).ContinueWith(mh => mh.Result?.Equals(this) ?? false);
 
-        private static readonly MultibaseEncoding[] _standardEncodings = new MultibaseEncoding[]
+        private static readonly MultibaseEncoding[] _encodings =
         {
-            Multibase.Base16,
-            Multibase.Base32,
-            Multibase.Base58,
-            Multibase.Base64,
-            Multibase.Base2,
-            Multibase.Base8,
+            MultibaseEncoding.Base16Lower,
+            MultibaseEncoding.Base32Lower,
+            MultibaseEncoding.Base58Btc,
+            MultibaseEncoding.Base64,
+            MultibaseEncoding.Base2,
+            MultibaseEncoding.Base8,
         };
 
         public static bool TryParse(string s, out Multihash mh)
         {
-            try
-            {
-                var bytes = Multibase.Decode(s);
-                if (bytes != null && bytes.Length > 0)
-                {
-                    mh = Decode(bytes);
-                    return true;
-                }
-            }
-            catch { }
-
-            foreach (var @base in _standardEncodings)
+            foreach (var encoding in _encodings)
             {
                 try
                 {
-                    var bytes = Multibase.DecodeRaw(@base, s);
-                    if (bytes != null && bytes.Length > 0)
-                    {
-                        mh = Decode(bytes);
-                        return true;
-                    }
+                    var bytes = Multibase.DecodeRaw(encoding, s);
+                    mh = Decode(bytes);
+                    return true;
                 }
-                catch { }
+                catch (Exception) { }
             }
 
             mh = null;
@@ -99,18 +85,17 @@ namespace Multiformats.Hash
 
         public static Multihash Parse(string s)
         {
-            Multihash mh;
-            if (!TryParse(s, out mh))
+            if (!TryParse(s, out var mh))
                 throw new FormatException("Not a valid multihash");
 
             return mh;
         }
 
         [Obsolete("Use Parse/TryParse instead")]
-        public static Multihash FromHexString(string s) => Cast(Multibase.DecodeRaw(Multibase.Base16, s));
+        public static Multihash FromHexString(string s) => Cast(Multibase.Base16.Decode(s));
 
         [Obsolete("Use Parse/TryParse instead")]
-        public static Multihash FromB58String(string s) => Cast(Multibase.DecodeRaw(Multibase.Base58, s));
+        public static Multihash FromB58String(string s) => Cast(Multibase.Base58.Decode(s));
 
         public static Multihash Cast(byte[] buf) => Decode(buf);
 
@@ -122,11 +107,8 @@ namespace Multiformats.Hash
             if (buf.Length < 3)
                 throw new Exception("Too short");
 
-            uint code;
-            var offset = Binary.Varint.Read(buf, 0, out code);
-
-            uint length;
-            offset += Binary.Varint.Read(buf, offset, out length);
+            var offset = Binary.Varint.Read(buf, 0, out uint code);
+            offset += Binary.Varint.Read(buf, offset, out uint length);
 
             if (length > buf.Length - offset)
                 throw new Exception("Incosistent length");
@@ -135,7 +117,7 @@ namespace Multiformats.Hash
         }
 
         public static byte[] Encode(byte[] data, HashType code) => Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes((uint)data.Length), data);
-        public static Multihash Encode(string s, HashType code) => Encode(Multibase.DecodeRaw(Multibase.Base32, s), code);
+        public static Multihash Encode(string s, HashType code) => Encode(Multibase.Base32.Decode(s), code);
         public static byte[] Encode<TAlgorithm>(byte[] data) where TAlgorithm : IMultihashAlgorithm
         {
             var algo = Registry.GetHashType<TAlgorithm>();
@@ -155,7 +137,7 @@ namespace Multiformats.Hash
         public static implicit operator Multihash(byte[] buf) => Decode(buf);
         public static implicit operator byte[](Multihash mh) => mh._bytes.Value;
         public static implicit operator Multihash(string s) => Parse(s);
-        public static implicit operator string(Multihash mh) => mh.ToString(Multibase.Base16);
+        public static implicit operator string(Multihash mh) => mh.ToString(MultibaseEncoding.Base16Lower);
 
         public static string GetName(HashType code) => code.ToString().Replace("_", "-").ToLower();
         public static string GetName(int code) => Enum.IsDefined(typeof(HashType), (HashType)code) ? GetName((HashType)code) : "unsupported";
