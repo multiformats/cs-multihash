@@ -1,24 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash", "src\Multiformats.Hash\Multiformats.Hash.csproj", "{86A29D9B-0640-4AF4-985B-CB3085C87693}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multiformats.Hash", "src\Multiformats.Hash\Multiformats.Hash.csproj", "{86A29D9B-0640-4AF4-985B-CB3085C87693}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.Tests", "test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj", "{00E6BCB9-A356-48B1-A84E-D6F293079EA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multiformats.Hash.Tests", "test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj", "{00E6BCB9-A356-48B1-A84E-D6F293079EA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1DD8484-EFAE-4B0E-A815-8C42EBC86604}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
+		build.sh = build.sh
 		LICENSE = LICENSE
 		multihash = multihash
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.Benchmarks", "src\Multiformats.Hash.Benchmarks\Multiformats.Hash.Benchmarks.csproj", "{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multiformats.Hash.Benchmarks", "src\Multiformats.Hash.Benchmarks\Multiformats.Hash.Benchmarks.csproj", "{DE652359-F094-4C4D-A9C5-7EDAE216D0F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiformats.Hash.CLI", "src\Multiformats.Hash.CLI\Multiformats.Hash.CLI.csproj", "{234B6C7D-472D-4DDB-9617-FBD9F4E146F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multiformats.Hash.CLI", "src\Multiformats.Hash.CLI\Multiformats.Hash.CLI.csproj", "{234B6C7D-472D-4DDB-9617-FBD9F4E146F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,5 +63,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D1222E2-925D-48D8-B240-95E98929EBA6}
 	EndGlobalSection
 EndGlobal
