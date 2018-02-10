@@ -1,5 +1,5 @@
 environment:
-  PKG_VERSION: 1.2.1
+  PKG_VERSION: 1.3.0
   VERSION_SUFFIX: ""
   #SONAR_HOST_URL: https://sonar.dispatch.no/
   #SONAR_TOKEN:
