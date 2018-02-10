@@ -20,6 +20,26 @@ namespace Multiformats.Hash.Tests
         }
 
         [Fact]
+        public void TestMD4()
+        {
+            var text = "hello world";
+            var hash = Hex.Decode("aa010fbc1d14c795d86ef98c95479d17");
+
+            var mh = Multihash.Sum<MD4>(Encoding.UTF8.GetBytes(text));
+            Assert.Equal(hash, mh.Digest);
+        }
+
+        [Fact]
+        public void TestMD5()
+        {
+            var text = "hello world";
+            var hash = Hex.Decode("5eb63bbbe01eeed093cb22bb8f5acdc3");
+
+            var mh = Multihash.Sum<MD5>(Encoding.UTF8.GetBytes(text));
+            Assert.Equal(hash, mh.Digest);
+        }
+
+        [Fact]
         public void TestSHA1()
         {
             var text = "hello world";
