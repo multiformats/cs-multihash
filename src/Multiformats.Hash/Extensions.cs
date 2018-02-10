@@ -11,12 +11,10 @@ namespace Multiformats.Hash
     {
         public static Multihash ReadMultihash(this Stream stream)
         {
-            uint code;
-            if (Binary.Varint.Read(stream, out code) <= 0)
+            if (Binary.Varint.Read(stream, out uint code) <= 0)
                 return null;
 
-            uint length;
-            if (Binary.Varint.Read(stream, out length) <= 0)
+            if (Binary.Varint.Read(stream, out uint length) <= 0)
                 return null;
 
             var buffer = new byte[length];

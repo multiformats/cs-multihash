@@ -1,7 +1,5 @@
 using System;
 using System.Composition;
-using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Multiformats.Hash.Algorithms
@@ -62,7 +60,6 @@ namespace Multiformats.Hash.Algorithms
         public int DefaultLength { get; }
 
         public MultihashAlgorithmExportAttribute(HashType code, string name, int defaultLength)
-            //: base(typeof(IMultihashAlgorithm))
         {
             Code = code;
             Name = name;

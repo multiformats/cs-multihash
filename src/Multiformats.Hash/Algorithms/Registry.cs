@@ -52,11 +52,8 @@ namespace Multiformats.Hash.Algorithms
 
         public void Return(IMultihashAlgorithm algo)
         {
-            Export<IMultihashAlgorithm> export;
-            if (_cache.TryRemove(algo.GetHashCode(), out export))
-            {
+            if (_cache.TryRemove(algo.GetHashCode(), out var export))
                 export?.Dispose();
-            }
         }
 
         public T Use<T>(HashType code, Func<IMultihashAlgorithm, T> func)
