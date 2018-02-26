@@ -11,17 +11,21 @@
 
 > [Multihash](https://github.com/multiformats/multihash) implementation in C# .NET Standard 1.6 compliant.
 
+This is not a general purpose hashing library, but a library to encode/decode Multihashes which is a "container" describing what hash algorithm the digest is calculated with. The library also support calculating the digest, but that is not it's main purpose. If you're looking for a library that supports many algorithms and only want the raw digest, try BouncyCastle or the built-ins of the .net framework.
+
+To be clear, when you calculate a digest (using Sum) with this library, you will get a byte array including a prefix with the properties of the algorithm used (type and length).
+
 There's a CLI version that you can use to compute files or direct input from the command line.
 This CLI tool passes the sharness tests [here](https://github.com/multiformats/multihash/tree/master/tests/sharness).
 
 ## Table of Contents
 
-- [Install](#install)
-- [Usage](#usage)
-- [Supported hash algorithms](#supported-hash-algorithms)
-- [Maintainers](#maintainers)
-- [Contribute](#contribute)
-- [License](#license)
+* [Install](#install)
+* [Usage](#usage)
+* [Supported hash algorithms](#supported-hash-algorithms)
+* [Maintainers](#maintainers)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## Install
 
@@ -32,24 +36,24 @@ This CLI tool passes the sharness tests [here](https://github.com/multiformats/m
     dotnet add package Multiformats.Hash
 
 ## Usage
-``` cs
+
+```csharp
 // decode a multihash formatted byte array
-var mh = Multihash.Decode(bytes);
+Multihash mh = Multihash.Decode(bytes);
 
 // decode a multihash formatted string
-var mh = Multihash.Parse(str);
-var ok = Multihash.TryParse(str, out mh);
+Multihash mh = Multihash.Parse(str);
+bool ok = Multihash.TryParse(str, out mh);
 
 // encode a digest to multiformat byte array
-var bytes = Multihash.Encode(digest, HashType.SHA1);
-// or
-var bytes = Multihash.Encode<SHA1>(digest);
+byte[] bytes = Multihash.Encode(digest, HashType.SHA1);
+byte[] bytes = Multihash.Encode<SHA1>(digest);
 
 // calculate digest
-var mh = Multihash.Sum<SHA1>(bytes);
+Multihash mh = Multihash.Sum<SHA1>(bytes);
 
 // verify
-var isValid = mh.Verify(bytes);
+bool isValid = mh.Verify(bytes);
 ```
 
 ## Supported hash algorithms
