@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Multiformats.Base;
 using Multiformats.Hash.Algorithms;
@@ -120,6 +121,18 @@ namespace Multiformats.Hash.Tests
         }
 
         [Fact]
+        public void TestBlake2BAll()
+        {
+            var text = "hello world";
+
+            foreach (var type in Enum.GetNames(typeof(HashType)).Where(t => t.StartsWith("BLAKE2B")).Select(n => (HashType)Enum.Parse(typeof(HashType), n)))
+            {
+                var mh = Multihash.Sum(type, Encoding.UTF8.GetBytes(text));
+                Assert.Equal(type, mh.Code);
+            }
+        }
+
+        [Fact]
         public void TestBlake2S()
         {
             var text = "hello world";
@@ -127,6 +140,18 @@ namespace Multiformats.Hash.Tests
 
             var mh = Multihash.Sum<BLAKE2S_256>(Encoding.UTF8.GetBytes(text));
             Assert.Equal(BitConverter.ToString(mh.Digest).Replace("-", "").ToLower(), hash);
+        }
+
+        [Fact]
+        public void TestBlake2SAll()
+        {
+            var text = "hello world";
+
+            foreach (var type in Enum.GetNames(typeof(HashType)).Where(t => t.StartsWith("BLAKE2S")).Select(n => (HashType)Enum.Parse(typeof(HashType), n)))
+            {
+                var mh = Multihash.Sum(type, Encoding.UTF8.GetBytes(text));
+                Assert.Equal(type, mh.Code);
+            }
         }
 
         [Fact]

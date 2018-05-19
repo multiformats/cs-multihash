@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Composition;
-using Crypto;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace Multiformats.Hash.Algorithms
 {
     public abstract class BLAKE2B : MultihashAlgorithm
     {
-        private readonly Func<Blake2B> _factory;
+        private readonly Func<IDigest> _factory;
 
         protected BLAKE2B(int bits)
             : base(GetHashType(bits), GetName(bits), bits / 8)
         {
-            _factory = () =>
-			{
-				var algo = new Blake2B(bits);
-				algo.Initialize();
-				return algo;
-			};
+            _factory = () => new Blake2bDigest(bits);
         }
 
-        private static HashType GetHashType(int bytes) => (HashType) Enum.Parse(typeof(HashType), $"BLAKE2B_{bytes}");
+        private static HashType GetHashType(int bytes) => (HashType)Enum.Parse(typeof(HashType), $"BLAKE2B_{bytes}");
         private static string GetName(int bytes) => $"blake2b-{bytes}";
         public override byte[] ComputeHash(byte[] data) => _factory().ComputeHash(data);
     }
