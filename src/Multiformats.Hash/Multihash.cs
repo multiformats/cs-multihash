@@ -104,7 +104,7 @@ namespace Multiformats.Hash
             if (buf == null)
                 throw new ArgumentNullException(nameof(buf));
 
-            if (buf.Length < 3)
+            if (buf.Length < 2)
                 throw new Exception("Too short");
 
             var offset = Binary.Varint.Read(buf, 0, out uint code);

@@ -48,6 +48,8 @@ namespace Multiformats.Hash.Tests
         }
 
         [Theory]
+        [InlineData("2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae", 0x00, "id")]
+        [InlineData("", 0x00, "id")]
         [InlineData("0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33", 0x11, "sha1")]
         [InlineData("0beec7b5", 0x11, "sha1")]
         [InlineData("2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae", 0x12, "sha2-256")]
