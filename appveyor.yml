@@ -9,7 +9,7 @@ configuration: Release
 platform: x64
 
 skip_commits:
-  message: /travis/
+  message: /chore/
   files:
     - '**\*.md'
     - LICENSE
