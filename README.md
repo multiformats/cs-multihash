@@ -74,8 +74,8 @@ bool isValid = mh.Verify(bytes);
 * KECCAK_256
 * KECCAK_384
 * KECCAK_512
-* BLAKE2B-(bits) (8-64)
-* BLAKE2S-(bits) (8-32)
+* BLAKE2B-(bits) (8-512)
+* BLAKE2S-(bits) (8-256)
 * DBL_SHA2_256
 * MURMUR3_32/128
 
