@@ -16,6 +16,10 @@ skip_commits:
 
 skip_branch_with_pr: true
 
+branches:
+  only:
+    - master
+
 matrix:
   fast_finish: true
 
