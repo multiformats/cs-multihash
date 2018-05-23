@@ -37,6 +37,9 @@ fi
 if [ $mono -eq 1 ]; then
   echo "* building and testing mono"
   export FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/
+  
   msbuild $project /p:Configuration=Release /p:Platform=net461
   mono $HOME/.nuget/packages/xunit.runner.console/*/tools/net452/xunit.console.exe ./test/$name/bin/net461/Release/net461/$name.dll
+
+  msbuild ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj /p:Configuration=Release /p:Platform=net461
 fi
