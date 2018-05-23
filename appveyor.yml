@@ -1,12 +1,10 @@
 environment:
-  PKG_VERSION: 1.3.0
+  PKG_VERSION: 1.3.1
   VERSION_SUFFIX: ""
-  #SONAR_HOST_URL: https://sonar.dispatch.no/
-  #SONAR_TOKEN:
-    #secure: Hh8u4GI+wqPDyVPqHBRLwG7SueJHQsl1YUkVMFQrp3plrvL26npWk0Qv/Ztnshci
 version: ${PKG_VERSION}-{build}
 configuration: Release
 platform: x64
+image: Visual Studio 2017
 
 skip_commits:
   message: /chore/
@@ -60,7 +58,6 @@ build_script:
       }
 
 after_build:
-  #- .\tools\MSBuild.SonarQube.Runner.Tool.2.3.1\tools\MSBuild.SonarQube.Runner.exe end /d:sonar.login=%SONAR_TOKEN%
   - ps: |
       if ($env:APPVEYOR_REPO_BRANCH -eq "master")
       {
@@ -73,11 +70,8 @@ after_build:
 
 test: off
 
-before_test:
-  - nuget install OpenCover -Version 4.6.519 -OutputDirectory .\tools
-
 test_script:
-  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -returntargetcode -target:"%ProgramFiles%\dotnet\dotnet.exe" -targetargs:"test %APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj -c Debug -f netcoreapp1.1 -l trx;logfilename=TestResult.xml /p:Platform=AnyCPU" -filter:"+[Multiformats.Hash]* -[Multiformats.Hash.Benchmarks]* -[Multiformats.Hash.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:"%APPVEYOR_BUILD_FOLDER%\coverage.xml" -oldStyle
+  - dotnet test --configuration Debug --framework netcoreapp2.0 --logger trx;logfilename=TestResult.xml --results-directory "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover %APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj
 
 after_test:
   - ps: |
@@ -85,20 +79,18 @@ after_test:
         $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Multiformats.Hash.Tests\TestResults\TestResult.xml))
 
 on_success:
-  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-  - pip install codecov
-  - codecov -f "%APPVEYOR_BUILD_FOLDER%\coverage.xml" -X gcov
+  - choco install codecov
+  - codecov -f "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\coverage.xml"
 
 artifacts:
   - path: artifacts\**\*.*
 
 cache:
   - '%USERPROFILE%\.local'
-  - '%USERPROFILE%\.nuget\packages -> **\project.json'
-  #- '%USERPROFILE%\.sonar'
+  - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
   - '%LocalAppData%\NuGet\Cache'
   - '%LocalAppData%\Python'
-  - '.\packages -> **\project.json'
+  - '.\packages -> **\*.csproj'
   - '.\tools'
   - '\Python34'
 

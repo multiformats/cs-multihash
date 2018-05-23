@@ -1,23 +1,24 @@
 language: csharp
-sudo: required
-dist: trusty
+solution: Multiformats.Hash.sln
 env:
   - CLI_VERSION=latest MULTIHASH_BIN="${TRAVIS_BUILD_DIR}/multihash" TEST_EXPENSIVE=1
-
-addons:
-  apt:
-    packages:
-    - gettext
-    - libcurl4-openssl-dev
-    - libicu-dev
-    - libssl-dev
-    - libunwind8
-    - zlib1g
-mono:
-  - latest
-os:
-  - linux
-  - osx
+  
+matrix:
+  include:
+    - dotnet: 2.1.300-preview2-008533
+      mono: none
+      env: DOTNET=1
+      os: linux
+    - mono: latest
+      env: MONO=1
+      os: linux
+    - dotnet: 2.1.300-preview2-008533
+      mono: none
+      env: DOTNET=1
+      os: osx
+    - mono: latest
+      env: MONO=1
+      os: osx
 
 notifications:
   email:
@@ -39,10 +40,6 @@ before_install:
   - if test "$TRAVIS_OS_NAME" == "osx"; then brew update; brew install openssl; ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/; ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/; fi
 
 install:
-  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
-  - export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
-  - export DOTNET_CLI_TELEMETRY_OPTOUT=1
-  - curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.1/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR"
   - git config --global core.autocrlf input
   - git submodule update --init --recursive
   - chmod +x ./build.sh
@@ -55,4 +52,3 @@ script:
   - ./build.sh
   - ./multihash --version
   - make -j1 -C ./sharness/tests/sharness
-
