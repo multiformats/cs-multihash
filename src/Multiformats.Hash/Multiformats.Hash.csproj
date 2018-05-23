@@ -15,8 +15,6 @@
     <PackageLicenseUrl>https://github.com/multiformats/cs-multihash/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/multiformats/cs-multihash</RepositoryUrl>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'net461' ">$(PackageTargetFallback);netstandard;portable-net461+win8</PackageTargetFallback>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputType>Library</OutputType>
   </PropertyGroup>

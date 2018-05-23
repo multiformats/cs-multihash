@@ -43,7 +43,6 @@ install:
   - git config --global core.autocrlf input
   - git submodule update --init --recursive
   - chmod +x ./build.sh
-  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
   - mkdir ./sharness
   - git clone https://github.com/multiformats/multihash.git ./sharness
   - chmod +x ./multihash
