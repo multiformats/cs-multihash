@@ -40,13 +40,11 @@ init:
 
 install:
   - git submodule update --init --recursive
-  #- nuget install MSBuild.SonarQube.Runner.Tool -Version 2.3.1 -OutputDirectory .\tools
 
 before_build:
-  - appveyor-retry dotnet restore -v Minimal
+  - appveyor-retry dotnet restore "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj" -v Minimal
 
 build_script:
-  #- .\tools\MSBuild.SonarQube.Runner.Tool.2.3.1\tools\MSBuild.SonarQube.Runner.exe begin /d:sonar.verbose=true /d:sonar.login=%SONAR_TOKEN% /d:sonar.host.url=%SONAR_HOST_URL% /d:sonar.cs.opencover.reportsPaths=".\coverage.xml" /d:sonar.cs.nunit.reportsPath=".\TestResult.xml" /n:"Multiformats.Hash" /k:"cs-multihash" /v:"%appveyor_build_version%"
   - ps: |
       if ($env:APPVEYOR_REPO_BRANCH -eq "master")
       {
