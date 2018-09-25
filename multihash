@@ -19,5 +19,5 @@ if [ $dotnet -eq 1 ]; then
 fi
 
 if [ $mono -eq 1 ]; then
-	mono ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/bin/x64/Release/net461/Multiformats.Hash.CLI.dll "$@"
+	mono ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/bin/x64/Release/net461/Multiformats.Hash.CLI.exe "$@"
 fi
