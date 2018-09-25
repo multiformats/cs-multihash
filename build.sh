@@ -39,8 +39,8 @@ fi
 if [ $mono -eq 1 ]; then
   echo "* building and testing mono"
   export FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/
-  msbuild $project /p:Configuration=Release /p:TargetFrameworkVersion=net461 /p:Platform=x64 /restore
+  msbuild $project /property:Configuration=Release,TargetFramework=net461,Platform=x64 /restore:true
   mono $HOME/.nuget/packages/xunit.runner.console/*/tools/net452/xunit.console.exe ./test/$name/bin/x64/Release/net461/$name.dll
 
-  msbuild ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj /p:TargetFrameworkVersion=net461 /p:Platform=x64 /restore
+  msbuild ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj /property:Configuration=Release,TargetFramework=net461,Platform=x64 /restore:true
 fi
