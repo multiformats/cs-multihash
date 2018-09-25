@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mono=${MONO:=1}
+mono=${MONO:=0}
 dotnet=${DOTNET:=0}
 
 case "$1" in
