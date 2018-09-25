@@ -69,7 +69,7 @@ after_build:
 test: off
 
 test_script:
-  - dotnet test --configuration Debug --framework netcoreapp2.0 --logger trx;logfilename=TestResult.xml --results-directory "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover %APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj
+  - dotnet test --no-build --no-restore --configuration Debug --framework netcoreapp2.0 --logger trx;logfilename=TestResult.xml --results-directory "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj"
 
 after_test:
   - ps: |

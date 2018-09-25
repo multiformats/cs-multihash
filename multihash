@@ -18,6 +18,6 @@ if [ $dotnet -eq 1 ]; then
 	dotnet run -c Release -f netcoreapp2.0 -p ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj -- "$@"
 fi
 
-if [ $mono -eq 1]; then
-	mono ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/bin/net461/Release/net461/Multiformats.Hash.CLI.dll "$@"
+if [ $mono -eq 1 ]; then
+	mono ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/bin/x64/Release/net461/Multiformats.Hash.CLI.dll "$@"
 fi

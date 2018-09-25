@@ -32,14 +32,15 @@ if [ $dotnet -eq 1 ]; then
   fi
 
   dotnet test $project -c Release -f netcoreapp2.0 --blame
+
+  dotnet build ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj -c Release -f netcoreapp2.0
 fi
 
 if [ $mono -eq 1 ]; then
   echo "* building and testing mono"
   export FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/
-  
-  msbuild $project /p:Configuration=Release /p:Platform=net461
-  mono $HOME/.nuget/packages/xunit.runner.console/*/tools/net452/xunit.console.exe ./test/$name/bin/net461/Release/net461/$name.dll
+  msbuild $project /p:Configuration=Release /p:TargetFrameworkVersion=net461 /p:Platform=x64 /restore
+  mono $HOME/.nuget/packages/xunit.runner.console/*/tools/net452/xunit.console.exe ./test/$name/bin/x64/Release/net461/$name.dll
 
-  msbuild ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj /p:Configuration=Release /p:Platform=net461
+  msbuild ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj /p:TargetFrameworkVersion=net461 /p:Platform=x64 /restore
 fi
