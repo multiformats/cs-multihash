@@ -3,8 +3,10 @@
 mono=${MONO:=0}
 dotnet=${DOTNET:=0}
 
-name=Multiformats.Hash.Tests
-project=./test/$name/$name.csproj
+test_name=Multiformats.Hash.Tests
+test_project=./test/$test_name/$test_name.csproj
+cli_name=Multiformats.Hash.CLI
+cli_project=./src/$cli_name/$cli_name.csproj
 
 case "$1" in
   dotnet)
@@ -26,21 +28,22 @@ if [ $dotnet -eq 1 ]; then
 
   if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     ulimit -n 1024
-    dotnet restore $project --disable-parallel --runtime osx-x64
+    dotnet restore $test_project --disable-parallel --runtime osx-x64
+    dotnet restore $cli_project --disable-parallel --runtime osx-x64
   else
-    dotnet restore $project --runtime ubuntu-x64
+    dotnet restore $test_project --runtime ubuntu-x64
+    dotnet restore $cli_project --runtime ubuntu-x64
   fi
 
-  dotnet test $project -c Release -f netcoreapp2.0 --blame
-
-  dotnet build ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj -c Release -f netcoreapp2.0
+  dotnet test $test_project --configuration Release --framework netcoreapp2.0 --no-restore --blame
+  dotnet build $cli_project --configuration Release --framework netcoreapp2.0 --no-restore
 fi
 
 if [ $mono -eq 1 ]; then
   echo "* building and testing mono"
   export FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/
-  msbuild $project /property:Configuration=Release,TargetFramework=net461,Platform=x64 /restore:true
-  mono $HOME/.nuget/packages/xunit.runner.console/*/tools/net452/xunit.console.exe ./test/$name/bin/x64/Release/net461/$name.dll
+  msbuild $test_project /property:Configuration=Release,TargetFramework=net461,Platform=x64 /restore:true
+  mono $HOME/.nuget/packages/xunit.runner.console/*/tools/net452/xunit.console.exe ./test/$test_name/bin/x64/Release/net461/$test_name.dll
 
-  msbuild ${TRAVIS_BUILD_DIR}/src/Multiformats.Hash.CLI/Multiformats.Hash.CLI.csproj /property:Configuration=Release,TargetFramework=net461,Platform=x64 /restore:true
+  msbuild $cli_project /property:Configuration=Release,TargetFramework=net461,Platform=x64 /restore:true
 fi
