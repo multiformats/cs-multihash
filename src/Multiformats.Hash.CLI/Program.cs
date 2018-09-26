@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using Multiformats.Base;
 
+#pragma warning disable CS0675
+
 namespace Multiformats.Hash.CLI
 {
     class Program
