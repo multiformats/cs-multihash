@@ -49,4 +49,4 @@ script:
   - ./build.sh
   - ./multihash --version
   - make -j1 -C ./sharness/tests/sharness
-  - cat ./sharness/actual
+  - cat ./sharness/tests/sharness/actual
