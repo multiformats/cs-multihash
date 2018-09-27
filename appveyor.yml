@@ -1,5 +1,5 @@
 environment:
-  PKG_VERSION: 1.3.1
+  PKG_VERSION: 1.3.2
   VERSION_SUFFIX: ""
 version: ${PKG_VERSION}-{build}
 configuration: Release
@@ -81,13 +81,8 @@ artifacts:
   - path: artifacts\**\*.*
 
 cache:
-  - '%USERPROFILE%\.local'
   - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
   - '%LocalAppData%\NuGet\Cache'
-  - '%LocalAppData%\Python'
-  - '.\packages -> **\*.csproj'
-  - '.\tools'
-  - '\Python34'
 
 nuget:
   account_feed: true
