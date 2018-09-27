@@ -1,6 +1,5 @@
 ﻿using System;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Jobs;
 using Multiformats.Hash.Algorithms;
 
 namespace Multiformats.Hash.Benchmarks
@@ -10,14 +9,17 @@ namespace Multiformats.Hash.Benchmarks
     {
         private byte[] _bytes;
 
-        [Setup]
+        [IterationSetup]
         public void Setup()
         {
             _bytes = new byte[64];
             new Random(Environment.TickCount).NextBytes(_bytes);
         }
 
-        public Multihash Sum<TAlgorithm>() where TAlgorithm : MultihashAlgorithm => Multihash.Sum<TAlgorithm>(_bytes);
+        public Multihash Sum<TAlgorithm>(int length = -1) where TAlgorithm : MultihashAlgorithm => Multihash.Sum<TAlgorithm>(_bytes, length);
+
+        [Benchmark]
+        public Multihash Sum_ID() => Sum<ID>(64);
 
         [Benchmark]
         public Multihash Sum_SHA1() => Sum<SHA1>();
