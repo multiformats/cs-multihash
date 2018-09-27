@@ -15,7 +15,7 @@ namespace Multiformats.Hash.Algorithms
             _factory = factory;
         }
 
-        public override byte[] ComputeHash(byte[] data) => _factory().ComputeHash(data);
+        public override byte[] ComputeHash(byte[] data, int length = -1) => _factory().ComputeHash(data);
     }
 
     [Export(typeof(IMultihashAlgorithm))]

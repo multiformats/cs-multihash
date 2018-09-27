@@ -21,6 +21,21 @@ namespace Multiformats.Hash.Tests
         }
 
         [Fact]
+        public void TestSmallerLengthHashID()
+        {
+            var data = Encoding.UTF8.GetBytes("Identity hash input data.");
+            var dataLength = data.Length;
+
+            Multihash.Sum<ID>(data, dataLength);
+            Multihash.Sum<ID>(data, -1);
+
+            for (var l = dataLength - 1; l >= 0; l--)
+            {
+                Assert.Throws<Exception>(() => Multihash.Sum<ID>(data, l));
+            }
+        }
+
+        [Fact]
         public void TestMD4()
         {
             var text = "hello world";

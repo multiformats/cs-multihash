@@ -137,7 +137,7 @@ namespace Multiformats.Hash.Tests
             var bytes = new byte[rand.Next(1024, 4096)];
             rand.NextBytes(bytes);
 
-            var mh = Multihash.Sum(type, bytes);
+            var mh = Multihash.Sum(type, bytes, type == HashType.ID ? bytes.Length : -1);
             var str = mh.ToString();
             var mh2 = Multihash.Parse(str);
 
@@ -170,7 +170,7 @@ namespace Multiformats.Hash.Tests
             var bytes = new byte[rand.Next(1024, 4096)];
             rand.NextBytes(bytes);
 
-            var mh = await Multihash.SumAsync(type, bytes);
+            var mh = await Multihash.SumAsync(type, bytes, type == HashType.ID ? bytes.Length : -1);
             var str = mh.ToString();
             var mh2 = Multihash.Parse(str);
 

@@ -18,7 +18,7 @@ namespace Multiformats.Hash.Algorithms
             _factory = () => MurmurHash.Create32(managed: false);
         }
 
-        public override byte[] ComputeHash(byte[] data) => _factory().ComputeHash(data);
+        public override byte[] ComputeHash(byte[] data, int length = -1) => _factory().ComputeHash(data);
     }
 
     [Export(typeof(IMultihashAlgorithm))]
@@ -33,7 +33,7 @@ namespace Multiformats.Hash.Algorithms
             _factory = () => MurmurHash.Create128(managed: false, preference: AlgorithmPreference.X64);
         }
 
-        public override byte[] ComputeHash(byte[] data)
+        public override byte[] ComputeHash(byte[] data, int length = -1)
         {
             var value = _factory().ComputeHash(data);
 

@@ -23,7 +23,7 @@ namespace Multiformats.Hash.Algorithms
 
         private static HashType GetHashType(int bytes) => (HashType)Enum.Parse(typeof(HashType), $"BLAKE2B_{bytes}");
         private static string GetName(int bytes) => $"blake2b-{bytes}";
-        public override byte[] ComputeHash(byte[] data) => _factory().ComputeHash(data);
+        public override byte[] ComputeHash(byte[] data, int length = -1) => _factory().ComputeHash(data);
     }
 <#
 	for (int i = 8; i <= 512; i += 8)

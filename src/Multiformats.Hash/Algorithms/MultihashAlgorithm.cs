@@ -9,8 +9,8 @@ namespace Multiformats.Hash.Algorithms
         HashType Code { get; }
         string Name { get; }
         int DefaultLength { get; }
-        byte[] ComputeHash(byte[] data);
-        Task<byte[]> ComputeHashAsync(byte[] data);
+        byte[] ComputeHash(byte[] data, int length = -1);
+        Task<byte[]> ComputeHashAsync(byte[] data, int length = -1);
     }
 
     public abstract class MultihashAlgorithm : IMultihashAlgorithm
@@ -31,8 +31,8 @@ namespace Multiformats.Hash.Algorithms
             _hashCode = new Lazy<int>(() => (int)Code ^ Name.GetHashCode() ^ DefaultLength ^ _random.Value.Next());
         }
 
-        public abstract byte[] ComputeHash(byte[] data);
-        public virtual Task<byte[]> ComputeHashAsync(byte[] data) => Task.Factory.StartNew(() => ComputeHash(data));
+        public abstract byte[] ComputeHash(byte[] data, int length = -1);
+        public virtual Task<byte[]> ComputeHashAsync(byte[] data, int length = -1) => Task.Factory.StartNew(() => ComputeHash(data, length));
 
         public override int GetHashCode() => _hashCode.Value;
     }

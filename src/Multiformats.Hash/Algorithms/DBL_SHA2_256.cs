@@ -14,6 +14,6 @@ namespace Multiformats.Hash.Algorithms
             _algo = System.Security.Cryptography.SHA256.Create();
         }
 
-        public override byte[] ComputeHash(byte[] data) => _algo.ComputeHash(_algo.ComputeHash(data));
+        public override byte[] ComputeHash(byte[] data, int length = -1) => _algo.ComputeHash(_algo.ComputeHash(data));
     }
 }
