@@ -18,7 +18,7 @@ namespace Multiformats.Hash.Algorithms
         protected BLAKE2S(int bits)
             : base(GetHashType(bits), GetName(bits), bits / 8)
         {
-            _factory = () => new Blake2sDigest(bits);
+            _factory = () => new Blake2sDigest(null, bits / 8, null, null);
         }
 
         private static HashType GetHashType(int bytes) => (HashType)Enum.Parse(typeof(HashType), $"BLAKE2S_{bytes}");
