@@ -39,7 +39,6 @@ before_install:
 
 install:
   - git config --global core.autocrlf input
-  - git submodule update --init --recursive
   - chmod +x ./build.sh
   - mkdir ./sharness
   - git clone https://github.com/multiformats/multihash.git ./sharness

@@ -38,9 +38,6 @@ init:
   - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
   - ps: Write-Host "Build version $env:BUILD_VERSION, NuGet version $env:NUGET_VERSION, Version suffix $env:VERSION_SUFFIX"
 
-install:
-  - git submodule update --init --recursive
-
 before_build:
   - appveyor-retry dotnet restore "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj" -v Minimal
 
