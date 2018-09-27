@@ -75,7 +75,7 @@ after_test:
 
 on_success:
   - choco install codecov
-  - codecov -f "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\coverage.xml"
+  - codecov -f "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\coverage.opencover.xml"
 
 artifacts:
   - path: artifacts\**\*.*
