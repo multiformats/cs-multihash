@@ -94,5 +94,3 @@ Small note: If editing the README, please conform to the [standard-readme](https
 ## License
 
 [MIT](LICENSE) © 2017-2018 Trond Bråthen
-
-[Blake2B](https://github.com/metadings/Blake2B.cs) © 2017 [Uli Riehm](https://github.com/metadings)
