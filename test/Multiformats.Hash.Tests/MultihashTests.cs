@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,28 +68,10 @@ namespace Multiformats.Hash.Tests
             Assert.Equal(dec.Digest, ob);
         }
 
+        public static IEnumerable<object[]> GetSupportedHashTable() => Multihash.SupportedHashCodes.Select(h => new object[] { (int)h, Multihash.GetName(h) });
+
         [Theory]
-        [InlineData(0x00, "id")]
-        [InlineData(0xd4, "md4")]
-        [InlineData(0xd5, "md5")]
-        [InlineData(0x11, "sha1")]
-        [InlineData(0x12, "sha2-256")]
-        [InlineData(0x13, "sha2-512")]
-        [InlineData(0x14, "sha3-512")]
-        [InlineData(0x15, "sha3-384")]
-        [InlineData(0x16, "sha3-256")]
-        [InlineData(0x17, "sha3-224")]
-        [InlineData(0x18, "shake-128")]
-        [InlineData(0x19, "shake-256")]
-        [InlineData(0x1A, "keccak-224")]
-        [InlineData(0x1B, "keccak-256")]
-        [InlineData(0x1C, "keccak-384")]
-        [InlineData(0x1D, "keccak-512")]
-        [InlineData(0xb240, "blake2b-512")]
-        [InlineData(0xb260, "blake2s-256")]
-        [InlineData(0x56, "dbl-sha2-256")]
-        [InlineData(0x22, "murmur3-32")]
-        [InlineData(0x23, "murmur3-128")]
+        [MemberData(nameof(GetSupportedHashTable), DisableDiscoveryEnumeration = false)]
         public void TestTable(int code, string name)
         {
             if (Multihash.GetName(code) != name)
@@ -111,26 +94,10 @@ namespace Multiformats.Hash.Tests
             Assert.True(mh.Verify(bytes));
         }
 
+        public static IEnumerable<object[]> GetSupportedHashes() => Multihash.SupportedHashCodes.Select(h => new object[] { h });
+
         [Theory]
-        [InlineData(HashType.ID)]
-        [InlineData(HashType.SHA1)]
-        [InlineData(HashType.SHA2_256)]
-        [InlineData(HashType.SHA2_512)]
-        [InlineData(HashType.SHA3_224)]
-        [InlineData(HashType.SHA3_256)]
-        [InlineData(HashType.SHA3_384)]
-        [InlineData(HashType.SHA3_512)]
-        [InlineData(HashType.KECCAK_224)]
-        [InlineData(HashType.KECCAK_256)]
-        [InlineData(HashType.KECCAK_384)]
-        [InlineData(HashType.KECCAK_512)]
-        [InlineData(HashType.SHAKE_128)]
-        [InlineData(HashType.SHAKE_256)]
-        [InlineData(HashType.BLAKE2B_256)]
-        [InlineData(HashType.BLAKE2S_128)]
-        [InlineData(HashType.DBL_SHA2_256)]
-        [InlineData(HashType.MURMUR3_32)]
-        [InlineData(HashType.MURMUR3_128)]
+        [MemberData(nameof(GetSupportedHashes), DisableDiscoveryEnumeration = false)]
         public void VerifyRoundTrip(HashType type)
         {
             var rand = new Random(Environment.TickCount);
@@ -145,25 +112,7 @@ namespace Multiformats.Hash.Tests
         }
 
         [Theory]
-        [InlineData(HashType.ID)]
-        [InlineData(HashType.SHA1)]
-        [InlineData(HashType.SHA2_256)]
-        [InlineData(HashType.SHA2_512)]
-        [InlineData(HashType.SHA3_224)]
-        [InlineData(HashType.SHA3_256)]
-        [InlineData(HashType.SHA3_384)]
-        [InlineData(HashType.SHA3_512)]
-        [InlineData(HashType.KECCAK_224)]
-        [InlineData(HashType.KECCAK_256)]
-        [InlineData(HashType.KECCAK_384)]
-        [InlineData(HashType.KECCAK_512)]
-        [InlineData(HashType.SHAKE_128)]
-        [InlineData(HashType.SHAKE_256)]
-        [InlineData(HashType.BLAKE2B_256)]
-        [InlineData(HashType.BLAKE2S_128)]
-        [InlineData(HashType.DBL_SHA2_256)]
-        [InlineData(HashType.MURMUR3_32)]
-        [InlineData(HashType.MURMUR3_128)]
+        [MemberData(nameof(GetSupportedHashes), DisableDiscoveryEnumeration = false)]
         public async Task VerifyRoundTripAsync(HashType type)
         {
             var rand = new Random(Environment.TickCount);
@@ -178,25 +127,7 @@ namespace Multiformats.Hash.Tests
         }
 
         [Theory]
-        [InlineData(HashType.ID)]
-        [InlineData(HashType.SHA1)]
-        [InlineData(HashType.SHA2_256)]
-        [InlineData(HashType.SHA2_512)]
-        [InlineData(HashType.SHA3_224)]
-        [InlineData(HashType.SHA3_256)]
-        [InlineData(HashType.SHA3_384)]
-        [InlineData(HashType.SHA3_512)]
-        [InlineData(HashType.KECCAK_224)]
-        [InlineData(HashType.KECCAK_256)]
-        [InlineData(HashType.KECCAK_384)]
-        [InlineData(HashType.KECCAK_512)]
-        [InlineData(HashType.SHAKE_128)]
-        [InlineData(HashType.SHAKE_256)]
-        [InlineData(HashType.BLAKE2B_256)]
-        [InlineData(HashType.BLAKE2S_128)]
-        [InlineData(HashType.DBL_SHA2_256)]
-        [InlineData(HashType.MURMUR3_32)]
-        [InlineData(HashType.MURMUR3_128)]
+        [MemberData(nameof(GetSupportedHashes), DisableDiscoveryEnumeration = false)]
         public void TestMultithreadedEnvironment(HashType type)
         {
             var rand = new Random(Environment.TickCount);
