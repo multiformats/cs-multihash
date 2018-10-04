@@ -1,0 +1,60 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+namespace Multiformats.Hash
+{
+    public enum HashType : uint
+    {
+        ID = 0x00,
+        MD4 = 0xd4,
+        MD5 = 0xd5,
+        SHA1 = 0x11,
+        SHA2_256 = 0x12,
+        SHA2_512 = 0x13,
+        SHA3_512 = 0x14,
+        SHA3_384 = 0x15,
+        SHA3_256 = 0x16,
+        SHA3_224 = 0x17,
+        SHAKE_128 = 0x18,
+        SHAKE_256 = 0x19,
+<#
+    var keccac_bits = new int[] { 224, 256, 384, 512 };
+    for (var i = 0; i < keccac_bits.Length; i++)
+    {
+#>
+        KECCAK_<#= keccac_bits[i] #> = <#= string.Format("0x{0:X}", 26 + i) #>,
+<#
+    }
+#>
+        MURMUR3_128 = 0x23,
+        MURMUR3_32 = 0x22,
+<#
+    for (int i = 8; i <= 512; i += 8)
+    {
+#>
+        BLAKE2B_<#= i #> = <#= string.Format("0x{0:x}", 45569 + (i / 8) - 1) #>,
+<#
+    }
+
+    for (int i = 8; i <= 256; i += 8) { #>
+        BLAKE2S_<#= i #> = <#= string.Format("0x{0:x}", 45633 + (i / 8) - 1) #>,
+<#
+    }
+
+	var skeinIndex = 0;
+	for (int bits = 256; bits <= 1024; bits *= 2)
+	{
+		for (int length = 8; length <= bits; length += 8)
+		{
+#>
+        SKEIN<#= bits #>_<#= length #> = <#= string.Format("0x{0:x}", 45825 + skeinIndex++) #>,
+<#
+		}
+	}
+#>
+        DBL_SHA2_256 = 0x56
+    }
+}

@@ -78,6 +78,9 @@ bool isValid = mh.Verify(bytes);
 * BLAKE2S-(bits) (8-256)
 * DBL_SHA2_256
 * MURMUR3_32/128
+* SKEIN256-(bits) (8-256)
+* SKEIN512-(bits) (8-512)
+* SKEIN1024-(bits) (8-1024)
 
 ## Maintainers
 

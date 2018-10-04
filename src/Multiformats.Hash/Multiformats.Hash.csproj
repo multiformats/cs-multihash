@@ -65,8 +65,18 @@
     </Compile>
     <Compile Update="Algorithms\SHAKE.cs">
       <DependentUpon>SHAKE.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Algorithms\SKEIN.cs">
+      <DependentUpon>SKEIN.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="HashType.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HashType.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +100,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SHA3.cs</LastGenOutput>
     </None>
+    <None Update="Algorithms\SKEIN.tt">
+      <LastGenOutput>SKEIN.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="Algorithms\SHAKE.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SHAKE.cs</LastGenOutput>
+    </None>
+    <None Update="HashType.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HashType.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
