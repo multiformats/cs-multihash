@@ -52,12 +52,7 @@ build_script:
 test: off
 
 test_script:
-  - dotnet test -c %CONFIGURATION% -f netcoreapp2.0 --logger trx;logfilename=TestResult.xml --results-directory "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj"
-
-after_test:
-  - ps: |
-        $wc = New-Object 'System.Net.WebClient'
-        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Multiformats.Hash.Tests\TestResults\TestResult.xml))
+  - dotnet test -c %CONFIGURATION% -f netcoreapp2.0 /p:CollectCoverage=true "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests"
 
 on_success:
   - choco install codecov

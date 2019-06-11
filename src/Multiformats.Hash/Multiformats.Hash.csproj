@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/multiformats/cs-multihash</RepositoryUrl>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputType>Library</OutputType>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
     <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>

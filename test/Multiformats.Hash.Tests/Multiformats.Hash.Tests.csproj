@@ -20,6 +20,14 @@
     <DefineConstants>$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- https://github.com/tonerdo/coverlet -->
+    <!-- Do not collect by default -->
+    <CollectCoverage>false</CollectCoverage>
+    <CoverletOutputFormat>opencover</CoverletOutputFormat>
+    <Exclude>[xunit.*]*</Exclude>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Multiformats.Hash\Multiformats.Hash.csproj" />
   </ItemGroup>
