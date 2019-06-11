@@ -68,9 +68,9 @@ on_success:
 
 artifacts:
   - path: '**\*.nupkg'
-      name: nupkg
+    name: nupkg
   - path: '**\*.snupkg'
-      name: snupkg
+    name: snupkg
 
 cache:
   - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
