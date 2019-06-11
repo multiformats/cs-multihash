@@ -52,17 +52,6 @@ build_script:
         dotnet build "src\Multiformats.Hash" -c $env:CONFIGURATION --version-suffix $env:VERSION_SUFFIX
       }
 
-after_build:
-  - ps: |
-      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
-      {
-        dotnet pack "src\Multiformats.Hash" -c $env:CONFIGURATION --no-build -o $env:APPVEYOR_BUILD_FOLDER\artifacts
-      }
-      else
-      {
-        dotnet pack "src\Multiformats.Hash" -c $env:CONFIGURATION --no-build --version-suffix $env:VERSION_SUFFIX -o $env:APPVEYOR_BUILD_FOLDER\artifacts
-      }
-
 test: off
 
 test_script:
@@ -78,7 +67,10 @@ on_success:
   - codecov -f "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\coverage.opencover.xml"
 
 artifacts:
-  - path: artifacts\**\*.*
+  - path: '**\*.nupkg'
+      name: nupkg
+  - path: '**\*.snupkg'
+      name: snupkg
 
 cache:
   - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
