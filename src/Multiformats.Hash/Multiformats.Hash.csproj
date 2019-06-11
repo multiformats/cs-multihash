@@ -43,7 +43,7 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>.pdb;$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.3" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
     <PackageReference Include="BinaryEncoding" Version="1.4.0" />
     <PackageReference Include="Multiformats.Base" Version="2.0.1" />
     <PackageReference Include="System.Composition" Version="1.2.0" />
