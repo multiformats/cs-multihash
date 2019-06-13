@@ -66,26 +66,56 @@ namespace Multiformats.Hash
             MultibaseEncoding.Base8,
         };
 
-        public static bool TryParse(string s, out Multihash mh)
+        public static bool TryParse(string s, out Multihash mh, out MultibaseEncoding encoding)
         {
-            foreach (var encoding in _encodings)
+            foreach (var _encoding in _encodings)
             {
                 try
                 {
-                    var bytes = Multibase.DecodeRaw(encoding, s);
-                    mh = Decode(bytes);
-                    return true;
+                    encoding = _encoding;
+                    if (TryParse(s, encoding, out mh))
+                    {
+                        return true;
+                    }
                 }
                 catch (Exception) { }
             }
 
             mh = null;
+            encoding = (MultibaseEncoding)(-1);
             return false;
+        }
+
+        public static bool TryParse(string s, out Multihash mh)
+        {
+            return TryParse(s, out mh, out _);
         }
 
         public static Multihash Parse(string s)
         {
             if (!TryParse(s, out var mh))
+                throw new FormatException("Not a valid multihash");
+
+            return mh;
+        }
+
+        public static bool TryParse(string s, MultibaseEncoding encoding, out Multihash mh)
+        {
+            try
+            {
+                var bytes = Multibase.DecodeRaw(encoding, s);
+                mh = Decode(bytes);
+                return true;
+            }
+            catch (Exception) { }
+
+            mh = null;
+            return false;
+        }
+
+        public static Multihash Parse(string s, MultibaseEncoding encoding)
+        {
+            if (!TryParse(s, encoding, out var mh))
                 throw new FormatException("Not a valid multihash");
 
             return mh;

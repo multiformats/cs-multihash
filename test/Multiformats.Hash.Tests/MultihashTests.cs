@@ -48,6 +48,27 @@ namespace Multiformats.Hash.Tests
             Assert.Equal(mh.ToBytes(), hex);
         }
 
+        [Fact]
+        public void CanDecodeFromMultibaseAndDetectEncoding()
+        {
+            var hex = Multibase.Base58.Decode("8Vtkv2tdQ43bNGdWN9vNx9GVS9wrbXHk4ZW8kmucPmaYJwwedXir52kti9wJhcik4HehyqgLrQ1hBuirviLhxgRBNv");
+            var mb = Multibase.Base32.Encode(hex);
+
+            Assert.True(Multihash.TryParse(mb, out var mh, out var encoding));
+            Assert.Equal(mh.ToBytes(), hex);
+            Assert.Equal(encoding, MultibaseEncoding.Base32Lower);
+        }
+
+        [Fact]
+        public void CanDecodeFromMultibaseWithKnownEncoding()
+        {
+            var hex = Multibase.Base58.Decode("8Vtkv2tdQ43bNGdWN9vNx9GVS9wrbXHk4ZW8kmucPmaYJwwedXir52kti9wJhcik4HehyqgLrQ1hBuirviLhxgRBNv");
+            var mb = Multibase.Base32.Encode(hex);
+
+            Assert.True(Multihash.TryParse(mb, MultibaseEncoding.Base32Lower, out var mh));
+            Assert.Equal(mh.ToBytes(), hex);
+        }
+
         [Theory]
         [InlineData("2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae", 0x00, "id")]
         [InlineData("", 0x00, "id")]
