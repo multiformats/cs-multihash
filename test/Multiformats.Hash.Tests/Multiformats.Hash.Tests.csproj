@@ -20,22 +20,30 @@
     <DefineConstants>$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- https://github.com/tonerdo/coverlet -->
+    <!-- Do not collect by default -->
+    <CollectCoverage>false</CollectCoverage>
+    <CoverletOutputFormat>opencover</CoverletOutputFormat>
+    <Exclude>[xunit.*]*</Exclude>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Multiformats.Hash\Multiformats.Hash.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="2.3.0">
+    <PackageReference Include="coverlet.msbuild" Version="2.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.console" Version="2.4.0">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.*" />
+    <PackageReference Include="xunit" Version="2.*" />
+    <PackageReference Include="xunit.runner.console" Version="2.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

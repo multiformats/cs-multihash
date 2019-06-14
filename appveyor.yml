@@ -38,9 +38,6 @@ init:
   - ps: Update-AppveyorBuild -Version $env:BUILD_VERSION
   - ps: Write-Host "Build version $env:BUILD_VERSION, NuGet version $env:NUGET_VERSION, Version suffix $env:VERSION_SUFFIX"
 
-before_build:
-  - appveyor-retry dotnet restore "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj" -v Minimal
-
 build_script:
   - ps: |
       if ($env:APPVEYOR_REPO_BRANCH -eq "master")
@@ -52,33 +49,20 @@ build_script:
         dotnet build "src\Multiformats.Hash" -c $env:CONFIGURATION --version-suffix $env:VERSION_SUFFIX
       }
 
-after_build:
-  - ps: |
-      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
-      {
-        dotnet pack "src\Multiformats.Hash" -c $env:CONFIGURATION --no-build -o $env:APPVEYOR_BUILD_FOLDER\artifacts
-      }
-      else
-      {
-        dotnet pack "src\Multiformats.Hash" -c $env:CONFIGURATION --no-build --version-suffix $env:VERSION_SUFFIX -o $env:APPVEYOR_BUILD_FOLDER\artifacts
-      }
-
 test: off
 
 test_script:
-  - dotnet test --configuration Debug --framework netcoreapp2.0 --logger trx;logfilename=TestResult.xml --results-directory "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\TestResults" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\Multiformats.Hash.Tests.csproj"
-
-after_test:
-  - ps: |
-        $wc = New-Object 'System.Net.WebClient'
-        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test\Multiformats.Hash.Tests\TestResults\TestResult.xml))
+  - dotnet test -c %CONFIGURATION% -f netcoreapp2.0 /p:CollectCoverage=true "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests"
 
 on_success:
   - choco install codecov
   - codecov -f "%APPVEYOR_BUILD_FOLDER%\test\Multiformats.Hash.Tests\coverage.opencover.xml"
 
 artifacts:
-  - path: artifacts\**\*.*
+  - path: '**\*.nupkg'
+    name: nupkg
+  - path: '**\*.snupkg'
+    name: snupkg
 
 cache:
   - '%USERPROFILE%\.nuget\packages -> **\*.csproj'
