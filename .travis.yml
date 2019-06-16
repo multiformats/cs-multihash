@@ -3,14 +3,16 @@ solution: Multiformats.Hash.sln
 
 matrix:
   include:
-    - dotnet: 2.1.300-preview2-008533
+    - dotnet: 2.2.300
+      dist: xenial
       mono: none
       env: DOTNET=1 CLI_VERSION=latest MULTIHASH_BIN="${TRAVIS_BUILD_DIR}/multihash" TEST_EXPENSIVE=1
       os: linux
     - mono: latest
       env: MONO=1 CLI_VERSION=latest MULTIHASH_BIN="${TRAVIS_BUILD_DIR}/multihash" TEST_EXPENSIVE=1
       os: linux
-    - dotnet: 2.1.300-preview2-008533
+    - dotnet: 2.2.300
+      dist: xenial
       mono: none
       env: DOTNET=1 CLI_VERSION=latest MULTIHASH_BIN="${TRAVIS_BUILD_DIR}/multihash" TEST_EXPENSIVE=1
       os: osx
