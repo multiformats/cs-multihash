@@ -11,8 +11,7 @@ namespace Multiformats.Hash.Algorithms
     {
         private readonly Func<IDigest> _factory;
 
-        public MD4()
-            : base(HashType.MD4, "md4", 16)
+        public MD4() : base(HashType.MD4, "md4", 16)
         {
             _factory = () => new MD4Digest();
         }

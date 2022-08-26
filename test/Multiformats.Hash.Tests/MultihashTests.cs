@@ -34,7 +34,7 @@ namespace Multiformats.Hash.Tests
         private static Multihash TestCastToMultihash(string hex, int code, string name)
         {
             var ob = Hex.Decode(hex);
-            var b = Binary.Varint.GetBytes((uint) code).Concat(Binary.Varint.GetBytes((uint) ob.Length)).Concat(ob).ToArray();
+            var b = Binary.Varint.GetBytes((uint)code).Concat(Binary.Varint.GetBytes((uint)ob.Length)).Concat(ob).ToArray();
             return Multihash.Cast(b);
         }
 
@@ -56,7 +56,7 @@ namespace Multiformats.Hash.Tests
 
             Assert.True(Multihash.TryParse(mb, out var mh, out var encoding));
             Assert.Equal(mh.ToBytes(), hex);
-            Assert.Equal(encoding, MultibaseEncoding.Base32Lower);
+            Assert.Equal(MultibaseEncoding.Base32Lower, encoding);
         }
 
         [Fact]
@@ -96,10 +96,14 @@ namespace Multiformats.Hash.Tests
         public void TestTable(int code, string name)
         {
             if (Multihash.GetName(code) != name)
+            {
                 Assert.True(false, $"Table mismatch: {Multihash.GetName(code)}, {name}");
+            }
 
             if ((int)Multihash.GetCode(name) != code)
+            {
                 Assert.True(false, $"Table mismatch: {Multihash.GetCode(name)}, {code}");
+            }
         }
 
         [Theory]
@@ -152,7 +156,7 @@ namespace Multiformats.Hash.Tests
         public void TestMultithreadedEnvironment(HashType type)
         {
             var rand = new Random(Environment.TickCount);
-            var bytes = new byte[32*1024];
+            var bytes = new byte[32 * 1024];
             rand.NextBytes(bytes);
 
             Parallel.For(0, 200, _ => Multihash.Sum(type, bytes));

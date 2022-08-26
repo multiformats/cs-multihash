@@ -1,134 +1,136 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>netstandard1.6;netstandard2.0;net461</TargetFrameworks>
-    <RuntimeIdentifiers>win10-x64;osx-x64;ubuntu-x64</RuntimeIdentifiers>
-    <Description>Multiformat hash encoding</Description>
-    <Copyright>Copyright © tabrath 2019</Copyright>
-    <AssemblyTitle>Multiformats.Hash</AssemblyTitle>
-    <VersionPrefix>1.5.0</VersionPrefix>
-    <Authors>tabrath</Authors>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyName>Multiformats.Hash</AssemblyName>
-    <PackageId>Multiformats.Hash</PackageId>
-    <PackageTags>multiformats multihash sha1 sha3 keccak blake2 shake</PackageTags>
-    <PackageIconUrl>https://cdn.rawgit.com/multiformats/website/116894f6/favicon.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/multiformats/cs-multihash/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/multiformats/cs-multihash</RepositoryUrl>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputType>Library</OutputType>
-    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
-    <!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
-    <NoWarn>$(NoWarn);NU1605</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>portable</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup>
-    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
-    <EmbedUntrackedSources>false</EmbedUntrackedSources>
-    <!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>.pdb;$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
-    <PackageReference Include="BinaryEncoding" Version="1.4.0" />
-    <PackageReference Include="Multiformats.Base" Version="2.0.1" />
-    <PackageReference Include="System.Composition" Version="1.2.0" />
-    <PackageReference Include="murmurhash" Version="1.0.2" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Algorithms\BLAKE2B.cs">
-      <DependentUpon>BLAKE2B.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Algorithms\BLAKE2S.cs">
-      <DependentUpon>BLAKE2S.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Algorithms\KECCAK.cs">
-      <DependentUpon>KECCAK.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Algorithms\SHA2.cs">
-      <DependentUpon>SHA2.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Algorithms\SHA3.cs">
-      <DependentUpon>SHA3.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="Algorithms\SHAKE.cs">
-      <DependentUpon>SHAKE.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Algorithms\SKEIN.cs">
-      <DependentUpon>SKEIN.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Update="HashType.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>HashType.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Algorithms\BLAKE2B.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BLAKE2B.cs</LastGenOutput>
-    </None>
-    <None Update="Algorithms\BLAKE2S.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BLAKE2S.cs</LastGenOutput>
-    </None>
-    <None Update="Algorithms\KECCAK.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>KECCAK.cs</LastGenOutput>
-    </None>
-    <None Update="Algorithms\SHA2.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SHA2.cs</LastGenOutput>
-    </None>
-    <None Update="Algorithms\SHA3.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SHA3.cs</LastGenOutput>
-    </None>
-    <None Update="Algorithms\SKEIN.tt">
-      <LastGenOutput>SKEIN.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-    <None Update="Algorithms\SHAKE.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SHAKE.cs</LastGenOutput>
-    </None>
-    <None Update="HashType.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>HashType.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<RuntimeIdentifiers>win10-x64;osx-x64;ubuntu-x64</RuntimeIdentifiers>
+		<Description>Multiformat hash encoding</Description>
+		<Copyright>Copyright © tabrath 2019</Copyright>
+		<AssemblyTitle>Multiformats.Hash</AssemblyTitle>
+		<VersionPrefix>1.5.0</VersionPrefix>
+		<Authors>tabrath</Authors>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<AssemblyName>Multiformats.Hash</AssemblyName>
+		<PackageId>Multiformats.Hash</PackageId>
+		<PackageTags>multiformats multihash sha1 sha3 keccak blake2 shake</PackageTags>
+		<PackageIconUrl>https://cdn.rawgit.com/multiformats/website/116894f6/favicon.png</PackageIconUrl>
+		<PackageLicenseUrl>https://github.com/multiformats/cs-multihash/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/multiformats/cs-multihash</RepositoryUrl>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<OutputType>Library</OutputType>
+		<GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+		<!--<GenerateDocumentationFile>true</GenerateDocumentationFile>-->
+		<NoWarn>$(NoWarn);NU1605</NoWarn>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+		<Optimize>false</Optimize>
+		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>portable</DebugType>
+		<Optimize>true</Optimize>
+		<DefineConstants>$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+		<EmbedUntrackedSources>false</EmbedUntrackedSources>
+		<!-- Optional: Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>.pdb;$(AllowedOutputExtensionsInPackageBuildOutputFolder)</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net6.0' ">
+		<PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
+		<PackageReference Include="BinaryEncoding" Version="1.5.0" />
+		<PackageReference Include="System.Composition" Version="6.0.0" />
+		<PackageReference Include="murmurhash" Version="1.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Multiformats.Base" Version="2.0.2" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Algorithms\BLAKE2B.cs">
+			<DependentUpon>BLAKE2B.tt</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="Algorithms\BLAKE2S.cs">
+			<DependentUpon>BLAKE2S.tt</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="Algorithms\KECCAK.cs">
+			<DependentUpon>KECCAK.tt</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="Algorithms\SHA2.cs">
+			<DependentUpon>SHA2.tt</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="Algorithms\SHA3.cs">
+			<DependentUpon>SHA3.tt</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="Algorithms\SHAKE.cs">
+			<DependentUpon>SHAKE.tt</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+		<Compile Update="Algorithms\SKEIN.cs">
+			<DependentUpon>SKEIN.tt</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
+		<Compile Update="HashType.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>HashType.tt</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Algorithms\BLAKE2B.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>BLAKE2B.cs</LastGenOutput>
+		</None>
+		<None Update="Algorithms\BLAKE2S.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>BLAKE2S.cs</LastGenOutput>
+		</None>
+		<None Update="Algorithms\KECCAK.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>KECCAK.cs</LastGenOutput>
+		</None>
+		<None Update="Algorithms\SHA2.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>SHA2.cs</LastGenOutput>
+		</None>
+		<None Update="Algorithms\SHA3.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>SHA3.cs</LastGenOutput>
+		</None>
+		<None Update="Algorithms\SKEIN.tt">
+			<LastGenOutput>SKEIN.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="Algorithms\SHAKE.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>SHAKE.cs</LastGenOutput>
+		</None>
+		<None Update="HashType.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>HashType.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
 </Project>

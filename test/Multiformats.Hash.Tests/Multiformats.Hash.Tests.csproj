@@ -1,56 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
-    <PlatformTarget>x64</PlatformTarget>
-    <IsPackable>false</IsPackable>
-    <NoWarn>$(NoWarn);NU1605</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<PlatformTarget>x64</PlatformTarget>
+		<IsPackable>false</IsPackable>
+		<NoWarn>$(NoWarn);NU1605</NoWarn>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<DefineConstants>$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <!-- https://github.com/tonerdo/coverlet -->
-    <!-- Do not collect by default -->
-    <CollectCoverage>false</CollectCoverage>
-    <CoverletOutputFormat>opencover</CoverletOutputFormat>
-    <Exclude>[xunit.*]*</Exclude>
-  </PropertyGroup>
+	<PropertyGroup>
+		<!-- https://github.com/tonerdo/coverlet -->
+		<!-- Do not collect by default -->
+		<CollectCoverage>false</CollectCoverage>
+		<CoverletOutputFormat>opencover</CoverletOutputFormat>
+		<Exclude>[xunit.*]*</Exclude>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Multiformats.Hash\Multiformats.Hash.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Multiformats.Hash\Multiformats.Hash.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.msbuild" Version="2.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.*" />
-    <PackageReference Include="xunit" Version="2.*" />
-    <PackageReference Include="xunit.runner.console" Version="2.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="coverlet.msbuild" Version="3.*">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+		<PackageReference Include="xunit" Version="2.*" />
+		<PackageReference Include="xunit.runner.console" Version="2.*">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.*">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
+	<ItemGroup>
+		<Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+	</ItemGroup>
 
 </Project>

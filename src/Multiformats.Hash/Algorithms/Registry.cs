@@ -15,14 +15,17 @@ namespace Multiformats.Hash.Algorithms
         private readonly IEnumerable<ExportFactory<IMultihashAlgorithm, MultihashAlgorithmMetadata>> _algorithms;
         private readonly ConcurrentDictionary<int, Export<IMultihashAlgorithm>> _cache;
 
-        public HashType[] SupportedHashTypes => _algorithms.Select(a => a.Metadata.Code).OrderBy(x => x.ToString()).ToArray();
+        public HashType[] SupportedHashTypes =>
+            _algorithms
+                .Select(a => a.Metadata.Code)
+                .OrderBy(x => x.ToString()).ToArray();
 
         public Registry()
         {
             _container = new ContainerConfiguration()
                 .WithAssembly(typeof(Registry).GetTypeInfo().Assembly)
                 .CreateContainer();
-            
+
             _algorithms = _container.GetExports<ExportFactory<IMultihashAlgorithm, MultihashAlgorithmMetadata>>();
             _cache = new ConcurrentDictionary<int, Export<IMultihashAlgorithm>>();
         }
@@ -31,7 +34,9 @@ namespace Multiformats.Hash.Algorithms
         {
             var algo = _algorithms.SingleOrDefault(a => a.Metadata.Code.Equals(type));
             if (algo == null)
+            {
                 throw new NotSupportedException($"{type} is not supported.");
+            }
 
             var export = algo.CreateExport();
 
@@ -45,7 +50,9 @@ namespace Multiformats.Hash.Algorithms
         {
             var code = GetHashType<TAlgorithm>();
             if (!code.HasValue || !Enum.IsDefined(typeof(HashType), code.Value))
+            {
                 throw new NotSupportedException($"{typeof(TAlgorithm)} is not supported.");
+            }
 
             return Get(code.Value);
         }
@@ -53,7 +60,9 @@ namespace Multiformats.Hash.Algorithms
         public void Return(IMultihashAlgorithm algo)
         {
             if (_cache.TryRemove(algo.GetHashCode(), out var export))
+            {
                 export?.Dispose();
+            }
         }
 
         public T Use<T>(HashType code, Func<IMultihashAlgorithm, T> func)

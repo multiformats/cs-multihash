@@ -12,31 +12,41 @@ namespace Multiformats.Hash
         public static Multihash ReadMultihash(this Stream stream)
         {
             if (Binary.Varint.Read(stream, out uint code) <= 0)
+            {
                 return null;
+            }
 
             if (Binary.Varint.Read(stream, out uint length) <= 0)
+            {
                 return null;
+            }
 
             var buffer = new byte[length];
             if (stream.Read(buffer, 0, buffer.Length) != length)
+            {
                 return null;
+            }
 
             return Multihash.Cast(Binary.Varint.GetBytes(code).Concat(Binary.Varint.GetBytes(length), buffer));
         }
 
         public static async Task<Multihash> ReadMultihashAsync(this Stream stream, CancellationToken cancellationToken)
         {
-            var code = await Binary.Varint.ReadUInt32Async(stream);
+            var code = await Binary.Varint.ReadUInt32Async(stream, cancellationToken);
             // @Todo: we should check how many bytes we have read,
             //        but the method we're using doesn't support that.
 
-            var length = await Binary.Varint.ReadUInt32Async(stream);
+            var length = await Binary.Varint.ReadUInt32Async(stream, cancellationToken);
             if (length == 0)
+            {
                 return null;
+            }
 
             var buffer = new byte[length];
-            if (await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken) != length)
+            if (await stream.ReadAsync(buffer, cancellationToken) != length)
+            {
                 return null;
+            }
 
             return Multihash.Cast(Binary.Varint.GetBytes(code).Concat(Binary.Varint.GetBytes(length), buffer));
         }
@@ -64,12 +74,14 @@ namespace Multiformats.Hash
         {
             var result = new byte[buffer.Length + buffers.Sum(b => b.Length)];
             Buffer.BlockCopy(buffer, 0, result, 0, buffer.Length);
+
             var offset = buffer.Length;
             foreach (var buf in buffers)
             {
                 Buffer.BlockCopy(buf, 0, result, offset, buf.Length);
                 offset += buf.Length;
             }
+
             return result;
         }
     }

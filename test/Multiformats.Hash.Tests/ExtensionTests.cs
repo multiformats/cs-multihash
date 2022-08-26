@@ -23,16 +23,14 @@ namespace Multiformats.Hash.Tests
             var data = Encoding.UTF8.GetBytes("hello world");
             var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToArray();
 
-            using (var stream = new MemoryStream(hashes.SelectMany(mh => (byte[])mh).ToArray()))
+            using var stream = new MemoryStream(hashes.SelectMany(mh => (byte[])mh).ToArray());
+            foreach (var hash in hashes)
             {
-                foreach (var hash in hashes)
-                {
-                    var mh = stream.ReadMultihash();
+                var mh = stream.ReadMultihash();
 
-                    Assert.NotNull(mh);
-                    Assert.Equal(mh, hash);
-                    Assert.True(mh.Verify(data));
-                }
+                Assert.NotNull(mh);
+                Assert.Equal(mh, hash);
+                Assert.True(mh.Verify(data));
             }
         }
 
@@ -42,16 +40,14 @@ namespace Multiformats.Hash.Tests
             var data = Encoding.UTF8.GetBytes("hello world");
             var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToArray();
 
-            using (var stream = new MemoryStream(hashes.SelectMany(mh => (byte[])mh).ToArray()))
+            await using var stream = new MemoryStream(hashes.SelectMany(mh => (byte[])mh).ToArray());
+            foreach (var hash in hashes)
             {
-                foreach (var hash in hashes)
-                {
-                    var mh = await stream.ReadMultihashAsync(CancellationToken.None);
+                var mh = await stream.ReadMultihashAsync(CancellationToken.None);
 
-                    Assert.NotNull(mh);
-                    Assert.Equal(mh, hash);
-                    Assert.True(mh.Verify(data));
-                }
+                Assert.NotNull(mh);
+                Assert.Equal(mh, hash);
+                Assert.True(await mh.VerifyAsync(data));
             }
         }
 
@@ -61,23 +57,21 @@ namespace Multiformats.Hash.Tests
             var data = Encoding.UTF8.GetBytes("hello world");
             var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToList();
 
-            using (var stream = new MemoryStream())
+            using var stream = new MemoryStream();
+            foreach (var hash in hashes)
             {
-                foreach (var hash in hashes)
-                {
-                    stream.Write(hash);
-                }
+                stream.Write(hash);
+            }
 
-                stream.Seek(0, SeekOrigin.Begin);
+            stream.Seek(0, SeekOrigin.Begin);
 
-                foreach (var hash in hashes)
-                {
-                    var mh = stream.ReadMultihash();
+            foreach (var hash in hashes)
+            {
+                var mh = stream.ReadMultihash();
 
-                    Assert.NotNull(mh);
-                    Assert.Equal(mh, hash);
-                    Assert.True(mh.Verify(data));
-                }
+                Assert.NotNull(mh);
+                Assert.Equal(mh, hash);
+                Assert.True(mh.Verify(data));
             }
         }
 
@@ -87,23 +81,21 @@ namespace Multiformats.Hash.Tests
             var data = Encoding.UTF8.GetBytes("hello world");
             var hashes = SupportedHashTypes.Select(type => Multihash.Sum(type, data)).ToList();
 
-            using (var stream = new MemoryStream())
+            await using var stream = new MemoryStream();
+            foreach (var hash in hashes)
             {
-                foreach (var hash in hashes)
-                {
-                    await stream.WriteAsync(hash, CancellationToken.None);
-                }
+                await stream.WriteAsync(hash, CancellationToken.None);
+            }
 
-                stream.Seek(0, SeekOrigin.Begin);
+            stream.Seek(0, SeekOrigin.Begin);
 
-                foreach (var hash in hashes)
-                {
-                    var mh = await stream.ReadMultihashAsync(CancellationToken.None);
+            foreach (var hash in hashes)
+            {
+                var mh = await stream.ReadMultihashAsync(CancellationToken.None);
 
-                    Assert.NotNull(mh);
-                    Assert.Equal(mh, hash);
-                    Assert.True(mh.Verify(data));
-                }
+                Assert.NotNull(mh);
+                Assert.Equal(mh, hash);
+                Assert.True(await mh.VerifyAsync(data));
             }
         }
     }

@@ -25,7 +25,9 @@ namespace Multiformats.Hash.CLI
         static void Main(string[] args)
         {
             if (args.Length == 0)
+            {
                 DisplayHelp();
+            }
 
             var options = ParseOptions(args);
 
@@ -34,7 +36,9 @@ namespace Multiformats.Hash.CLI
 #endif
 
             if (options.Source == null)
+            {
                 DisplayError("No source");
+            }
 
             Process(options);
         }
@@ -43,7 +47,7 @@ namespace Multiformats.Hash.CLI
         {
             using (options.Source)
             {
-                byte[] data = null;
+                byte[] data;
                 using (var mem = new MemoryStream())
                 {
                     options.Source.CopyTo(mem);
@@ -63,13 +67,17 @@ namespace Multiformats.Hash.CLI
                 if (!checksum.SequenceEqual(mh.Digest))
                 {
                     if (!options.Quiet)
+                    {
                         Console.WriteLine($"Digest mismatch, got: {Multibase.EncodeRaw(options.Encoding, mh.Digest)}, wanted: {Multibase.EncodeRaw(options.Encoding, checksum)}");
+                    }
 
                     Environment.Exit(1);
                 }
 
                 if (!options.Quiet)
+                {
                     Console.WriteLine("Checksum match");
+                }
             }
         }
 
@@ -81,29 +89,37 @@ namespace Multiformats.Hash.CLI
             while (i < args.Length)
             {
                 if (args[i] == "-h" || args[i] == "--help")
+                {
                     DisplayHelp();
+                }
 
                 if (args[i] == "-v" || args[i] == "--version")
+                {
                     DisplayVersion();
+                }
 
                 if (args[i].StartsWith("-a") || args[i].StartsWith("--algorithm"))
                 {
-                    string algo;
+                    string algorithm;
                     if (args[i].Contains("="))
                     {
-                        algo = args[i++].Split('=').Last();
+                        algorithm = args[i++].Split('=').Last();
                     }
                     else
                     {
                         if (++i >= args.Length)
+                        {
                             DisplayError("No algorithm specified");
+                        }
 
-                        algo = args[i++];
+                        algorithm = args[i++];
                     }
 
-                    var code = Hash.Multihash.GetCode(algo);
+                    var code = Hash.Multihash.GetCode(algorithm);
                     if (!code.HasValue)
-                        DisplayError($"Unknown algorithm: {algo}");
+                    {
+                        DisplayError($"Unknown algorithm: {algorithm}");
+                    }
 
                     options.Algorithm = code.Value;
                     continue;
@@ -118,7 +134,9 @@ namespace Multiformats.Hash.CLI
                     else
                     {
                         if (++i >= args.Length)
+                        {
                             DisplayError("No checksum specified");
+                        }
 
                         options.Checksum = args[i++];
                     }
@@ -134,7 +152,9 @@ namespace Multiformats.Hash.CLI
                     else
                     {
                         if (++i >= args.Length)
+                        {
                             DisplayError("No encoding specified");
+                        }
 
                         options.Encoding = ParseEncoding(args[i++]);
                     }
@@ -151,14 +171,17 @@ namespace Multiformats.Hash.CLI
                     else
                     {
                         if (++i >= args.Length)
+                        {
                             DisplayError("No length specified");
+                        }
 
                         raw = args[i++];
                     }
 
-                    int length = -1;
-                    if (!int.TryParse(raw, out length))
+                    if (!int.TryParse(raw, out var length))
+                    {
                         DisplayError("Invalid length specified");
+                    }
 
                     options.Length = length;
                     continue;
@@ -191,7 +214,8 @@ namespace Multiformats.Hash.CLI
                     DisplayError($"File does not exists: {args[i]}");
                 }
 
-                options.Source = new FileStream(args[i], FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan); //File.OpenRead(args[i]);
+                options.Source = new FileStream(args[i], FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
+                //File.OpenRead(args[i]);
                 break;
             }
 
@@ -219,7 +243,7 @@ namespace Multiformats.Hash.CLI
                 case "base64": return MultibaseEncoding.Base64;
                 default:
                     DisplayError($"Unknown or unsupported encoding: {s}");
-                    return default(MultibaseEncoding);
+                    return default;
             }
         }
 

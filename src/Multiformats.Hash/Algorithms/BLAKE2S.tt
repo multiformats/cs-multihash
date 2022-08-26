@@ -15,8 +15,7 @@ namespace Multiformats.Hash.Algorithms
     {
         private readonly Func<IDigest> _factory;
 
-        protected BLAKE2S(int bits)
-            : base(GetHashType(bits), GetName(bits), bits / 8)
+        protected BLAKE2S(int bits) : base(GetHashType(bits), GetName(bits), bits / 8)
         {
             _factory = () => new Blake2sDigest(null, bits / 8, null, null);
         }

@@ -8,8 +8,7 @@ namespace Multiformats.Hash.Algorithms
     {
         private readonly System.Security.Cryptography.HashAlgorithm _algo;
 
-        public DBL_SHA2_256()
-            : base(HashType.DBL_SHA2_256, "dbl-sha2-256", 32)
+        public DBL_SHA2_256() : base(HashType.DBL_SHA2_256, "dbl-sha2-256", 32)
         {
             _algo = System.Security.Cryptography.SHA256.Create();
         }

@@ -11,8 +11,7 @@ namespace Multiformats.Hash.Algorithms
     {
         private readonly Func<IDigest> _factory;
 
-        public SHA1()
-            : base(HashType.SHA1, "sha1", 20)
+        public SHA1() : base(HashType.SHA1, "sha1", 20)
         {
             _factory = () => new Sha1Digest();
         }

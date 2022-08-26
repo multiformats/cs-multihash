@@ -1,29 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
-    <RuntimeIdentifiers>win10-x64;osx-x64;ubuntu-x64</RuntimeIdentifiers>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'net461' ">$(PackageTargetFallback);netstandard;portable-net461+win8</PackageTargetFallback>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputType>Exe</OutputType>
-    <NoWarn>$(NoWarn);NU1605</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<RuntimeIdentifiers>win10-x64;osx-x64;ubuntu-x64</RuntimeIdentifiers>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<OutputType>Exe</OutputType>
+		<NoWarn>$(NoWarn);NU1605;CA1018;CA5351</NoWarn>
+		<Nullable>disable</Nullable>
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>True</Optimize>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>0</WarningLevel>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Multiformats.Hash\Multiformats.Hash.csproj" />
-    <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
-  </ItemGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>0</WarningLevel>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Multiformats.Hash\Multiformats.Hash.csproj" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+	</ItemGroup>
 
 </Project>

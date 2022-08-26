@@ -7,19 +7,26 @@ namespace Multiformats.Hash.Algorithms
     public interface IMultihashAlgorithm
     {
         HashType Code { get; }
+
         string Name { get; }
+
         int DefaultLength { get; }
+
         byte[] ComputeHash(byte[] data, int length = -1);
+
         Task<byte[]> ComputeHashAsync(byte[] data, int length = -1);
     }
 
     public abstract class MultihashAlgorithm : IMultihashAlgorithm
     {
-        private static readonly Lazy<Random> _random = new Lazy<Random>(() => new Random(Environment.TickCount));
+        private static readonly Lazy<Random> _random = new(() => new Random(Environment.TickCount));
+
         private readonly Lazy<int> _hashCode;
 
         public HashType Code { get; }
+
         public string Name { get; }
+
         public int DefaultLength { get; }
 
         protected MultihashAlgorithm(HashType code, string name, int defaultLength)
@@ -32,7 +39,9 @@ namespace Multiformats.Hash.Algorithms
         }
 
         public abstract byte[] ComputeHash(byte[] data, int length = -1);
-        public virtual Task<byte[]> ComputeHashAsync(byte[] data, int length = -1) => Task.Factory.StartNew(() => ComputeHash(data, length));
+        
+        public virtual Task<byte[]> ComputeHashAsync(byte[] data, int length = -1) => 
+            Task.Run(() => ComputeHash(data, length));
 
         public override int GetHashCode() => _hashCode.Value;
     }

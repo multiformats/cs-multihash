@@ -11,8 +11,7 @@ namespace Multiformats.Hash.Algorithms
     {
         private readonly Func<IDigest> _factory;
 
-        public MD5()
-            : base(HashType.MD5, "md5", 16)
+        public MD5() : base(HashType.MD5, "md5", 16)
         {
             _factory = () => new MD5Digest();
         }
