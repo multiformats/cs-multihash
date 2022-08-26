@@ -177,8 +177,9 @@ namespace Multiformats.Hash.CLI
 
                         raw = args[i++];
                     }
-
-                    if (!int.TryParse(raw, out var length))
+                    
+                    var length = -1;
+                    if (!int.TryParse(raw, out length))
                     {
                         DisplayError("Invalid length specified");
                     }
